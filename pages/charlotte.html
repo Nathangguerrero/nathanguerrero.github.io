@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charlotte — Brand Design | Nathan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0ece6;
+      --muted: #5a5a5a;
+      --orange: #ff4d00;
+      --orange-dim: rgba(255,92,0,0.12);
+      --border: rgba(240,236,230,0.08);
+      --ease: cubic-bezier(0.76, 0, 0.24, 1);
+    }
+
+    html { font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    
+    /* ── Scroll progress ── */
+
+    /* ── Background canvas ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 16px; left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      padding: 16px 28px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.3) inset;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-back {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-back:hover { opacity: 1; }
+    .btn-nav-contact {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #ffffff;
+      background: var(--orange);
+      padding: 10px 20px;
+      border-radius: 999px;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
+      white-space: nowrap;
+    }
+    .btn-nav-contact:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,77,0,0.4);
+    }
+
+    /* ── HERO ── */
+    .project-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .project-hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.4);
+    }
+    .project-hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 60%, transparent 100%);
+    }
+    .project-hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .project-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: inline-block;
+      align-self: flex-start;
+      background: #000000;
+      padding: 10px 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.3s forwards;
+    }
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 1.2s var(--ease) 0.5s forwards;
+    }
+    .project-title em {
+      font-style: normal;
+      color: var(--orange);
+    }
+    .project-meta-row {
+      display: flex;
+      gap: 64px;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.8s forwards;
+    }
+    .project-meta-item label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .project-meta-item span {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ── CONTENT ── */
+    .project-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 120px 48px;
+    }
+    .project-section {
+      margin-bottom: 100px;
+    }
+    .project-section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+    .project-section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .project-section-text {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 640px;
+    }
+    .project-section-text strong { color: var(--fg); font-weight: 400; }
+
+    /* ── Image blocks ── */
+    .project-image-full {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .project-image-full img,
+    .project-image-full video {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+    }
+    .project-image-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .project-image-grid .project-image-full { margin-bottom: 0; }
+
+    /* ── Tools ── */
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .tool-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      border: 1px solid var(--border);
+      padding: 8px 20px;
+      border-radius: 999px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .tool-tag:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── Credits ── */
+    .credits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 24px;
+      padding: 48px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .credit-item label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .credit-item span {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* ── CTA ── */
+    .project-cta {
+      text-align: center;
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .project-cta p {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    .project-cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 36px;
+      background: var(--orange);
+      color: #ffffff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s;
+    }
+    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(255,77,0,0.4); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 36px;
+      background: transparent;
+      color: var(--fg);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: transform 0.4s var(--ease), border-color 0.3s, color 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); transform: scale(1.04); }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 48px;
+    }
+
+    /* ── Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--orange); }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; gap: 24px; }
+      .project-hero { padding: 0 24px 60px; }
+      .project-meta-row { flex-wrap: wrap; gap: 32px; }
+      .project-content { padding: 80px 24px; }
+      .project-image-grid { grid-template-columns: 1fr; }
+      .credits-grid { grid-template-columns: 1fr; padding: 32px; }
+      .project-cta { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- NAV -->
+  <nav>
+    <a href="../index.html" class="nav-logo">Nathan<span>.</span></a>
+    <a href="../index.html#work" class="nav-back">← Voltar</a>
+    <a href="mailto:nathan201rp@gmail.com" class="btn-nav-contact">Entrar em contato ↗</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="project-hero">
+    <div class="project-hero-bg">
+      <img src="https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png" alt="Hybrid Media" />
+    </div>
+    <div class="project-hero-content">
+      <span class="project-eyebrow">Branding — Design</span>
+      <h1 class="project-title">
+        Charlotte<br/><em>Brand Design</em>
+      </h1>
+      <div class="project-meta-row">
+        <div class="project-meta-item">
+          <label>Agência</label>
+          <span>Wave Agency</span>
+        </div>
+        <div class="project-meta-item">
+          <label>Direção</label>
+          <span>Nathan Guerrero</span>
+        </div>
+        <div class="project-meta-item">
+          <label>Animação</label>
+          <span>Nathan Guerrero</span>
+        </div>
+        <div class="project-meta-item">
+          <label>Ano</label>
+          <span>2025</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <div class="project-content">
+
+    <!-- Sobre -->
+    <div class="project-section reveal">
+      <p class="project-section-label">Sobre o projeto</p>
+      <h2 class="project-section-title">O real encontra<br/>o imaginário.</h2>
+      <p class="project-section-text">
+        <strong>Hybrid Media — São Paulo</strong> explora a fusão entre o real e o imaginário ao combinar cenas da cidade de São Paulo com elementos animados. Inspirado em produções como <strong>The Amazing World of Gumball</strong>, o projeto transforma paisagens urbanas em espaços lúdicos onde personagens interagem com o cotidiano metropolitano.
+      </p>
+    </div>
+
+    <!-- Imagem principal -->
+    <div class="project-image-full reveal">
+      <img src="https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png" alt="Hybrid Media São Paulo" />
+    </div>
+
+    <!-- Processo -->
+    <div class="project-section reveal" style="margin-top: 80px;">
+      <p class="project-section-label">Processo</p>
+      <h2 class="project-section-title">Capturas reais,<br/>alma animada.</h2>
+      <p class="project-section-text">
+        Combinamos <strong>footage capturado em diferentes pontos de São Paulo</strong> com elementos animados que ajudaram a construir a narrativa e a atmosfera. O trabalho envolveu compositing cuidadoso, correção de cor e sincronização de animação para criar interações fluidas entre o mundo real e o digital.
+      </p>
+    </div>
+
+    <!-- Placeholder para imagens adicionais -->
+    <div class="project-image-grid reveal">
+      <div class="project-image-full" style="background:#111; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">
+        Adicionar imagem
+      </div>
+      <div class="project-image-full" style="background:#111; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">
+        Adicionar imagem
+      </div>
+    </div>
+
+    <!-- Ferramentas -->
+    <div class="project-section reveal">
+      <p class="project-section-label">Ferramentas</p>
+      <h2 class="project-section-title">Tecnologia &amp;<br/>criatividade.</h2>
+      <div class="tools-list">
+        <span class="tool-tag">After Effects</span>
+        <span class="tool-tag">Illustrator</span>
+        <span class="tool-tag">Photoshop</span>
+        <span class="tool-tag">Motion Graphics</span>
+        <span class="tool-tag">Video Editing</span>
+        <span class="tool-tag">Compositing</span>
+      </div>
+    </div>
+
+    <!-- Créditos -->
+    <div class="project-section reveal">
+      <p class="project-section-label">Créditos</p>
+      <div class="credits-grid">
+        <div class="credit-item">
+          <label>Agência</label>
+          <span>Wave Agency</span>
+        </div>
+        <div class="credit-item">
+          <label>Direção de Vídeo</label>
+          <span>Nathan Guerrero</span>
+        </div>
+        <div class="credit-item">
+          <label>Animação</label>
+          <span>Nathan Guerrero</span>
+        </div>
+        <div class="credit-item">
+          <label>Cliente</label>
+          <span>Stalo Agência</span>
+        </div>
+        <div class="credit-item">
+          <label>Publicado em</label>
+          <span>Outubro, 2025</span>
+        </div>
+        <div class="credit-item">
+          <label>Localização</label>
+          <span>São Paulo, Brasil</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end project-content -->
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+
+  <script>
+    
+
+    /* ── Scroll progress ── */
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    }, { passive: true });
+
+    /* ── Reveal ── */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    /* ── Background canvas ── */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let mouseX = W * 0.5, mouseY = H * 0.4;
+    let lerpX = mouseX, lerpY = mouseY;
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    const orbs = [
+      { x:0.2, y:0.3, r:0.55, color:[255,77,0],   speed:0.00018, phase:0,   mouse:true  },
+      { x:0.8, y:0.7, r:0.45, color:[80,20,180],   speed:0.00013, phase:2.1, mouse:false },
+      { x:0.5, y:0.1, r:0.40, color:[0,120,200],   speed:0.00020, phase:4.3, mouse:false },
+      { x:0.1, y:0.8, r:0.35, color:[180,40,255],  speed:0.00015, phase:1.1, mouse:false },
+    ];
+
+    function drawBg(t) {
+      lerpX += (mouseX - lerpX) * 0.04;
+      lerpY += (mouseY - lerpY) * 0.04;
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, W, H);
+      orbs.forEach(o => {
+        const cx = o.mouse ? lerpX + (o.x - 0.5) * W * 0.3 : (o.x + Math.sin(t * o.speed + o.phase) * 0.12) * W;
+        const cy = o.mouse ? lerpY + (o.y - 0.5) * H * 0.3 : (o.y + Math.cos(t * o.speed * 0.8 + o.phase) * 0.10) * H;
+        const radius = o.r * Math.max(W, H);
+        const [r, g, b] = o.color;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        grad.addColorStop(0,   `rgba(${r},${g},${b},0.13)`);
+        grad.addColorStop(0.5, `rgba(${r},${g},${b},0.05)`);
+        grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(drawBg);
+    }
+    requestAnimationFrame(drawBg);
+  </script>
+
+  <script>
+    /* When loaded inside the portfolio drawer, intercept back/logo links */
+    if (window.self !== window.top) {
+      document.addEventListener("DOMContentLoaded", () => {
+        /* hide nav inside drawer */
+        const nav = document.querySelector("nav");
+        if (nav) { nav.style.display = "none"; }
+        /* offset hero/first section to remove nav gap */
+        document.body.style.paddingTop = "0";
+        const hero = document.querySelector(".project-hero, #hero, section");
+        if (hero) { hero.style.paddingTop = "0"; hero.style.marginTop = "0"; }
+        document.querySelectorAll(".nav-back, .nav-logo").forEach(a => {
+          a.addEventListener("click", e => {
+            e.preventDefault();
+            window.parent.postMessage("closeDrawer", "*");
+    document.addEventListener('mousemove', e => {
+      window.parent.postMessage({ type: 'cursorMove', x: e.clientX, y: e.clientY }, '*');
+    });
+
+          });
+        });
+      });
+    }
+  </script>
+</body>
+</html>
