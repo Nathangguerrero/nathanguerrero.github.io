@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathan — Design, Motion & Creative Direction</title>
-  <link rel="icon" type="image/svg+xml" href="assets/logo/Logo.svg/Favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo/Favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -148,7 +148,7 @@
     :root.light .nav-logo { color: #0a0a0a; }
     .nav-logo { transition: transform 0.25s var(--ease); display: inline-flex; align-items: center; }
     .nav-logo:hover { transform: scale(1.08); }
-    .nav-logo-img { height: 32px; width: auto; display: block; object-fit: contain; }
+    .nav-logo-img { height: 48px; width: auto; display: block; object-fit: contain; }
     .nav-links {
       display: flex;
       gap: 40px;
@@ -357,6 +357,7 @@
       border-radius: 16px;
       overflow: hidden;
       align-self: stretch;
+      position: relative;
     }
     .about-photo img {
       width: 100%;
@@ -364,9 +365,26 @@
       object-fit: cover;
       object-position: 65% 15%;
       display: block;
-      transition: transform 0.6s var(--ease);
     }
-    .about-photo:hover img { transform: scale(1.04); }
+    .photo-base {
+      position: absolute;
+      inset: 0;
+    }
+    .photo-alt-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .photo-orbit-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    @keyframes orb-spin { to { transform: rotate(360deg); } }
     .about-label {
       font-size: 0.7rem;
       letter-spacing: 0.2em;
@@ -421,6 +439,14 @@
       width: 7rem;
       height: 7rem;
       object-fit: contain;
+    }
+    .logo-paint {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .about-sym-img:hover .logo-paint,
+    .nav-logo:hover .logo-paint {
+      clip-path: inset(0%);
     }
     .about-text {
       font-size: 1.1rem;
@@ -893,7 +919,7 @@
       justify-content: center;
     }
     .loader-logo {
-      height: 56px;
+      height: 84px;
       width: auto;
       opacity: 0;
       transform: translateY(20px);
@@ -1125,7 +1151,7 @@
   <!-- Loader -->
   <div id="loader">
     <div class="loader-name">
-      <img src="assets/logo/Logo.svg/Horizontal.svg" alt="Nathan" class="loader-logo" />
+      <img src="assets/logo/NTHN.svg" alt="Nathan" class="loader-logo" />
     </div>
     <div class="loader-bar"></div>
     <div class="loader-pct" id="loader-pct">0%</div>
@@ -1142,7 +1168,18 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo"><img src="assets/logo/Logo.svg/Horizontal.svg" alt="Nathan" class="nav-logo-img" /></a>
+    <a href="#hero" class="nav-logo" id="logo-home">
+      <svg class="nav-logo-img" viewBox="0 0 970.9 645.8" xmlns="http://www.w3.org/2000/svg">
+        <g><path fill="#f0ece6" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#f0ece6" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#f0ece6" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#f0ece6" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
+        <path fill="#f0ece6" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>
+        <path fill="#ff4d00" d="M766.3,625.8h-22.7c-5.9,0-10.6-4.8-10.6-10.6v-28c0-2.9,2.4-5.3,5.3-5.3h33.3c2.9,0,5.3,2.4,5.3,5.3v28c0,5.9-4.8,10.6-10.6,10.6Z"/>
+        <g class="logo-paint">
+          <g><path fill="#ff4d00" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#ff4d00" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#ff4d00" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#ff4d00" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
+          <path fill="#ff4d00" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>
+          <path fill="#ff4d00" d="M766.3,625.8h-22.7c-5.9,0-10.6-4.8-10.6-10.6v-28c0-2.9,2.4-5.3,5.3-5.3h33.3c2.9,0,5.3,2.4,5.3,5.3v28c0,5.9-4.8,10.6-10.6,10.6Z"/>
+        </g>
+      </svg>
+    </a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
       <li><a href="#services">Serviços</a></li>
@@ -1214,7 +1251,14 @@
       </div>
       <div class="about-sym-lcol">
         <span class="about-sym" id="sym6">◎</span>
-        <img src="assets/logo/Logo.svg/Favicon.svg" class="about-sym about-sym-img" id="sym7" alt="logo" />
+        <svg class="about-sym about-sym-img" id="sym7" viewBox="0 0 330 500" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#f0ece6" d="M82.3,126.06l32.47-76c3.01-3.32,7.17-4.69,11.66-4.65l18.11.16c4.45-.17,8.35,1.55,10.59,5.72,6.15,72.14,11.87,143.59,21.55,217.48L266.62,31.16c1.29-3.41,6.68-4.15,9.59-4.63l27.14.29c3.53.04,8,3.93,6.74,7.78l-41.49,127.16c-5.83,17.88-8.94,35.08-9.4,53.95l-1.97,80.99-3.02,112.64c-.07,5.57-1.27,10.24-8.01,10.25l-27.76.03c-5.16,0-8.88-3.94-7.86-9.29l3.2-121.67-27.82,72.46c-1.14,2.97-6.61,4.46-9.27,4.56l-19.34-.02c-3.79-.27-7.04-1.43-9.98-5.06l-29.3-211.85-55,127.21c-2.11,2.8-5.1,3.94-8.57,4.71l-27.66-.29c-4.14-.04-7.45-3.8-7.13-7.76l46.93-110.89,15.66-35.67Z"/>
+          <path fill="#ff4d00" d="M243.84,473.47h-22.73c-5.87,0-10.64-4.76-10.64-10.64v-28.02c0-2.95,2.39-5.34,5.34-5.34h33.32c2.95,0,5.34,2.39,5.34,5.34v28.02c0,5.87-4.76,10.64-10.64,10.64Z"/>
+          <g class="logo-paint">
+            <path fill="#ff4d00" d="M82.3,126.06l32.47-76c3.01-3.32,7.17-4.69,11.66-4.65l18.11.16c4.45-.17,8.35,1.55,10.59,5.72,6.15,72.14,11.87,143.59,21.55,217.48L266.62,31.16c1.29-3.41,6.68-4.15,9.59-4.63l27.14.29c3.53.04,8,3.93,6.74,7.78l-41.49,127.16c-5.83,17.88-8.94,35.08-9.4,53.95l-1.97,80.99-3.02,112.64c-.07,5.57-1.27,10.24-8.01,10.25l-27.76.03c-5.16,0-8.88-3.94-7.86-9.29l3.2-121.67-27.82,72.46c-1.14,2.97-6.61,4.46-9.27,4.56l-19.34-.02c-3.79-.27-7.04-1.43-9.98-5.06l-29.3-211.85-55,127.21c-2.11,2.8-5.1,3.94-8.57,4.71l-27.66-.29c-4.14-.04-7.45-3.8-7.13-7.76l46.93-110.89,15.66-35.67Z"/>
+            <path fill="#ff4d00" d="M243.84,473.47h-22.73c-5.87,0-10.64-4.76-10.64-10.64v-28.02c0-2.95,2.39-5.34,5.34-5.34h33.32c2.95,0,5.34,2.39,5.34,5.34v28.02c0,5.87-4.76,10.64-10.64,10.64Z"/>
+          </g>
+        </svg>
         <span class="about-sym" id="sym8">◈</span>
       </div>
       <div class="about-sym-lcol">
@@ -1223,8 +1267,23 @@
         <span class="about-sym" id="sym11">◎</span>
       </div>
     </div>
-    <div class="about-photo reveal">
-      <img src="assets/images/Imagem Nathan.jpeg" alt="Nathan" />
+    <div class="about-photo reveal" id="about-photo-anim">
+      <img src="assets/images/Imagem Nathan.jpeg" alt="Nathan" class="photo-base" />
+      <!-- Goo canvas: alt image revealed by liquid mask -->
+      <canvas id="goo-canvas" class="photo-alt-svg"></canvas>
+      <!-- Orbit rings -->
+      <svg class="photo-orbit-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+        <g>
+          <ellipse cx="200" cy="300" rx="178" ry="272" fill="none" stroke="rgba(255,77,0,0.22)" stroke-width="1.2" stroke-dasharray="8 16"/>
+          <circle cx="378" cy="300" r="4" fill="rgba(255,77,0,0.85)"/>
+          <animateTransform attributeName="transform" type="rotate" values="0 200 300;360 200 300" dur="16s" repeatCount="indefinite"/>
+        </g>
+        <g>
+          <ellipse cx="200" cy="300" rx="148" ry="226" fill="none" stroke="rgba(255,77,0,0.1)" stroke-width="0.8" stroke-dasharray="3 22"/>
+          <circle cx="348" cy="300" r="2.2" fill="rgba(255,77,0,0.5)"/>
+          <animateTransform attributeName="transform" type="rotate" values="0 200 300;-360 200 300" dur="26s" repeatCount="indefinite"/>
+        </g>
+      </svg>
     </div>
     <div class="about-right">
       <p class="about-label reveal">Sobre mim</p>
@@ -1242,7 +1301,7 @@
       </p>
       <div class="about-stats reveal reveal-delay-2">
         <div>
-          <div class="stat-number" style="font-size:1.4rem; line-height:1.2;">Full<br/>Process</div>
+          <div class="stat-number" style="font-size:1.85rem; line-height:1.1;">Full<br/>Process</div>
           <div class="stat-label">Captação até entrega</div>
         </div>
         <div>
@@ -1263,7 +1322,7 @@
       </div>
       <div class="about-sym-lcol">
         <span class="about-sym" id="sym12">◎</span>
-        <img src="assets/logo/Logo.svg/Favicon.svg" class="about-sym about-sym-img" id="sym13" alt="logo" />
+        <img src="assets/logo/Favicon.svg" class="about-sym about-sym-img" id="sym13" alt="logo" />
         <span class="about-sym" id="sym14">◈</span>
       </div>
       <div class="about-sym-lcol">
@@ -1287,7 +1346,7 @@
 
       <div class="project-item reveal" data-project="0">
         <div class="project-thumb">
-          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/290b72243627065.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png" alt="Stalo" loading="lazy" />
+          <img src="assets/images/Stalo/Logotipo.png" alt="Stalo" loading="lazy" />
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -1485,7 +1544,18 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo"><img src="assets/logo/Logo.svg/Horizontal.svg" alt="Nathan" style="height:36px; width:auto; display:block;" /></div>
+    <div class="footer-logo"><a href="#hero" class="nav-logo" id="logo-footer">
+      <svg viewBox="0 0 970.9 645.8" xmlns="http://www.w3.org/2000/svg" style="height:54px;width:auto;display:block;">
+        <g><path fill="#f0ece6" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#f0ece6" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#f0ece6" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#f0ece6" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
+        <path fill="#f0ece6" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>
+        <path fill="#ff4d00" d="M766.3,625.8h-22.7c-5.9,0-10.6-4.8-10.6-10.6v-28c0-2.9,2.4-5.3,5.3-5.3h33.3c2.9,0,5.3,2.4,5.3,5.3v28c0,5.9-4.8,10.6-10.6,10.6Z"/>
+        <g class="logo-paint">
+          <g><path fill="#ff4d00" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#ff4d00" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#ff4d00" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#ff4d00" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
+          <path fill="#ff4d00" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>
+          <path fill="#ff4d00" d="M766.3,625.8h-22.7c-5.9,0-10.6-4.8-10.6-10.6v-28c0-2.9,2.4-5.3,5.3-5.3h33.3c2.9,0,5.3,2.4,5.3,5.3v28c0,5.9-4.8,10.6-10.6,10.6Z"/>
+        </g>
+      </svg>
+    </a></div>
     <ul class="footer-links">
       <li><a href="#">Instagram</a></li>
       <li><a href="https://www.behance.net/nathanguerrero1" target="_blank">Behance</a></li>
@@ -1669,7 +1739,7 @@
 
     /* ── Project Modal ── */
     const projects = [
-      { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/290b72243627065.Y3JvcCwxMzgwLDEwODAsMjcwLDA.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'stalo.html' },
+      { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'assets/images/Stalo/Logotipo.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'stalo.html' },
       { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/48150f236442981.Y3JvcCwyNzYxLDIxNjAsNTQwLDA.jpg', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'hybrid-media.html' },
       { num:'03', name:'Welcome Day — CCRP', tags:['Design','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/807517235882613.Y3JvcCwxNTY3LDEyMjUsMTY2LDA.jpg', url:'https://www.behance.net/gallery/235882613/Welcome-Day-CCRP', page: 'welcome-day.html' },
       { num:'04', name:'Acampa LKC 2033', tags:['Design','Identidade'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif', url:'https://www.behance.net/gallery/235767189/Acampa-LKC-2033', page: 'acampa-lkc.html' },
@@ -1869,6 +1939,133 @@
       requestAnimationFrame(drawBg);
     }
     requestAnimationFrame(drawBg);
+  </script>
+  <script>
+    function scrollToTop() {
+      const start = window.scrollY;
+      const duration = 1000;
+      const startTime = performance.now();
+      function easeInOutExpo(t) {
+        return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
+          ? Math.pow(2, 20 * t - 10) / 2
+          : (2 - Math.pow(2, -20 * t + 10)) / 2;
+      }
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        window.scrollTo(0, start * (1 - easeInOutExpo(progress)));
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    ['logo-home', 'logo-footer'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('click', function(e) { e.preventDefault(); scrollToTop(); });
+    });
+  </script>
+
+  <!-- Photo blob reveal animation -->
+  <script>
+  (function () {
+    var wrap = document.getElementById('about-photo-anim');
+    if (!wrap) return;
+
+    // Goo liquid reveal — canvas compositing with trailing circle chain
+    var gooCanvas = document.getElementById('goo-canvas');
+    var gooCtx   = gooCanvas.getContext('2d');
+    var maskCvs  = document.createElement('canvas');
+    var maskCtx  = maskCvs.getContext('2d');
+
+    var altImg = new Image();
+    altImg.src = 'assets/images/Imagem Nathan 2.png';
+
+    var blobs = [
+      { x: -999, y: -999, ease: 0.18 },
+      { x: -999, y: -999, ease: 0.11 },
+      { x: -999, y: -999, ease: 0.07 },
+      { x: -999, y: -999, ease: 0.045 },
+      { x: -999, y: -999, ease: 0.028 }
+    ];
+    var mouseX = 0, mouseY = 0, hovered = false;
+
+    function gooResize() {
+      var W = wrap.offsetWidth, H = wrap.offsetHeight;
+      gooCanvas.width  = W; gooCanvas.height  = H;
+      maskCvs.width    = W; maskCvs.height    = H;
+    }
+
+    function coverDraw(ctx, img, W, H) {
+      var iw = img.naturalWidth, ih = img.naturalHeight;
+      if (!iw || !ih) return;
+      var scale = Math.max(W / iw, H / ih);
+      var sw = iw * scale, sh = ih * scale;
+      // Match CSS object-position: 65% 15%
+      ctx.drawImage(img, (W - sw) * 0.65, (H - sh) * 0.15, sw, sh);
+    }
+
+    function gooTick() {
+      // Update blob positions (chain easing)
+      for (var i = 0; i < blobs.length; i++) {
+        var tx = hovered ? (i === 0 ? mouseX : blobs[i - 1].x) : -500;
+        var ty = hovered ? (i === 0 ? mouseY : blobs[i - 1].y) : -500;
+        blobs[i].x += (tx - blobs[i].x) * blobs[i].ease;
+        blobs[i].y += (ty - blobs[i].y) * blobs[i].ease;
+      }
+
+      var W = gooCanvas.width, H = gooCanvas.height;
+      if (!W || !H || !altImg.complete) { requestAnimationFrame(gooTick); return; }
+
+      var scale = W / 320;
+      var radii = [110, 86, 64, 45, 28].map(function(r) { return r * scale; });
+      var blur  = Math.round(18 * scale);
+
+      // Draw goo mask on small canvas then scale up (performance)
+      var S = 4; // downscale factor
+      var MW = Math.ceil(W / S), MH = Math.ceil(H / S);
+      if (maskCvs.width !== MW || maskCvs.height !== MH) {
+        maskCvs.width = MW; maskCvs.height = MH;
+      }
+      maskCtx.clearRect(0, 0, MW, MH);
+      maskCtx.filter = 'blur(' + Math.round(blur / S) + 'px)';
+      maskCtx.fillStyle = 'white';
+      for (var i = 0; i < blobs.length; i++) {
+        maskCtx.beginPath();
+        maskCtx.arc(blobs[i].x / S, blobs[i].y / S, radii[i] / S, 0, Math.PI * 2);
+        maskCtx.fill();
+      }
+      maskCtx.filter = 'none';
+
+      // Threshold via pixel ops on small canvas
+      var id = maskCtx.getImageData(0, 0, MW, MH);
+      var d = id.data;
+      for (var j = 0; j < d.length; j += 4) {
+        var v = d[j + 3] > 60 ? 255 : 0; // use alpha channel, not color
+        d[j] = d[j+1] = d[j+2] = d[j+3] = v;
+      }
+      maskCtx.putImageData(id, 0, 0);
+
+      // Draw alt image, then clip to mask
+      gooCtx.clearRect(0, 0, W, H);
+      coverDraw(gooCtx, altImg, W, H);
+      gooCtx.globalCompositeOperation = 'destination-in';
+      gooCtx.drawImage(maskCvs, 0, 0, W, H); // scale mask up to full canvas size
+      gooCtx.globalCompositeOperation = 'source-over';
+
+      requestAnimationFrame(gooTick);
+    }
+
+    wrap.addEventListener('mousemove', function (e) {
+      var rect = wrap.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    });
+    wrap.addEventListener('mouseenter', function () { hovered = true; });
+    wrap.addEventListener('mouseleave', function () { hovered = false; });
+    window.addEventListener('resize', gooResize);
+
+    gooResize();
+    requestAnimationFrame(gooTick);
+  })();
   </script>
 </body>
 </html>
