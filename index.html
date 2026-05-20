@@ -31,7 +31,7 @@
       --border: rgba(10, 10, 10, 0.1);
     }
 
-    html { font-size: 16px; }
+    html { font-size: 16px; overflow-x: hidden; }
 
     @keyframes gradientShift {
       0%   { background-position: 0% 50%; }
@@ -46,6 +46,15 @@
       font-weight: 300;
       line-height: 1.6;
       overflow-x: hidden;
+    }
+
+    /* Parallax zoom containers */
+    .parallax-section {
+      overflow: hidden;
+    }
+    .parallax-section > * {
+      will-change: transform;
+      transform-origin: center top;
     }
 
     body::before { display: none; }
@@ -1242,7 +1251,7 @@
   </div>
 
   <!-- ABOUT -->
-  <section id="about">
+  <section id="about" class="parallax-section">
     <div class="about-symbols-left reveal" id="about-sym-left">
       <div class="about-sym-lcol">
         <span class="about-sym" id="sym3">◈</span>
@@ -1334,7 +1343,7 @@
   </section>
 
   <!-- WORK -->
-  <section id="work">
+  <section id="work" class="parallax-section">
     <div class="section-header reveal">
       <div>
         <p class="section-label">Projetos selecionados</p>
@@ -1446,7 +1455,7 @@
   </section>
 
   <!-- SERVICES -->
-  <section id="services">
+  <section id="services" class="parallax-section">
     <div class="section-header reveal">
       <div>
         <p class="section-label">O que faço</p>
@@ -1494,7 +1503,7 @@
   </section>
 
   <!-- PROCESS -->
-  <section id="process">
+  <section id="process" class="parallax-section">
     <div class="section-header reveal">
       <div>
         <p class="section-label">Como trabalho</p>
@@ -1526,7 +1535,7 @@
   </section>
 
   <!-- CTA -->
-  <section id="cta">
+  <section id="cta" class="parallax-section">
     <div class="cta-box reveal">
       <p class="cta-label">Vamos trabalhar juntos</p>
       <h2 class="cta-title">
@@ -1543,7 +1552,7 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
+  <footer class="parallax-section">
     <div class="footer-logo"><a href="#hero" class="nav-logo" id="logo-footer">
       <svg viewBox="0 0 970.9 645.8" xmlns="http://www.w3.org/2000/svg" style="height:54px;width:auto;display:block;">
         <g><path fill="#f0ece6" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#f0ece6" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#f0ece6" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#f0ece6" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
@@ -1962,6 +1971,41 @@
       var el = document.getElementById(id);
       if (el) el.addEventListener('click', function(e) { e.preventDefault(); scrollToTop(); });
     });
+  </script>
+
+  <!-- Lenis smooth scroll + parallax zoom -->
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script>
+  (function () {
+    var lenis = new Lenis({
+      duration: 1.15,
+      easing: function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+      smoothWheel: true,
+    });
+
+    var sections = document.querySelectorAll('.parallax-section');
+
+    function updateParallax() {
+      var vh = window.innerHeight;
+      for (var i = 0; i < sections.length; i++) {
+        var rect = sections[i].getBoundingClientRect();
+        var progress = Math.max(0, Math.min(1, (vh - rect.top) / vh));
+        var eased = 1 - Math.pow(1 - progress, 2);
+        var scale = 1.08 - 0.08 * eased;
+        var children = sections[i].children;
+        for (var j = 0; j < children.length; j++) {
+          children[j].style.transform = 'scale3d(' + scale + ',' + scale + ',1)';
+        }
+      }
+    }
+
+    function raf(time) {
+      lenis.raf(time);
+      updateParallax();
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  })();
   </script>
 
   <!-- Photo blob reveal animation -->
