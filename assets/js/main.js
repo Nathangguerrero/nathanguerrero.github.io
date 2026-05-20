@@ -369,6 +369,23 @@ function scrollToTop() {
     smoothWheel: true,
   });
 
+  // Smooth scroll for anchor nav links (logos have their own scrollToTop handler)
+  document.querySelectorAll('a[href^="#"]:not(#logo-home):not(#logo-footer)').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, {
+        duration: 1.4,
+        easing: function(t) {
+          return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
+            ? Math.pow(2, 20 * t - 10) / 2
+            : (2 - Math.pow(2, -20 * t + 10)) / 2;
+        }
+      });
+    });
+  });
+
   var sections = document.querySelectorAll('.parallax-section');
 
   function updateParallax() {
@@ -378,10 +395,7 @@ function scrollToTop() {
       var progress = Math.max(0, Math.min(1, (vh - rect.top) / vh));
       var eased = 1 - Math.pow(1 - progress, 2);
       var scale = 1.08 - 0.08 * eased;
-      var children = sections[i].children;
-      for (var j = 0; j < children.length; j++) {
-        children[j].style.transform = 'scale3d(' + scale + ',' + scale + ',1)';
-      }
+      sections[i].style.transform = 'scale3d(' + scale + ',' + scale + ',1)';
     }
   }
 

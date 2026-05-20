@@ -39,9 +39,6 @@ body {
 
 /* Parallax zoom containers */
 .parallax-section {
-  overflow: hidden;
-}
-.parallax-section > * {
   will-change: transform;
   transform-origin: center top;
 }
