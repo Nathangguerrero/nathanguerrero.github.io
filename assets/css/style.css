@@ -1,5 +1,6 @@
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a, button, [role="button"], label[for], summary { cursor: pointer; }
 
 :root {
   --bg: #0a0a0a;
@@ -337,11 +338,15 @@ nav:hover {
 
 /* ── ABOUT ── */
 #about {
-  padding: 140px 0;
+  padding: 140px 48px;
   display: grid;
-  grid-template-columns: 1fr 0.9fr 1.4fr 1fr;
+  grid-template-columns: 0.9fr 1.4fr;
   gap: 60px;
   align-items: start;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 .about-photo {
   width: 100%;
@@ -505,15 +510,17 @@ nav:hover {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
+  overflow: visible;
 }
 
 .project-item {
   text-decoration: none;
   color: inherit;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   display: block;
   border-radius: 12px;
+  cursor: pointer;
 }
 .project-item:nth-child(1) { grid-column: span 7; }
 .project-item:nth-child(2) { grid-column: span 5; }
@@ -530,6 +537,10 @@ nav:hover {
   background: #111;
   position: relative;
   border-radius: 10px;
+  transition: filter 0.4s ease;
+}
+.project-item:hover .project-thumb {
+  filter: drop-shadow(0 8px 32px rgba(255, 77, 0, 0.3));
 }
 .project-item:nth-child(1) .project-thumb,
 .project-item:nth-child(4) .project-thumb { aspect-ratio: 16/9; }

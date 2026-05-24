@@ -142,13 +142,13 @@ setTimeout(() => { isDeleting = true; typeWriter(); }, 2000);
 
 /* ── Project Modal ── */
 const projects = [
-  { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'assets/images/projects/stalo/Logotipo.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'stalo.html' },
-  { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/48150f236442981.Y3JvcCwyNzYxLDIxNjAsNTQwLDA.jpg', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'hybrid-media.html' },
-  { num:'03', name:'Welcome Day — CCRP', tags:['Design','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/807517235882613.Y3JvcCwxNTY3LDEyMjUsMTY2LDA.jpg', url:'https://www.behance.net/gallery/235882613/Welcome-Day-CCRP', page: 'welcome-day.html' },
-  { num:'04', name:'Acampa LKC 2033', tags:['Design','Identidade'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif', url:'https://www.behance.net/gallery/235767189/Acampa-LKC-2033', page: 'acampa-lkc.html' },
-  { num:'05', name:'CRECEI — Brand Refresh', tags:['Branding','Refresh'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg', url:'https://www.behance.net/gallery/222522241/CRECEI-Brand-Refresh', page: 'crecei.html' },
-  { num:'06', name:'Charlotte — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png', url:'https://www.behance.net/gallery/222436833/Charlotte-Brand-Design', page: 'charlotte.html' },
-  { num:'07', name:'Wave Agency — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/9adaed182240697.6721438fc4566.jpg', url:'https://www.behance.net/gallery/182240697/Wave-Agency-Brand-Design', page: 'wave-agency.html' },
+  { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'assets/images/projects/stalo/logotipo.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'pages/stalo.html' },
+  { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'assets/images/projects/hybrid-media/6-gif-hero.gif', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'pages/hybrid-media.html' },
+  { num:'03', name:'Welcome Day — CCRP', tags:['Design','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/807517235882613.Y3JvcCwxNTY3LDEyMjUsMTY2LDA.jpg', url:'https://www.behance.net/gallery/235882613/Welcome-Day-CCRP', page: 'pages/welcome-day.html' },
+  { num:'04', name:'Acampa LKC 2033', tags:['Design','Identidade'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif', url:'https://www.behance.net/gallery/235767189/Acampa-LKC-2033', page: 'pages/acampa-lkc.html' },
+  { num:'05', name:'CRECEI — Brand Refresh', tags:['Branding','Refresh'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg', url:'https://www.behance.net/gallery/222522241/CRECEI-Brand-Refresh', page: 'pages/crecei.html' },
+  { num:'06', name:'Charlotte — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png', url:'https://www.behance.net/gallery/222436833/Charlotte-Brand-Design', page: 'pages/charlotte.html' },
+  { num:'07', name:'Wave Agency — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/9adaed182240697.6721438fc4566.jpg', url:'https://www.behance.net/gallery/182240697/Wave-Agency-Brand-Design', page: 'pages/wave-agency.html' },
 ];
 
 const drawer        = document.getElementById('project-drawer');
@@ -270,9 +270,13 @@ function initTilt(el, strength = 12) {
   });
 }
 
-document.querySelectorAll('.project-item, .step, .cta-box').forEach(el => {
+document.querySelectorAll('.project-item').forEach(el => {
+  const thumb = el.querySelector('.project-thumb');
+  if (thumb) { thumb.classList.add('tilt'); initTilt(thumb, 14); }
+});
+document.querySelectorAll('.step, .cta-box').forEach(el => {
   el.classList.add('tilt');
-  initTilt(el, el.classList.contains('cta-box') ? 6 : el.classList.contains('step') ? 10 : 14);
+  initTilt(el, el.classList.contains('cta-box') ? 6 : 10);
 });
 
 const btnPrimary = document.querySelector('.btn-primary');
@@ -338,29 +342,6 @@ function drawBg(t) {
 }
 requestAnimationFrame(drawBg);
 
-/* ── Scroll to top ── */
-function scrollToTop() {
-  const start = window.scrollY;
-  const duration = 1000;
-  const startTime = performance.now();
-  function easeInOutExpo(t) {
-    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
-      ? Math.pow(2, 20 * t - 10) / 2
-      : (2 - Math.pow(2, -20 * t + 10)) / 2;
-  }
-  function step(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    window.scrollTo(0, start * (1 - easeInOutExpo(progress)));
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-['logo-home', 'logo-footer'].forEach(function(id) {
-  var el = document.getElementById(id);
-  if (el) el.addEventListener('click', function(e) { e.preventDefault(); scrollToTop(); });
-});
-
 /* ── Lenis smooth scroll + parallax zoom ── */
 (function () {
   var lenis = new Lenis({
@@ -369,20 +350,24 @@ function scrollToTop() {
     smoothWheel: true,
   });
 
-  // Smooth scroll for anchor nav links (logos have their own scrollToTop handler)
-  document.querySelectorAll('a[href^="#"]:not(#logo-home):not(#logo-footer)').forEach(function(link) {
+  var easeInOutExpo = function(t) {
+    return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
+      ? Math.pow(2, 20 * t - 10) / 2
+      : (2 - Math.pow(2, -20 * t + 10)) / 2;
+  };
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(link) {
     link.addEventListener('click', function(e) {
-      var target = document.querySelector(link.getAttribute('href'));
+      var href = link.getAttribute('href');
+      if (href === '#' || href === '#hero') {
+        e.preventDefault();
+        lenis.scrollTo(0, { duration: 1.4, easing: easeInOutExpo });
+        return;
+      }
+      var target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target, {
-        duration: 1.4,
-        easing: function(t) {
-          return t === 0 ? 0 : t === 1 ? 1 : t < 0.5
-            ? Math.pow(2, 20 * t - 10) / 2
-            : (2 - Math.pow(2, -20 * t + 10)) / 2;
-        }
-      });
+      lenis.scrollTo(target, { duration: 1.4, easing: easeInOutExpo });
     });
   });
 
@@ -445,8 +430,8 @@ function scrollToTop() {
 
   function gooTick() {
     for (var i = 0; i < blobs.length; i++) {
-      var tx = hovered ? (i === 0 ? mouseX : blobs[i - 1].x) : -500;
-      var ty = hovered ? (i === 0 ? mouseY : blobs[i - 1].y) : -500;
+      var tx = i === 0 ? mouseX : blobs[i - 1].x;
+      var ty = i === 0 ? mouseY : blobs[i - 1].y;
       blobs[i].x += (tx - blobs[i].x) * blobs[i].ease;
       blobs[i].y += (ty - blobs[i].y) * blobs[i].ease;
     }
@@ -458,7 +443,7 @@ function scrollToTop() {
     var radii = [110, 86, 64, 45, 28].map(function(r) { return r * scale; });
     var blur  = Math.round(18 * scale);
 
-    var S = 4;
+    var S = 2;
     var MW = Math.ceil(W / S), MH = Math.ceil(H / S);
     if (maskCvs.width !== MW || maskCvs.height !== MH) {
       maskCvs.width = MW; maskCvs.height = MH;
@@ -476,7 +461,8 @@ function scrollToTop() {
     var id = maskCtx.getImageData(0, 0, MW, MH);
     var d = id.data;
     for (var j = 0; j < d.length; j += 4) {
-      var v = d[j + 3] > 60 ? 255 : 0;
+      var a = d[j + 3];
+      var v = a < 40 ? 0 : a > 100 ? 255 : Math.round((a - 40) / 60 * 255);
       d[j] = d[j+1] = d[j+2] = d[j+3] = v;
     }
     maskCtx.putImageData(id, 0, 0);
@@ -490,13 +476,11 @@ function scrollToTop() {
     requestAnimationFrame(gooTick);
   }
 
-  wrap.addEventListener('mousemove', function (e) {
+  window.addEventListener('mousemove', function (e) {
     var rect = wrap.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
   });
-  wrap.addEventListener('mouseenter', function () { hovered = true; });
-  wrap.addEventListener('mouseleave', function () { hovered = false; });
   window.addEventListener('resize', gooResize);
 
   gooResize();
