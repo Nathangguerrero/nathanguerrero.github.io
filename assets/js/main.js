@@ -143,7 +143,7 @@ setTimeout(() => { isDeleting = true; typeWriter(); }, 2000);
 /* ── Project Modal ── */
 const projects = [
   { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'assets/images/projects/stalo/logotipo.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'pages/stalo.html' },
-  { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'assets/images/projects/hybrid-media/6-gif-hero.gif', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'pages/hybrid-media.html' },
+  { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'assets/images/projects/hybrid-media/6-gif-hero.mp4', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'pages/hybrid-media.html' },
   { num:'03', name:'Welcome Day — CCRP', tags:['Design','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/807517235882613.Y3JvcCwxNTY3LDEyMjUsMTY2LDA.jpg', url:'https://www.behance.net/gallery/235882613/Welcome-Day-CCRP', page: 'pages/welcome-day.html' },
   { num:'04', name:'Acampa LKC 2033', tags:['Design','Identidade'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif', url:'https://www.behance.net/gallery/235767189/Acampa-LKC-2033', page: 'pages/acampa-lkc.html' },
   { num:'05', name:'CRECEI — Brand Refresh', tags:['Branding','Refresh'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg', url:'https://www.behance.net/gallery/222522241/CRECEI-Brand-Refresh', page: 'pages/crecei.html' },
