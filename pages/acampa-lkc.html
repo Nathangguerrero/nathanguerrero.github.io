@@ -15,7 +15,6 @@
       --fg: #f0ece6;
       --muted: #5a5a5a;
       --orange: #ff4d00;
-      --orange-dim: rgba(255,92,0,0.12);
       --border: rgba(240,236,230,0.08);
       --ease: cubic-bezier(0.76, 0, 0.24, 1);
     }
@@ -30,343 +29,107 @@
       overflow-x: hidden;
     }
 
-    /* ── Noise ── */
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
+      pointer-events: none; z-index: 1000; opacity: 0.4;
     }
 
-    
-    /* ── Scroll progress ── */
+    #bg-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-    /* ── Background canvas ── */
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 16px; left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 48px;
-      padding: 16px 28px;
-      border-radius: 999px;
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 100; display: flex; align-items: center; gap: 48px;
+      padding: 16px 28px; border-radius: 999px;
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(24px) saturate(180%);
       -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid rgba(255,255,255,0.25);
       box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.3) inset;
     }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #ffffff;
-      text-decoration: none;
-    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ffffff; text-decoration: none; }
     .nav-logo span { color: var(--orange); }
-    .nav-back {
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #ffffff;
-      text-decoration: none;
-      opacity: 0.7;
-      transition: opacity 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .nav-back { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; text-decoration: none; opacity: 0.7; transition: opacity 0.3s; }
     .nav-back:hover { opacity: 1; }
     .btn-nav-contact {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #ffffff;
-      background: var(--orange);
-      padding: 10px 20px;
-      border-radius: 999px;
-      transition: transform 0.3s var(--ease), box-shadow 0.3s;
-      white-space: nowrap;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      color: #ffffff; background: var(--orange); padding: 10px 20px; border-radius: 999px;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s; white-space: nowrap;
     }
-    .btn-nav-contact:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255,77,0,0.4);
-    }
+    .btn-nav-contact:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,77,0,0.4); }
 
-    /* ── HERO ── */
     .project-hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 48px 80px;
-      position: relative;
-      overflow: hidden;
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden;
     }
-    .project-hero-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-    .project-hero-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.4);
-    }
+    .project-hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .project-hero-bg video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
     .project-hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 60%, transparent 100%);
     }
-    .project-hero-content {
-      position: relative;
-      z-index: 1;
-    }
+    .project-hero-content { position: relative; z-index: 1; }
     .project-eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #ffffff;
-      display: inline-block;
-      align-self: flex-start;
-      background: #000000;
-      padding: 10px 28px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 1s var(--ease) 0.3s forwards;
+      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #ffffff; display: inline-block; background: #000000;
+      padding: 10px 28px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 32px; opacity: 0; animation: fadeUp 1s var(--ease) 0.3s forwards;
     }
     .project-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(3.5rem, 8vw, 8rem);
-      line-height: 0.9;
-      letter-spacing: -0.04em;
-      margin-bottom: 48px;
-      opacity: 0;
-      animation: fadeUp 1.2s var(--ease) 0.5s forwards;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(3.5rem, 8vw, 8rem); line-height: 0.9; letter-spacing: -0.04em;
+      margin-bottom: 48px; opacity: 0; animation: fadeUp 1.2s var(--ease) 0.5s forwards;
     }
-    .project-title em {
-      font-style: normal;
-      color: var(--orange);
-    }
-    .project-meta-row {
-      display: flex;
-      gap: 64px;
-      opacity: 0;
-      animation: fadeUp 1s var(--ease) 0.8s forwards;
-    }
-    .project-meta-item label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 6px;
-    }
-    .project-meta-item span {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
+    .project-title em { font-style: normal; color: var(--orange); }
+    .project-meta-row { display: flex; gap: 64px; opacity: 0; animation: fadeUp 1s var(--ease) 0.8s forwards; }
+    .project-meta-item label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+    .project-meta-item span { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; }
 
-    /* ── CONTENT ── */
-    .project-content {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 120px 48px;
-    }
-    .project-section {
-      margin-bottom: 100px;
-    }
-    .project-section-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 20px;
-    }
-    .project-section-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 24px;
-    }
-    .project-section-text {
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.9;
-      max-width: 640px;
-    }
-    .project-section-text strong { color: var(--fg); font-weight: 400; }
+    .project-text-section { padding: 100px 48px; max-width: 900px; }
+    .project-section-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 32px; }
+    .project-section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 3vw, 2.8rem); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 40px; }
+    .project-text-block { margin-bottom: 48px; }
+    .project-text-block .lang-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; display: block; }
+    .project-text-block p { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
+    .project-text-block p:last-child { margin-bottom: 0; }
+    .project-text-block p strong { color: var(--muted); font-weight: 400; }
 
-    /* ── Image blocks ── */
-    .project-image-full {
-      width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-    .project-image-full img,
-    .project-image-full video {
-      width: 100%;
-      display: block;
-      border-radius: 16px;
-    }
-    .project-image-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .project-image-grid .project-image-full { margin-bottom: 0; }
+    .project-image-full { width: 100%; overflow: hidden; }
+    .project-image-full img, .project-image-full video { width: 100%; display: block; }
 
-    /* ── Tools ── */
-    .tools-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 24px;
-    }
-    .tool-tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--fg);
-      border: 1px solid var(--border);
-      padding: 8px 20px;
-      border-radius: 999px;
-      transition: border-color 0.3s, color 0.3s;
-    }
-    .tool-tag:hover { border-color: var(--orange); color: var(--orange); }
+    .project-image-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .project-image-grid-3 img { width: 100%; display: block; object-fit: contain; }
 
-    /* ── Credits ── */
-    .credits-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-top: 24px;
-      padding: 48px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-    .credit-item label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 8px;
-    }
-    .credit-item span {
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 1rem;
-    }
+    .project-image-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .project-image-grid-2 img { width: 100%; display: block; object-fit: contain; }
 
-    /* ── CTA ── */
-    .project-cta {
-      text-align: center;
-      padding: 80px 48px;
-      border-top: 1px solid var(--border);
-    }
-    .project-cta p {
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 40px;
-    }
-    .project-cta-buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 36px;
-      background: var(--orange);
-      color: #ffffff;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 999px;
-      transition: transform 0.4s var(--ease), box-shadow 0.4s;
-    }
-    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(255,77,0,0.4); }
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 36px;
-      background: transparent;
-      color: var(--fg);
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      transition: transform 0.4s var(--ease), border-color 0.3s, color 0.3s;
-    }
-    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); transform: scale(1.04); }
+    .project-video-full { padding: 48px 48px 0; display: flex; justify-content: center; }
+    .video-player-wrapper { position: relative; width: 75%; background: #000; border-radius: 8px; overflow: hidden; cursor: pointer; }
+    .video-player-wrapper video { width: 100%; display: block; }
+    .video-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); transition: opacity 0.2s; }
+    .video-play-overlay.hidden { opacity: 0; pointer-events: none; }
+    .video-play-big { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 2px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.15s, background 0.15s; }
+    .video-play-overlay:hover .video-play-big { transform: scale(1.1); background: rgba(255,255,255,0.25); }
+    .video-controls { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%); display: flex; align-items: center; gap: 12px; opacity: 0; transition: opacity 0.2s; }
+    .video-player-wrapper:hover .video-controls { opacity: 1; }
+    .video-btn { background: none; border: none; color: #fff; cursor: pointer; padding: 4px; display: flex; align-items: center; flex-shrink: 0; }
+    .video-progress { flex: 1; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; cursor: pointer; }
+    .video-progress-fill { height: 100%; background: var(--orange); border-radius: 2px; width: 0%; pointer-events: none; }
+    .video-time { color: #fff; font-size: 12px; font-family: monospace; flex-shrink: 0; }
+    .video-quality { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 12px; border-radius: 4px; padding: 2px 6px; cursor: pointer; flex-shrink: 0; }
+    .video-quality option { background: #111; color: #fff; }
+    .video-volume-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .video-volume { -webkit-appearance: none; appearance: none; width: 72px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); cursor: pointer; outline: none; }
+    .video-volume::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; }
 
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0 48px;
-    }
+    .divider { height: 1px; background: var(--border); margin: 0 48px; }
 
-    /* ── Reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s var(--ease), transform 1s var(--ease);
-    }
+    .reveal { opacity: 0; transform: translateY(50px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.15s; }
-    .reveal-delay-2 { transition-delay: 0.3s; }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Scrollbar ── */
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     ::-webkit-scrollbar { width: 2px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--orange); }
@@ -375,10 +138,8 @@
       nav { padding: 14px 20px; gap: 24px; }
       .project-hero { padding: 0 24px 60px; }
       .project-meta-row { flex-wrap: wrap; gap: 32px; }
-      .project-content { padding: 80px 24px; }
-      .project-image-grid { grid-template-columns: 1fr; }
-      .credits-grid { grid-template-columns: 1fr; padding: 32px; }
-      .project-cta { padding: 60px 24px; }
+      .project-text-section { padding: 60px 24px; }
+      .project-image-grid-3 { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -386,165 +147,138 @@
 
   <canvas id="bg-canvas"></canvas>
 
-  <!-- NAV -->
   <nav>
     <a href="../index.html" class="nav-logo">Nathan<span>.</span></a>
     <a href="../index.html#work" class="nav-back">← Voltar</a>
     <a href="mailto:nathan201rp@gmail.com" class="btn-nav-contact">Entrar em contato ↗</a>
   </nav>
 
-  <!-- HERO -->
   <section class="project-hero">
     <div class="project-hero-bg">
-      <img src="https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif" alt="Hybrid Media" />
+      <video autoplay muted loop playsinline>
+        <source src="../assets/images/projects/Acampa LKC 2033/Capa.mp4" type="video/mp4" />
+      </video>
     </div>
     <div class="project-hero-content">
-      <span class="project-eyebrow">Design — Identidade Visual</span>
+      <span class="project-eyebrow">Motion Design — Cobertura de Evento</span>
       <h1 class="project-title">
         Acampa<br/><em>LKC 2033</em>
       </h1>
       <div class="project-meta-row">
         <div class="project-meta-item">
-          <label>Agência</label>
-          <span>Wave Agency</span>
+          <label>Cliente</label>
+          <span>LKC</span>
         </div>
         <div class="project-meta-item">
-          <label>Direção</label>
-          <span>Nathan Guerrero</span>
-        </div>
-        <div class="project-meta-item">
-          <label>Animação</label>
+          <label>Edição & Motion</label>
           <span>Nathan Guerrero</span>
         </div>
         <div class="project-meta-item">
           <label>Ano</label>
-          <span>2025</span>
+          <span>2033</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTENT -->
-  <div class="project-content">
+  <div class="project-image-full reveal">
+    <video autoplay muted loop playsinline>
+      <source src="../assets/images/projects/Acampa LKC 2033/Capa.mp4" type="video/mp4" />
+    </video>
+  </div>
 
-    <!-- Sobre -->
-    <div class="project-section reveal">
-      <p class="project-section-label">Sobre o projeto</p>
-      <h2 class="project-section-title">O real encontra<br/>o imaginário.</h2>
-      <p class="project-section-text">
-        <strong>Hybrid Media — São Paulo</strong> explora a fusão entre o real e o imaginário ao combinar cenas da cidade de São Paulo com elementos animados. Inspirado em produções como <strong>The Amazing World of Gumball</strong>, o projeto transforma paisagens urbanas em espaços lúdicos onde personagens interagem com o cotidiano metropolitano.
-      </p>
+  <div class="project-text-section reveal">
+    <p class="project-section-label">Project Overview</p>
+    <h2 class="project-section-title">Experiências que<br/>ficam para sempre<span style="color:var(--orange)">.</span></h2>
+
+    <div class="project-text-block">
+      <p>O Acampa LKC 2033 é um evento voltado para jovens e adolescentes, marcado por grandes experiências com Deus.</p>
+      <p>A nossa atuação no projeto consistiu na <strong>edição completa dos vídeos de cobertura</strong> e peças de comunicação, criação de animações e elementos de motion design para reforçar a identidade do evento, montagem de vinhetas e <strong>transições dinâmicas</strong>, garantindo ritmo e engajamento e adequação de formatos para diferentes canais de divulgação (redes sociais e telões).</p>
     </div>
+  </div>
 
-    <!-- Imagem principal -->
-    <div class="project-image-full reveal">
-      <img src="https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif" alt="Hybrid Media São Paulo" />
-    </div>
-
-    <!-- Processo -->
-    <div class="project-section reveal" style="margin-top: 80px;">
-      <p class="project-section-label">Processo</p>
-      <h2 class="project-section-title">Capturas reais,<br/>alma animada.</h2>
-      <p class="project-section-text">
-        Combinamos <strong>footage capturado em diferentes pontos de São Paulo</strong> com elementos animados que ajudaram a construir a narrativa e a atmosfera. O trabalho envolveu compositing cuidadoso, correção de cor e sincronização de animação para criar interações fluidas entre o mundo real e o digital.
-      </p>
-    </div>
-
-    <!-- Placeholder para imagens adicionais -->
-    <div class="project-image-grid reveal">
-      <div class="project-image-full" style="background:#111; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">
-        Adicionar imagem
-      </div>
-      <div class="project-image-full" style="background:#111; aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">
-        Adicionar imagem
-      </div>
-    </div>
-
-    <!-- Ferramentas -->
-    <div class="project-section reveal">
-      <p class="project-section-label">Ferramentas</p>
-      <h2 class="project-section-title">Tecnologia &amp;<br/>criatividade.</h2>
-      <div class="tools-list">
-        <span class="tool-tag">After Effects</span>
-        <span class="tool-tag">Illustrator</span>
-        <span class="tool-tag">Photoshop</span>
-        <span class="tool-tag">Motion Graphics</span>
-        <span class="tool-tag">Video Editing</span>
-        <span class="tool-tag">Compositing</span>
-      </div>
-    </div>
-
-    <!-- Créditos -->
-    <div class="project-section reveal">
-      <p class="project-section-label">Créditos</p>
-      <div class="credits-grid">
-        <div class="credit-item">
-          <label>Agência</label>
-          <span>Wave Agency</span>
-        </div>
-        <div class="credit-item">
-          <label>Direção de Vídeo</label>
-          <span>Nathan Guerrero</span>
-        </div>
-        <div class="credit-item">
-          <label>Animação</label>
-          <span>Nathan Guerrero</span>
-        </div>
-        <div class="credit-item">
-          <label>Cliente</label>
-          <span>Stalo Agência</span>
-        </div>
-        <div class="credit-item">
-          <label>Publicado em</label>
-          <span>Outubro, 2025</span>
-        </div>
-        <div class="credit-item">
-          <label>Localização</label>
-          <span>São Paulo, Brasil</span>
+  <div class="project-video-full reveal">
+    <div class="video-player-wrapper" id="videoWrapper">
+      <video id="projectVideo" playsinline>
+        <source id="videoSource" src="../assets/images/projects/Acampa LKC 2033/Highlights-1080.mp4" type="video/mp4" />
+      </video>
+      <div class="video-play-overlay" id="playOverlay">
+        <div class="video-play-big">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
         </div>
       </div>
+      <div class="video-controls">
+        <button class="video-btn" id="playBtn" aria-label="Play/Pause">
+          <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+          <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="white" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="video-progress" id="progressBar">
+          <div class="video-progress-fill" id="progressFill"></div>
+        </div>
+        <span class="video-time" id="videoTime">0:00 / 0:00</span>
+        <div class="video-volume-wrap">
+          <button class="video-btn" id="muteBtn" aria-label="Mudo">
+            <svg id="soundIcon" width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54,8.46a5,5,0,0,1,0,7.07M19.07,4.93a10,10,0,0,1,0,14.14" stroke="white" stroke-width="2" fill="none"/></svg>
+            <svg id="muteIcon" width="20" height="20" viewBox="0 0 24 24" fill="white" style="display:none"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2"/></svg>
+          </button>
+          <input type="range" class="video-volume" id="volumeSlider" min="0" max="1" step="0.02" value="1" />
+        </div>
+        <select class="video-quality" id="qualitySelect">
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <button class="video-btn" id="fullBtn" aria-label="Tela cheia">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15,3 21,3 21,9"/><polyline points="9,21 3,21 3,15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+      </div>
     </div>
+  </div>
 
-  </div><!-- end project-content -->
+  <div class="project-text-section reveal">
+    <p class="project-section-label">Resultado</p>
+    <h2 class="project-section-title">Energia, emoção<br/>e unidade visual<span style="color:var(--orange)">.</span></h2>
+
+    <div class="project-text-block">
+      <p>Um conjunto de materiais audiovisuais que ampliaram a presença do Acampa LKC 2033, transmitindo <strong>energia, emoção e unidade visual</strong> para os participantes.</p>
+    </div>
+  </div>
+
+  <div class="project-image-grid-3 reveal">
+    <img src="../assets/images/projects/Acampa LKC 2033/1.webp" alt="Acampa LKC 2033" loading="lazy" />
+    <img src="../assets/images/projects/Acampa LKC 2033/2.webp" alt="Acampa LKC 2033" loading="lazy" />
+    <img src="../assets/images/projects/Acampa LKC 2033/3.webp" alt="Acampa LKC 2033" loading="lazy" />
+  </div>
+
+  <div class="project-image-grid-2 reveal">
+    <img src="../assets/images/projects/Acampa LKC 2033/4.webp" alt="Acampa LKC 2033" loading="lazy" />
+    <img src="../assets/images/projects/Acampa LKC 2033/5.webp" alt="Acampa LKC 2033" loading="lazy" />
+  </div>
 
   <div class="divider"></div>
 
-  <!-- CTA -->
-
   <script>
-    
-
-    /* ── Scroll progress ── */
-    window.addEventListener('scroll', () => {
-      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-    }, { passive: true });
-
-    /* ── Reveal ── */
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.05 });
     reveals.forEach(el => observer.observe(el));
 
-    /* ── Background canvas ── */
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let W, H;
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
-
     let mouseX = W * 0.5, mouseY = H * 0.4;
     let lerpX = mouseX, lerpY = mouseY;
     document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
     const orbs = [
-      { x:0.2, y:0.3, r:0.55, color:[255,77,0],   speed:0.00018, phase:0,   mouse:true  },
-      { x:0.8, y:0.7, r:0.45, color:[80,20,180],   speed:0.00013, phase:2.1, mouse:false },
-      { x:0.5, y:0.1, r:0.40, color:[0,120,200],   speed:0.00020, phase:4.3, mouse:false },
-      { x:0.1, y:0.8, r:0.35, color:[180,40,255],  speed:0.00015, phase:1.1, mouse:false },
+      { x:0.2, y:0.3, r:0.55, color:[255,77,0],  speed:0.00018, phase:0,   mouse:true  },
+      { x:0.8, y:0.7, r:0.45, color:[80,20,180],  speed:0.00013, phase:2.1, mouse:false },
+      { x:0.5, y:0.1, r:0.40, color:[0,120,200],  speed:0.00020, phase:4.3, mouse:false },
+      { x:0.1, y:0.8, r:0.35, color:[180,40,255], speed:0.00015, phase:1.1, mouse:false },
     ];
-
     function drawBg(t) {
       lerpX += (mouseX - lerpX) * 0.04;
       lerpY += (mouseY - lerpY) * 0.04;
@@ -572,28 +306,94 @@
   </script>
 
   <script>
-    /* When loaded inside the portfolio drawer, intercept back/logo links */
+    const video = document.getElementById('projectVideo');
+    const videoSource = document.getElementById('videoSource');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const progressFill = document.getElementById('progressFill');
+    const progressBar = document.getElementById('progressBar');
+    const videoTime = document.getElementById('videoTime');
+    const muteBtn = document.getElementById('muteBtn');
+    const soundIcon = document.getElementById('soundIcon');
+    const muteIcon = document.getElementById('muteIcon');
+    const fullBtn = document.getElementById('fullBtn');
+    const playOverlay = document.getElementById('playOverlay');
+    const qualitySelect = document.getElementById('qualitySelect');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    const qualitySources = {
+      '1080': '../assets/images/projects/Acampa LKC 2033/Highlights-1080.mp4',
+      '720':  '../assets/images/projects/Acampa LKC 2033/Highlights-720.mp4',
+      '480':  '../assets/images/projects/Acampa LKC 2033/Highlights-480.mp4',
+    };
+
+    function fmt(s) { return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
+    function togglePlay() { video.paused ? video.play() : video.pause(); }
+    function updateVolumeUI() {
+      const muted = video.muted || video.volume === 0;
+      soundIcon.style.display = muted ? 'none' : '';
+      muteIcon.style.display = muted ? '' : 'none';
+      volumeSlider.value = muted ? 0 : video.volume;
+    }
+
+    document.getElementById('videoWrapper').addEventListener('click', e => {
+      if (e.target.closest('.video-controls')) return;
+      togglePlay();
+    });
+    playBtn.addEventListener('click', e => { e.stopPropagation(); togglePlay(); });
+    video.addEventListener('play', () => { playIcon.style.display='none'; pauseIcon.style.display=''; playOverlay.classList.add('hidden'); });
+    video.addEventListener('pause', () => { playIcon.style.display=''; pauseIcon.style.display='none'; playOverlay.classList.remove('hidden'); });
+    video.addEventListener('timeupdate', () => {
+      if (!video.duration) return;
+      progressFill.style.width = (video.currentTime / video.duration * 100) + '%';
+      videoTime.textContent = fmt(video.currentTime) + ' / ' + fmt(video.duration);
+    });
+    progressBar.addEventListener('click', e => {
+      const rect = progressBar.getBoundingClientRect();
+      video.currentTime = (e.clientX - rect.left) / rect.width * video.duration;
+    });
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (!video.muted && video.volume === 0) video.volume = 1;
+      updateVolumeUI();
+    });
+    volumeSlider.addEventListener('input', () => {
+      video.volume = parseFloat(volumeSlider.value);
+      video.muted = video.volume === 0;
+      updateVolumeUI();
+    });
+    fullBtn.addEventListener('click', () => {
+      document.fullscreenElement ? document.exitFullscreen() : document.getElementById('videoWrapper').requestFullscreen();
+    });
+    qualitySelect.addEventListener('change', () => {
+      const src = qualitySources[qualitySelect.value];
+      if (!src) return;
+      const t = video.currentTime;
+      const paused = video.paused;
+      videoSource.src = src;
+      video.load();
+      video.currentTime = t;
+      if (!paused) video.play();
+    });
+  </script>
+
+  <script>
     if (window.self !== window.top) {
       document.addEventListener("DOMContentLoaded", () => {
-        /* hide nav inside drawer */
         const nav = document.querySelector("nav");
-        if (nav) { nav.style.display = "none"; }
-        /* offset hero/first section to remove nav gap */
-        document.body.style.paddingTop = "0";
-        const hero = document.querySelector(".project-hero, #hero, section");
+        if (nav) nav.style.display = "none";
+        const hero = document.querySelector(".project-hero");
         if (hero) { hero.style.paddingTop = "0"; hero.style.marginTop = "0"; }
         document.querySelectorAll(".nav-back, .nav-logo").forEach(a => {
-          a.addEventListener("click", e => {
-            e.preventDefault();
-            window.parent.postMessage("closeDrawer", "*");
-    document.addEventListener('mousemove', e => {
-      window.parent.postMessage({ type: 'cursorMove', x: e.clientX, y: e.clientY }, '*');
-    });
-
-          });
+          a.addEventListener("click", e => { e.preventDefault(); window.parent.postMessage("closeDrawer", "*"); });
+        });
+        document.addEventListener('mousemove', e => {
+          window.parent.postMessage({ type: 'cursorMove', x: e.clientX, y: e.clientY }, '*');
         });
       });
     }
   </script>
+
 </body>
 </html>
