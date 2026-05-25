@@ -1081,12 +1081,12 @@ nav.nav-visible {
   background: var(--orange);
   color: #f0ece6;
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 14px 36px;
+  padding: 18px 52px;
   border-radius: 999px;
   animation: scrollBounce 2s ease-in-out infinite;
 }

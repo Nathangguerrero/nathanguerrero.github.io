@@ -55,7 +55,7 @@
     .btn-nav-contact {
       font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem;
       letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
-      color: #ffffff; background: var(--orange); padding: 10px 20px; border-radius: 999px;
+      color: #ffffff; background: var(--orange); padding: 14px 32px; border-radius: 999px;
       transition: transform 0.3s var(--ease), box-shadow 0.3s; white-space: nowrap;
     }
     .btn-nav-contact:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,77,0,0.4); }
@@ -150,7 +150,6 @@
   <nav>
     <a href="../index.html" class="nav-logo">Nathan<span>.</span></a>
     <a href="../index.html#work" class="nav-back">← Voltar</a>
-    <a href="mailto:nathan201rp@gmail.com" class="btn-nav-contact">Entrar em contato ↗</a>
   </nav>
 
   <section class="project-hero">
@@ -395,5 +394,22 @@
     }
   </script>
 
+
+  <!-- CLOSING CTA -->
+  <section id="project-closing" style="padding:120px 48px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:28px;">
+    <p style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#5a5a5a;">Próximo passo</p>
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.5rem,5vw,4.5rem); letter-spacing:-0.04em; line-height:0.95; color:#f0ece6;">Vamos criar algo<br/><em style="font-style:normal; color:#ff4d00;">juntos.</em></h2>
+    <p style="color:#5a5a5a; font-size:0.9rem; max-width:400px; line-height:1.7;">Tem algum projeto em mente? Eu adoraria fazer parte!</p>
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2025</p>
+  </section>
+
+  <script>
+    const _closing = document.getElementById('project-closing');
+    if (_closing) {
+      new IntersectionObserver(([e]) => {
+        window.parent.postMessage({ type: 'closingVisible', visible: e.isIntersecting }, '*');
+      }, { threshold: 0.15 }).observe(_closing);
+    }
+  </script>
 </body>
 </html>
