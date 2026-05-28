@@ -1,3 +1,36 @@
+/* ── Mobile hamburger menu ── */
+(function () {
+  const btn = document.getElementById('nav-hamburger');
+  const menu = document.getElementById('mobile-menu');
+  if (!btn || !menu) return;
+
+  function openMenu() {
+    btn.classList.add('open');
+    menu.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => {
+    btn.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  menu.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+
 /* ── Loader ── */
 const loader = document.getElementById('loader');
 const loaderPct = document.getElementById('loader-pct');
@@ -109,7 +142,8 @@ window.addEventListener('scroll', () => {
 
 /* ── Typewriter cycling word ── */
 const cyclingWord = document.getElementById('cycling-word');
-const words = ['experiências', 'resultados', 'projetos'];
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+const words = isMobile ? ['marcas', 'ideias', 'projetos'] : ['experiências', 'resultados', 'projetos', 'marcas'];
 let wordIndex = 0;
 let charIndex = words[0].length;
 let isDeleting = false;
