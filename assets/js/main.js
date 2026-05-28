@@ -176,13 +176,17 @@ setTimeout(() => { isDeleting = true; typeWriter(); }, 2000);
 
 /* ── Project Modal ── */
 const projects = [
-  { num:'01', name:'Stalo — Brand Strategy & Visual Identity', tags:['Branding','Estratégia'], img:'assets/images/projects/stalo/logotipo.png', url:'https://www.behance.net/gallery/243627065/Stalo-Brand-Strategy-Visual-Identity', page: 'pages/stalo.html' },
-  { num:'02', name:'Hybrid Media — São Paulo', tags:['Branding','Motion'], img:'assets/images/projects/hybrid-media/6-gif-hero.mp4', url:'https://www.behance.net/gallery/236442981/Hybrid-Media-Sao-Paulo', page: 'pages/hybrid-media.html' },
-  { num:'03', name:'Welcome Day — CCRP', tags:['Design','Motion'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/807517235882613.Y3JvcCwxNTY3LDEyMjUsMTY2LDA.jpg', url:'https://www.behance.net/gallery/235882613/Welcome-Day-CCRP', page: 'pages/welcome-day.html' },
-  { num:'04', name:'Acampa LKC 2033', tags:['Design','Identidade'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/d8f3d4235767189.Y3JvcCwxMzgwLDEwODAsMzMxLDA.gif', url:'https://www.behance.net/gallery/235767189/Acampa-LKC-2033', page: 'pages/acampa-lkc.html' },
-  { num:'05', name:'CRECEI — Brand Refresh', tags:['Branding','Refresh'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg', url:'https://www.behance.net/gallery/222522241/CRECEI-Brand-Refresh', page: 'pages/crecei.html' },
-  { num:'06', name:'Charlotte — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png', url:'https://www.behance.net/gallery/222436833/Charlotte-Brand-Design', page: 'pages/charlotte.html' },
-  { num:'07', name:'Wave Agency — Brand Design', tags:['Branding','Design'], img:'https://mir-s3-cdn-cf.behance.net/projects/808/9adaed182240697.6721438fc4566.jpg', url:'https://www.behance.net/gallery/182240697/Wave-Agency-Brand-Design', page: 'pages/wave-agency.html' },
+  { num:'01', name:'Moqueca de Bacalhau · Riberalves', tags:['Audiovisual','Motion'], page: 'pages/riberalves.html' },
+  { num:'02', name:'Matrículas 2025 · CRECEI', tags:['Audiovisual','Motion'], page: 'pages/matriculas-crecei.html' },
+  { num:'03', name:'Divulgação do Evento · LKC CON', tags:['Audiovisual','Motion'], page: 'pages/lkc-con-anuncio.html' },
+  { num:'04', name:'São Paulo · Hybrid Media', tags:['Branding','Motion'], page: 'pages/hybrid-media.html' },
+  { num:'05', name:'Por Que Você Ainda Não Evoluiu? · Asafe Quirino', tags:['Audiovisual','Motion'], page: 'pages/asafe-quirino.html' },
+  { num:'06', name:'Welcome Day · CCRP', tags:['Design','Motion'], page: 'pages/welcome-day.html' },
+  { num:'07', name:'Highlights Acampa · LKC', tags:['Design','Identidade'], page: 'pages/acampa-lkc.html' },
+  { num:'08', name:'Brand Strategy & Visual Identity · Stalo', tags:['Branding','Estratégia'], page: 'pages/stalo.html' },
+  { num:'09', name:'Brand Refresh · CRECEI', tags:['Branding','Refresh'], page: 'pages/crecei.html' },
+  { num:'10', name:'Brand Design · Charlotte', tags:['Branding','Design'], page: 'pages/charlotte.html' },
+  { num:'11', name:'Brand Design · Wave Agency', tags:['Branding','Design'], page: 'pages/wave-agency.html' },
 ];
 
 const drawer        = document.getElementById('project-drawer');
@@ -236,6 +240,26 @@ function loadProject(index, direction = 'next') {
   slideToProject(index, direction);
 }
 
+function lockScroll() {
+  const scrollY = window.scrollY;
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = '100%';
+  document.body.dataset.scrollY = scrollY;
+  if (window.__lenis) window.__lenis.stop();
+}
+
+function unlockScroll() {
+  const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollY);
+  if (window.__lenis) window.__lenis.start();
+}
+
 function openDrawer(index) {
   const p = projects[index];
   if (!p.page) return;
@@ -248,7 +272,7 @@ function openDrawer(index) {
   frameB.style.pointerEvents = 'none';
   activeFrame = frameA;
   updateArrows();
-  document.body.style.overflow = 'hidden';
+  lockScroll();
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       drawer.classList.add('open');
@@ -258,7 +282,7 @@ function openDrawer(index) {
 
 function closeDrawer() {
   drawer.classList.remove('open');
-  document.body.style.overflow = '';
+  unlockScroll();
   setTimeout(() => { frameA.src = ''; frameB.src = ''; }, 600);
 }
 
@@ -378,7 +402,7 @@ requestAnimationFrame(drawBg);
 
 /* ── Lenis smooth scroll + parallax zoom ── */
 (function () {
-  var lenis = new Lenis({
+  var lenis = window.__lenis = new Lenis({
     duration: 1.15,
     easing: function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
     smoothWheel: true,
@@ -654,5 +678,83 @@ requestAnimationFrame(drawBg);
     const p = svg.dataset.perimeter;
     r.style.transition = 'stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1)';
     r.style.strokeDashoffset = p;
+  });
+})();
+
+/* ── Contact Panel ── */
+(function () {
+  const panel   = document.getElementById('contact-panel');
+  const overlay = document.getElementById('contact-overlay');
+  const closeBtn = document.getElementById('contact-close');
+  const form    = document.getElementById('contact-form');
+  const success = document.getElementById('cf-success');
+
+  const whatsappBtn = document.getElementById('whatsapp-btn');
+
+  function openContact() {
+    lockScroll();
+    panel.classList.add('open');
+    if (whatsappBtn) whatsappBtn.style.display = 'none';
+    panel.querySelector('#cf-name') && panel.querySelector('#cf-name').focus();
+  }
+
+  function closeContact() {
+    panel.classList.remove('open');
+    unlockScroll();
+    if (whatsappBtn) whatsappBtn.style.display = '';
+  }
+
+  document.querySelectorAll('.open-contact').forEach(btn => {
+    btn.addEventListener('click', openContact);
+  });
+
+  closeBtn.addEventListener('click', closeContact);
+  overlay.addEventListener('click', closeContact);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && panel.classList.contains('open')) closeContact();
+  });
+
+  const errorEl  = document.getElementById('cf-error');
+  const submitBtn = form.querySelector('.cf-submit');
+
+  function showMsg(el, text, duration = 5000) {
+    el.textContent = text;
+    el.classList.add('visible');
+    setTimeout(() => el.classList.remove('visible'), duration);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name    = form.querySelector('#cf-name').value.trim();
+    const contact = form.querySelector('#cf-contact').value.trim();
+    const message = form.querySelector('#cf-message').value.trim();
+    const types   = [...form.querySelectorAll('input[name="type"]:checked')].map(c => c.value).join(', ');
+
+    // Validação
+    if (!name) { showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
+    if (!contact) { showMsg(errorEl, 'Por favor, preencha seu e-mail ou WhatsApp.'); return; }
+    if (!message) { showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    emailjs.send('service_op2nr3o', 'template_hxodt4e', {
+      nome:           name,
+      contato:        contact,
+      tipo_projeto:   types || '—',
+      mensagem:       message,
+    })
+    .then(() => {
+      showMsg(success, 'Mensagem enviada com sucesso!');
+      form.reset();
+    })
+    .catch(() => {
+      showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    });
   });
 })();

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chamada do Evento · LKC CON | Nathan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0a0a0a; --fg: #f0ece6; --muted: #5a5a5a; --orange: #ff4d00; --border: rgba(240,236,230,0.08); --ease: cubic-bezier(0.76, 0, 0.24, 1); }
+    html { font-size: 16px; }
+    body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+    body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
+    #bg-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    nav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 48px; padding: 16px 28px; border-radius: 999px; background: rgba(255,255,255,0.12); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.3) inset; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ffffff; text-decoration: none; }
+    .nav-logo span { color: var(--orange); }
+    .nav-back { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; text-decoration: none; opacity: 0.7; transition: opacity 0.3s; }
+    .nav-back:hover { opacity: 1; }
+    .project-hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 48px 80px; position: relative; overflow: hidden; }
+    .project-hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .project-hero-bg video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
+    .project-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 60%, transparent 100%); }
+    .project-hero-content { position: relative; z-index: 1; }
+    .project-eyebrow { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: #ffffff; display: inline-block; background: #000000; padding: 10px 28px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); margin-bottom: 32px; opacity: 0; animation: fadeUp 1s var(--ease) 0.3s forwards; }
+    .project-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3.5rem, 8vw, 8rem); line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 48px; opacity: 0; animation: fadeUp 1.2s var(--ease) 0.5s forwards; }
+    .project-title em { font-style: normal; color: var(--orange); }
+    .project-meta-row { display: flex; gap: 64px; opacity: 0; animation: fadeUp 1s var(--ease) 0.8s forwards; }
+    .project-meta-item label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+    .project-meta-item span { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; }
+    .project-text-section { padding: 100px 48px; max-width: 900px; }
+    .project-section-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 32px; }
+    .project-section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 3vw, 2.8rem); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 40px; }
+    .project-text-block { margin-bottom: 48px; }
+    .project-text-block .lang-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; display: block; }
+    .project-text-block p { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
+    .project-text-block p:last-child { margin-bottom: 0; }
+    .project-video-full { padding: 48px 48px 0; display: flex; justify-content: center; }
+    .video-player-wrapper { position: relative; width: 75%; background: #000; border-radius: 8px; overflow: hidden; cursor: pointer; }
+    .video-player-wrapper video { width: 100%; display: block; }
+    .video-play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); transition: opacity 0.2s; }
+    .video-play-overlay.hidden { opacity: 0; pointer-events: none; }
+    .video-play-big { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 2px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.15s, background 0.15s; }
+    .video-play-overlay:hover .video-play-big { transform: scale(1.1); background: rgba(255,255,255,0.25); }
+    .video-controls { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%); display: flex; align-items: center; gap: 12px; opacity: 0; transition: opacity 0.2s; }
+    .video-player-wrapper:hover .video-controls { opacity: 1; }
+    .video-btn { background: none; border: none; color: #fff; cursor: pointer; padding: 4px; display: flex; align-items: center; flex-shrink: 0; }
+    .video-progress { flex: 1; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; cursor: pointer; position: relative; }
+    .video-progress-fill { height: 100%; background-image: linear-gradient(270deg, #ff4d00, #ff8c00, #ff2200, #ff6a00); background-size: 400% 400%; animation: gradientShift 5s ease infinite; border-radius: 2px; width: 0%; pointer-events: none; }
+    .video-time { color: #fff; font-size: 12px; font-family: monospace; flex-shrink: 0; }
+    .video-quality { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-size: 12px; border-radius: 4px; padding: 2px 6px; cursor: pointer; flex-shrink: 0; }
+    .video-quality option { background: #111; color: #fff; }
+    .video-volume-wrap { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .video-volume { -webkit-appearance: none; appearance: none; width: 72px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); cursor: pointer; outline: none; }
+    .video-volume::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; }
+    .divider { height: 1px; background: var(--border); margin: 0 48px; }
+    .reveal { opacity: 0; transform: translateY(50px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    ::-webkit-scrollbar { width: 2px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background-image: linear-gradient(270deg, #ff4d00, #ff8c00, #ff2200, #ff6a00); background-size: 400% 400%; animation: gradientShift 5s ease infinite; }
+    @media (max-width: 768px) { nav { padding: 14px 20px; gap: 24px; } .project-hero { padding: 0 24px 60px; } .project-meta-row { flex-wrap: wrap; gap: 32px; } .project-text-section { padding: 60px 24px; } .video-player-wrapper { width: 100%; } }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <nav>
+    <a href="../index.html" class="nav-logo">Nathan<span>.</span></a>
+    <a href="../index.html#work" class="nav-back">← Voltar</a>
+  </nav>
+
+  <section class="project-hero">
+    <div class="project-hero-bg">
+      <video autoplay muted loop playsinline>
+        <source src="../assets/images/projects/LKC Con anúncio/LKC Con Chamada.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="project-hero-content">
+      <span class="project-eyebrow">Audiovisual · Motion Design</span>
+      <h1 class="project-title">
+        Chamada do Evento<br/><em>LKC CON</em>
+      </h1>
+      <div class="project-meta-row">
+        <div class="project-meta-item"><label>Cliente</label><span>LKC</span></div>
+        <div class="project-meta-item"><label>Direção</label><span>Nathan Guerrero</span></div>
+        <div class="project-meta-item"><label>Edição & Motion</label><span>Nathan Guerrero</span></div>
+        <div class="project-meta-item"><label>Ano</label><span>2025</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="project-text-section reveal">
+    <p class="project-section-label">Project Overview</p>
+    <h2 class="project-section-title">Engajar &<br/>mobilizar a audiência<span style="color:var(--orange)">.</span></h2>
+    <div class="project-text-block">
+      <span class="lang-label">PT-BR</span>
+      <p>Vídeo de chamada para o LKC CON, criado para engajar e mobilizar a audiência a participar do evento. Com uma linguagem direta e visualmente estimulante, o conteúdo reforça o convite e aproxima o público da experiência que o evento propõe.</p>
+      <p>A produção foi conduzida para gerar senso de urgência e pertencimento, consolidando o LKC CON como um momento imperdível para a comunidade.</p>
+    </div>
+    <div class="project-text-block">
+      <span class="lang-label">ENG-US</span>
+      <p>Call-to-action video for LKC CON, created to engage and mobilize the audience to attend the event. With direct and visually stimulating language, the content reinforces the invitation and brings the audience closer to the experience the event proposes.</p>
+      <p>The production was driven to generate a sense of urgency and belonging, consolidating LKC CON as a must-attend moment for the community.</p>
+    </div>
+  </div>
+
+  <div class="project-video-full reveal">
+    <div class="video-player-wrapper" id="videoWrapper">
+      <video id="projectVideo" playsinline>
+        <source id="videoSource" src="../assets/images/projects/LKC Con anúncio/LKC Con Chamada.mp4" type="video/mp4" />
+      </video>
+      <div class="video-play-overlay" id="playOverlay">
+        <div class="video-play-big">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+      </div>
+      <div class="video-controls">
+        <button class="video-btn" id="playBtn" aria-label="Play/Pause">
+          <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+          <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="white" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="video-progress" id="progressBar"><div class="video-progress-fill" id="progressFill"></div></div>
+        <span class="video-time" id="videoTime">0:00 / 0:00</span>
+        <div class="video-volume-wrap">
+          <button class="video-btn" id="muteBtn" aria-label="Mudo">
+            <svg id="soundIcon" width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54,8.46a5,5,0,0,1,0,7.07M19.07,4.93a10,10,0,0,1,0,14.14" stroke="white" stroke-width="2" fill="none"/></svg>
+            <svg id="muteIcon" width="20" height="20" viewBox="0 0 24 24" fill="white" style="display:none"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2"/><line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2"/></svg>
+          </button>
+          <input type="range" class="video-volume" id="volumeSlider" min="0" max="1" step="0.02" value="1" />
+        </div>
+        <select class="video-quality" id="qualitySelect"><option value="original">Original</option></select>
+        <button class="video-btn" id="fullBtn" aria-label="Tela cheia">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15,3 21,3 21,9"/><polyline points="9,21 3,21 3,15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top:48px;"></div>
+  <section id="project-closing" style="padding:120px 48px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:28px;">
+    <p style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#5a5a5a;">Próximo passo</p>
+    <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.5rem,5vw,4.5rem); letter-spacing:-0.04em; line-height:0.95; color:#f0ece6;">Vamos criar algo<br/><em style="font-style:normal; color:#ff4d00;">juntos.</em></h2>
+    <p style="color:#5a5a5a; font-size:0.9rem; max-width:400px; line-height:1.7;">Tem algum projeto em mente? Eu adoraria fazer parte!</p>
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2025</p>
+  </section>
+
+  <script>
+    const reveals=document.querySelectorAll('.reveal');const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.05});reveals.forEach(el=>observer.observe(el));
+    const canvas=document.getElementById('bg-canvas');const ctx=canvas.getContext('2d');let W,H;function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}resize();window.addEventListener('resize',resize);let mouseX=W*0.5,mouseY=H*0.4,lerpX=mouseX,lerpY=mouseY;document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});const orbs=[{x:0.2,y:0.3,r:0.55,color:[255,77,0],speed:0.00018,phase:0,mouse:true},{x:0.8,y:0.7,r:0.45,color:[80,20,180],speed:0.00013,phase:2.1,mouse:false},{x:0.5,y:0.1,r:0.40,color:[0,120,200],speed:0.00020,phase:4.3,mouse:false},{x:0.1,y:0.8,r:0.35,color:[180,40,255],speed:0.00015,phase:1.1,mouse:false}];function drawBg(t){lerpX+=(mouseX-lerpX)*0.04;lerpY+=(mouseY-lerpY)*0.04;ctx.fillStyle='#0a0a0a';ctx.fillRect(0,0,W,H);orbs.forEach(o=>{const cx=o.mouse?lerpX+(o.x-0.5)*W*0.3:(o.x+Math.sin(t*o.speed+o.phase)*0.12)*W;const cy=o.mouse?lerpY+(o.y-0.5)*H*0.3:(o.y+Math.cos(t*o.speed*0.8+o.phase)*0.10)*H;const radius=o.r*Math.max(W,H);const[r,g,b]=o.color;const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);grad.addColorStop(0,`rgba(${r},${g},${b},0.13)`);grad.addColorStop(0.5,`rgba(${r},${g},${b},0.05)`);grad.addColorStop(1,`rgba(${r},${g},${b},0)`);ctx.globalCompositeOperation='screen';ctx.fillStyle=grad;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.fill();});ctx.globalCompositeOperation='source-over';requestAnimationFrame(drawBg);}requestAnimationFrame(drawBg);
+  </script>
+  <script>if(window.self!==window.top){document.addEventListener("DOMContentLoaded",()=>{const nav=document.querySelector("nav");if(nav)nav.style.display="none";const hero=document.querySelector(".project-hero");if(hero){hero.style.paddingTop="0";hero.style.marginTop="0";}document.querySelectorAll(".nav-back, .nav-logo").forEach(a=>{a.addEventListener("click",e=>{e.preventDefault();window.parent.postMessage("closeDrawer","*");});});document.addEventListener('mousemove',e=>{window.parent.postMessage({type:'cursorMove',x:e.clientX,y:e.clientY},'*');});});}</script>
+  <script>
+    const video=document.getElementById('projectVideo');const playBtn=document.getElementById('playBtn');const playIcon=document.getElementById('playIcon');const pauseIcon=document.getElementById('pauseIcon');const progressFill=document.getElementById('progressFill');const progressBar=document.getElementById('progressBar');const videoTime=document.getElementById('videoTime');const muteBtn=document.getElementById('muteBtn');const soundIcon=document.getElementById('soundIcon');const muteIcon=document.getElementById('muteIcon');const fullBtn=document.getElementById('fullBtn');const playOverlay=document.getElementById('playOverlay');const volumeSlider=document.getElementById('volumeSlider');
+    function fmt(s){const m=Math.floor(s/60);return m+':'+String(Math.floor(s%60)).padStart(2,'0');}function togglePlay(){video.paused?video.play():video.pause();}function updateVolumeUI(){const muted=video.muted||video.volume===0;soundIcon.style.display=muted?'none':'';muteIcon.style.display=muted?'':'none';volumeSlider.value=muted?0:video.volume;}
+    document.getElementById('videoWrapper').addEventListener('click',e=>{if(e.target.closest('.video-controls'))return;togglePlay();});playBtn.addEventListener('click',e=>{e.stopPropagation();togglePlay();});video.addEventListener('play',()=>{playIcon.style.display='none';pauseIcon.style.display='';playOverlay.classList.add('hidden');});video.addEventListener('pause',()=>{playIcon.style.display='';pauseIcon.style.display='none';playOverlay.classList.remove('hidden');});video.addEventListener('timeupdate',()=>{if(!video.duration)return;progressFill.style.width=(video.currentTime/video.duration*100)+'%';videoTime.textContent=fmt(video.currentTime)+' / '+fmt(video.duration);});progressBar.addEventListener('click',e=>{const rect=progressBar.getBoundingClientRect();video.currentTime=(e.clientX-rect.left)/rect.width*video.duration;});muteBtn.addEventListener('click',()=>{video.muted=!video.muted;if(!video.muted&&video.volume===0)video.volume=1;updateVolumeUI();});volumeSlider.addEventListener('input',()=>{video.volume=parseFloat(volumeSlider.value);video.muted=video.volume===0;updateVolumeUI();});fullBtn.addEventListener('click',()=>{document.fullscreenElement?document.exitFullscreen():document.getElementById('videoWrapper').requestFullscreen();});
+  </script>
+  <script>const _closing=document.getElementById('project-closing');if(_closing){new IntersectionObserver(([e])=>{window.parent.postMessage({type:'closingVisible',visible:e.isIntersecting},'*');},{threshold:0.15}).observe(_closing);}</script>
+</body>
+</html>
