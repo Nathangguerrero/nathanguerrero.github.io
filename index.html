@@ -8,17 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.min.css" />
 </head>
 <body>
 
   <!-- Loader -->
   <div id="loader">
     <div class="loader-name">
-      <img src="assets/images/logo/nthn.svg" alt="Nathan" class="loader-logo" />
+      <video src="assets/video/NTHN. Animated.mp4" class="loader-logo" autoplay muted playsinline></video>
     </div>
-    <div class="loader-bar"></div>
-    <div class="loader-pct" id="loader-pct">0%</div>
+    <div class="loader-pct" id="loader-pct" style="display:none">0%</div>
   </div>
 
   <!-- Background Canvas -->
@@ -196,7 +195,7 @@
 
       <div class="project-item reveal" data-project="0">
         <div class="project-thumb">
-          <video src="assets/images/projects/Riberalves/Capa Riberalves.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/Riberalves/Capa Riberalves.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -210,7 +209,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="1">
         <div class="project-thumb">
-          <video src="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS NOVEMBRO I CRECEI.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS NOVEMBRO I CRECEI.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -224,7 +223,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="2">
         <div class="project-thumb">
-          <video src="assets/images/projects/LKC Con anúncio/LKC Con Anuncio.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/LKC Con anúncio/LKC Con Anuncio.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -238,7 +237,7 @@
 
       <div class="project-item reveal reveal-delay-3" data-project="3">
         <div class="project-thumb">
-          <video src="assets/images/projects/hybrid-media/6-gif-hero.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/hybrid-media/6-gif-hero.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -252,7 +251,7 @@
 
       <div class="project-item reveal" data-project="4">
         <div class="project-thumb">
-          <video src="assets/images/projects/Asafe quirino/Aafe Quirino.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/Asafe quirino/Aafe Quirino.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -266,7 +265,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="5">
         <div class="project-thumb">
-          <video src="assets/images/projects/welcome-day/Capa Welcome Day.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/welcome-day/Capa Welcome Day.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -280,7 +279,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="6">
         <div class="project-thumb">
-          <video src="assets/images/projects/acampa-lkc/Capa- Acampa LKC 23.mp4" autoplay muted loop playsinline></video>
+          <video data-src="assets/images/projects/acampa-lkc/Capa- Acampa LKC 23.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -564,6 +563,6 @@
 
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.min.js"></script>
 </body>
 </html>

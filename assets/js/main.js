@@ -34,19 +34,21 @@
 /* ── Loader ── */
 const loader = document.getElementById('loader');
 const loaderPct = document.getElementById('loader-pct');
-let pct = 0;
-const loaderTimer = setInterval(() => {
-  pct = Math.min(pct + Math.random() * 14, 100);
-  loaderPct.textContent = Math.floor(pct) + '%';
-  if (pct >= 100) {
-    clearInterval(loaderTimer);
+const loaderDuration = 1600; // ms to reach 100%
+const loaderStart = performance.now();
+(function loaderTick(now) {
+  const progress = Math.min((now - loaderStart) / loaderDuration, 1);
+  loaderPct.textContent = Math.floor(progress * 100) + '%';
+  if (progress < 1) {
+    requestAnimationFrame(loaderTick);
+  } else {
     loaderPct.textContent = '100%';
     setTimeout(() => {
       loader.classList.add('hidden');
       document.querySelector('nav').classList.add('nav-visible');
-    }, 400);
+    }, 400); // 1600 + 400 = 2000ms total
   }
-}, 80);
+})(loaderStart);
 
 /* ── About symbols 3D ── */
 (function() {
@@ -359,7 +361,7 @@ if (btnPrimary) initTilt(btnPrimary, 16);
 
 /* ── Background Canvas ── */
 const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', { alpha: false });
 
 let W, H;
 function resize() {
@@ -478,7 +480,7 @@ requestAnimationFrame(drawBg);
   var maskCtx  = maskCvs.getContext('2d');
 
   var altImg = new Image();
-  altImg.src = 'assets/images/about/nathan-alt.png';
+  altImg.src = 'assets/images/about/nathan-alt.webp';
 
   var blobs = [
     { x: -999, y: -999, ease: 0.18 },
@@ -487,7 +489,7 @@ requestAnimationFrame(drawBg);
     { x: -999, y: -999, ease: 0.045 },
     { x: -999, y: -999, ease: 0.028 }
   ];
-  var mouseX = 0, mouseY = 0, hovered = false;
+  var mouseX = -999, mouseY = -999, hovered = false, gooRunning = false;
 
   function gooResize() {
     var W = wrap.offsetWidth, H = wrap.offsetHeight;
@@ -548,10 +550,25 @@ requestAnimationFrame(drawBg);
     gooCtx.drawImage(maskCvs, 0, 0, W, H);
     gooCtx.globalCompositeOperation = 'source-over';
 
-    requestAnimationFrame(gooTick);
+    if (gooRunning) requestAnimationFrame(gooTick);
   }
 
+  wrap.addEventListener('mouseenter', function() {
+    hovered = true;
+    if (!gooRunning) { gooRunning = true; requestAnimationFrame(gooTick); }
+  });
+  wrap.addEventListener('mouseleave', function() {
+    hovered = false;
+    gooRunning = false;
+    // reset blobs off-screen so canvas clears on next hover
+    blobs.forEach(function(b) { b.x = -999; b.y = -999; });
+    mouseX = -999; mouseY = -999;
+    // clear canvas
+    gooCtx.clearRect(0, 0, gooCanvas.width, gooCanvas.height);
+  });
+
   window.addEventListener('mousemove', function (e) {
+    if (!hovered) return;
     var rect = wrap.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
@@ -559,7 +576,6 @@ requestAnimationFrame(drawBg);
   window.addEventListener('resize', gooResize);
 
   gooResize();
-  requestAnimationFrame(gooTick);
 })();
 
 /* ── Hero scroll indicator visibility ── */
@@ -787,4 +803,22 @@ let ctaHoverUnfreeze = null;
       submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     });
   });
+})();
+
+/* ── Lazy load card videos ── */
+(function() {
+  const lazyVideos = document.querySelectorAll('video.lazy-video[data-src]');
+  if (!lazyVideos.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const v = e.target;
+        v.src = v.dataset.src;
+        v.removeAttribute('data-src');
+        v.play().catch(() => {});
+        obs.unobserve(v);
+      }
+    });
+  }, { rootMargin: '200px' });
+  lazyVideos.forEach(v => obs.observe(v));
 })();
