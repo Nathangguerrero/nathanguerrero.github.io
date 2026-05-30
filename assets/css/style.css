@@ -12,14 +12,6 @@ a, button, [role="button"], label[for], summary { cursor: pointer; }
   --ease: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-:root.light {
-  --bg: #f5f2ee;
-  --fg: #0a0a0a;
-  --muted: #888;
-  --orange: #ff4d00;
-  --orange-dim: rgba(255, 92, 0, 0.1);
-  --border: rgba(10, 10, 10, 0.1);
-}
 
 html { font-size: 16px; overflow-x: hidden; }
 
@@ -178,7 +170,6 @@ nav:hover {
   color: #f0ece6;
   text-decoration: none;
 }
-:root.light .nav-logo { color: #0a0a0a; }
 .nav-logo { transition: transform 0.25s var(--ease); display: inline-flex; align-items: center; }
 .nav-logo:hover { transform: scale(1.08); }
 .nav-logo-img { height: 48px; width: auto; display: block; object-fit: contain; }
@@ -200,7 +191,6 @@ nav:hover {
   transition: color 0.25s;
 }
 .nav-links a:hover { color: var(--orange); }
-:root.light .nav-links a { color: #0a0a0a; }
 .nav-actions {
   display: flex;
   align-items: center;
@@ -916,11 +906,6 @@ nav:hover {
   filter: brightness(0) invert(1);
 }
 
-:root.light .cta-box {
-  background: rgba(0,0,0,0.04);
-  border-color: rgba(0,0,0,0.1);
-  box-shadow: 0 0 0 1px rgba(255,77,0,0.1), 0 40px 80px rgba(0,0,0,0.1);
-}
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -1102,42 +1087,6 @@ nav.nav-visible {
   animation: fadeUp 0.5s var(--ease) 0.4s forwards;
 }
 
-/* ── Theme Toggle Button ── */
-.theme-toggle {
-  position: fixed;
-  top: 24px; right: 28px;
-  z-index: 101;
-  background: var(--orange);
-  border: none;
-  color: #f0ece6;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s, color 0.3s, transform 0.3s;
-}
-.theme-toggle:hover { transform: scale(1.1); }
-:root.light .theme-toggle {
-  background: #ffffff;
-  color: #0a0a0a;
-}
-.theme-toggle svg { pointer-events: none; }
-.icon-moon { display: block; }
-.icon-sun  { display: none; }
-:root.light .icon-moon { display: none; }
-:root.light .icon-sun  { display: block; }
-
-/* ── Light mode overrides ── */
-:root.light body::after { opacity: 0.15; }
-:root.light #services { background: #ece8e2; }
-:root.light .project-thumb { background: #ddd; }
-:root.light .project-thumb img { filter: brightness(0.95); }
-:root.light .project-item:hover .project-thumb img { filter: brightness(1.02); }
-:root.light .project-thumb::after { background: linear-gradient(to top, rgba(245,242,238,0.6) 0%, transparent 50%); }
-:root.light #loader { background: var(--bg); }
-:root.light #cta::before { background: radial-gradient(circle, rgba(255,77,0,0.06) 0%, transparent 70%); }
 
 /* ── Project Drawer ── */
 #project-drawer {
@@ -1612,7 +1561,6 @@ nav.nav-visible {
   nav.nav-visible { transform: translateY(0); opacity: 1; }
   .nav-links { display: none; }
   .btn-nav-contact { display: none; }
-  .theme-toggle { display: none; }
   #nav-hamburger { display: flex; }
 
   /* Hero */
