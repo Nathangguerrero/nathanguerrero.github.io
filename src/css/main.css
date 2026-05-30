@@ -126,7 +126,7 @@ nav:hover {
 .reveal-delay-3 { transition-delay: 0.45s; }
 
 /* ── Loader ── */
-#loader { background: #000000; transition: opacity 0.8s var(--ease), visibility 0.8s; }
+#loader { background: #0a0a0a; transition: opacity 0.8s var(--ease), visibility 0.8s; }
 #loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
 .loader-logo {
   opacity: 0;

@@ -1044,7 +1044,6 @@ nav.nav-visible {
   height: 400px;
   width: 400px;
   object-fit: contain;
-  mix-blend-mode: screen;
   opacity: 0;
   transform: translateY(20px);
   animation: charIn 0.5s var(--ease) 0s forwards;
