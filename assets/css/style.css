@@ -1112,10 +1112,8 @@ nav.nav-visible {
 
 #drawer-panel {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -44%) scale(0.88);
-  width: 88vw;
-  height: 82vh;
+  inset: 9vh 6vw;
+  transform: scale(0.88);
   background: #0e0e0e;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
@@ -1127,7 +1125,7 @@ nav.nav-visible {
   flex-direction: column;
 }
 #project-drawer.open #drawer-panel {
-  transform: translate(-50%, -50%) scale(1);
+  transform: scale(1);
   opacity: 1;
 }
 
@@ -1659,8 +1657,7 @@ nav.nav-visible {
   /* Drawer prev/next arrows off screen on mobile */
   #drawer-prev, #drawer-next { display: none; }
   #drawer-mobile-nav { display: flex; }
-  #drawer-panel { width: 96vw; height: 88vh; border-radius: 16px; }
-  #drawer-panel { width: 96vw; height: 88vh; }
+  #drawer-panel { inset: 6vh 2vw; border-radius: 16px; }
 }
 
 /* ── Contact Panel ── */
