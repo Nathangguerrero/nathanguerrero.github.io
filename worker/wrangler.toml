@@ -1,3 +1,5 @@
-name = "nathan-portfolio-contact"
+name = "resend-proxy"
 main = "index.js"
 compatibility_date = "2024-01-01"
+account_id = "4577c58a815d360fa4baa631f1781b92"
+workers_dev = true

@@ -28,7 +28,7 @@ export default {
       },
       body: JSON.stringify({
         from: 'Nathan Portfolio <onboarding@resend.dev>',
-        to: ['nathan201rp@gmail.com'],
+        to: ['nathangguerrero@gmail.com'],
         subject: `Novo contato: ${nome}`,
         html: `
           <h2>Novo contato via portfólio</h2>
