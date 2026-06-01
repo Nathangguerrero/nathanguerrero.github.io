@@ -34,7 +34,8 @@
   <link rel="icon" type="image/svg+xml" href="assets/images/logo/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="assets/css/style.min.css" />
 </head>
 <body>
@@ -120,6 +121,7 @@
   <!-- HERO -->
   <section id="hero">
     <video class="hero-video" autoplay muted loop playsinline>
+      <source media="(max-width: 768px)" src="assets/video/hero-mobile.mp4" type="video/mp4" />
       <source src="assets/video/hero-opt.mp4" type="video/mp4" />
     </video>
     <p class="hero-eyebrow">Estratégia · Direção Criativa · Audiovisual</p>
@@ -231,7 +233,7 @@
 
       <div class="project-item reveal" data-project="0">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/Riberalves/Capa Riberalves.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/Riberalves/Capa Riberalves.mp4" data-src-mobile="assets/images/projects/Riberalves/Capa Riberalves-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -245,7 +247,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="1">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS NOVEMBRO I CRECEI.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS NOVEMBRO I CRECEI.mp4" data-src-mobile="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -273,7 +275,7 @@
 
       <div class="project-item reveal reveal-delay-3" data-project="3">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/hybrid-media/6-gif-hero.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/hybrid-media/6-gif-hero.mp4" data-src-mobile="assets/images/projects/hybrid-media/6-gif-hero-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -315,7 +317,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="6">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/acampa-lkc/Capa- Acampa LKC 23.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/acampa-lkc/Capa- Acampa LKC 23.mp4" data-src-mobile="assets/images/projects/acampa-lkc/Capa-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -604,11 +606,11 @@
   </div>
 
   <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>emailjs.init('xL6JDa8uWPKDQ06EY');</script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script defer>window.addEventListener('DOMContentLoaded',()=>emailjs.init('xL6JDa8uWPKDQ06EY'));</script>
 
   <!-- Lenis smooth scroll -->
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-  <script src="assets/js/main.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
+  <script src="assets/js/main.min.js" defer></script>
 </body>
 </html>

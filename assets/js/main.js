@@ -58,8 +58,11 @@ const loaderStart = performance.now();
   }
 })(loaderStart);
 
+const _isMobileDevice = window.matchMedia('(max-width: 768px), (hover: none)').matches;
+
 /* ── About symbols 3D ── */
 (function() {
+  if (_isMobileDevice) return; // skip heavy 3D animation on mobile
   const syms = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17].map(i => document.getElementById('sym'+i)).filter(Boolean);
   const phases  = [0, 0.3, 0.6, 0.1, 0.4, 0.7, 0.2, 0.5, 0.8, 0.15, 0.45, 0.75, 0.05, 0.35, 0.65, 0.25, 0.55, 0.85];
   const speeds  = [1.1, 0.8, 1.3, 0.9, 1.2, 0.7, 1.0, 1.4, 0.85, 1.15, 0.75, 1.25, 0.95, 1.05, 0.8, 1.3, 0.9, 1.1];
@@ -392,80 +395,71 @@ function initTilt(el, strength = 12) {
   });
 }
 
-document.querySelectorAll('.project-item').forEach(el => {
-  const thumb = el.querySelector('.project-thumb');
-  if (thumb) { thumb.classList.add('tilt'); initTilt(thumb, 14); }
-});
-document.querySelectorAll('.step, .cta-box').forEach(el => {
-  el.classList.add('tilt');
-  initTilt(el, el.classList.contains('cta-box') ? 6 : 10);
-});
-
-const btnPrimary = document.querySelector('.btn-primary');
-if (btnPrimary) initTilt(btnPrimary, 16);
+if (!_isMobileDevice) {
+  document.querySelectorAll('.project-item').forEach(el => {
+    const thumb = el.querySelector('.project-thumb');
+    if (thumb) { thumb.classList.add('tilt'); initTilt(thumb, 14); }
+  });
+  document.querySelectorAll('.step, .cta-box').forEach(el => {
+    el.classList.add('tilt');
+    initTilt(el, el.classList.contains('cta-box') ? 6 : 10);
+  });
+  const btnPrimary = document.querySelector('.btn-primary');
+  if (btnPrimary) initTilt(btnPrimary, 16);
+}
 
 /* ── Background Canvas ── */
 const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d', { alpha: false });
-
-let W, H;
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-let mouseX = W * 0.5, mouseY = H * 0.4;
-let lerpX  = mouseX,  lerpY  = mouseY;
-document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
-const orbs = [
-  { x: 0.2, y: 0.3, r: 0.55, color: [255, 77,  0],  speed: 0.00018, phase: 0,    mouse: true  },
-  { x: 0.8, y: 0.7, r: 0.45, color: [80,  20, 180], speed: 0.00013, phase: 2.1,  mouse: false },
-  { x: 0.5, y: 0.1, r: 0.40, color: [0,  120, 200], speed: 0.00020, phase: 4.3,  mouse: false },
-  { x: 0.1, y: 0.8, r: 0.35, color: [180, 40, 255], speed: 0.00015, phase: 1.1,  mouse: false },
-];
-
-function drawBg(t) {
-  lerpX += (mouseX - lerpX) * 0.04;
-  lerpY += (mouseY - lerpY) * 0.04;
-
-  const isLight = document.documentElement.classList.contains('light');
-  ctx.fillStyle = isLight ? '#f5f2ee' : '#0a0a0a';
-  ctx.fillRect(0, 0, W, H);
-
-  orbs.forEach(o => {
-    const cx = o.mouse
-      ? lerpX + (o.x - 0.5) * W * 0.3
-      : (o.x + Math.sin(t * o.speed + o.phase) * 0.12) * W;
-    const cy = o.mouse
-      ? lerpY + (o.y - 0.5) * H * 0.3
-      : (o.y + Math.cos(t * o.speed * 0.8 + o.phase) * 0.10) * H;
-
-    const radius = o.r * Math.max(W, H);
-    const alpha  = isLight ? 0.07 : 0.13;
-    const [r, g, b] = o.color;
-
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-    grad.addColorStop(0,   `rgba(${r},${g},${b},${alpha})`);
-    grad.addColorStop(0.5, `rgba(${r},${g},${b},${alpha * 0.4})`);
-    grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
-
-    ctx.globalCompositeOperation = 'screen';
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.fill();
-  });
-
-  ctx.globalCompositeOperation = 'source-over';
+if (_isMobileDevice) {
+  // Mobile: static CSS gradient instead of canvas animation
+  canvas.style.display = 'none';
+} else {
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  let mouseX = W * 0.5, mouseY = H * 0.4, lerpX = mouseX, lerpY = mouseY;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  const orbs = [
+    { x: 0.2, y: 0.3, r: 0.55, color: [255, 77,  0],  speed: 0.00018, phase: 0,   mouse: true  },
+    { x: 0.8, y: 0.7, r: 0.45, color: [80,  20, 180], speed: 0.00013, phase: 2.1, mouse: false },
+    { x: 0.5, y: 0.1, r: 0.40, color: [0,  120, 200], speed: 0.00020, phase: 4.3, mouse: false },
+    { x: 0.1, y: 0.8, r: 0.35, color: [180, 40, 255], speed: 0.00015, phase: 1.1, mouse: false },
+  ];
+  function drawBg(t) {
+    lerpX += (mouseX - lerpX) * 0.04;
+    lerpY += (mouseY - lerpY) * 0.04;
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(0, 0, W, H);
+    orbs.forEach(o => {
+      const cx = o.mouse ? lerpX + (o.x - 0.5) * W * 0.3 : (o.x + Math.sin(t * o.speed + o.phase) * 0.12) * W;
+      const cy = o.mouse ? lerpY + (o.y - 0.5) * H * 0.3 : (o.y + Math.cos(t * o.speed * 0.8 + o.phase) * 0.10) * H;
+      const radius = o.r * Math.max(W, H);
+      const [r, g, b] = o.color;
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      grad.addColorStop(0,   `rgba(${r},${g},${b},0.13)`);
+      grad.addColorStop(0.5, `rgba(${r},${g},${b},0.05)`);
+      grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(drawBg);
+  }
   requestAnimationFrame(drawBg);
 }
-requestAnimationFrame(drawBg);
 
 /* ── Lenis smooth scroll + parallax zoom ── */
 (function () {
+  if (_isMobileDevice) {
+    window.__lenis = { stop: function(){}, start: function(){} };
+    return;
+  }
+
   var lenis = window.__lenis = new Lenis({
     duration: 1.15,
     easing: function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
@@ -877,12 +871,12 @@ let ctaHoverUnfreeze = null;
     entries.forEach(e => {
       if (e.isIntersecting) {
         const v = e.target;
-        v.src = v.dataset.src;
+        v.src = (_isMobileDevice && v.dataset.srcMobile) ? v.dataset.srcMobile : v.dataset.src;
         v.removeAttribute('data-src');
         v.play().catch(() => {});
         obs.unobserve(v);
       }
     });
-  }, { rootMargin: '200px' });
+  }, { rootMargin: '100px' });
   lazyVideos.forEach(v => obs.observe(v));
 })();
