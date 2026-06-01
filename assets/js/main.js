@@ -68,6 +68,13 @@ const loaderStart = performance.now();
     setTimeout(() => {
       loader.classList.add('hidden');
       document.querySelector('nav').classList.add('nav-visible');
+      // Após o fade-out, remove o loader do fluxo de renderização e libera o
+      // vídeo da memória (display:none + pausa), em vez de deixá-lo oculto no DOM.
+      loader.addEventListener('transitionend', () => {
+        loader.style.display = 'none';
+        const v = loader.querySelector('video');
+        if (v) { v.pause(); v.innerHTML = ''; v.load(); } // limpa <source> e libera decode
+      }, { once: true });
     }, 400); // 1600 + 400 = 2000ms total
   }
 })(loaderStart);
