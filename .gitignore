@@ -1,15 +1,6 @@
-
-# Large original video files (>100MB)
-assets/images/projects/welcome-day/_originals/
-assets/images/projects/acampa-lkc/_originals/
-assets/images/projects/charlotte/_originals/
-assets/images/projects/crecei/_originals/
-assets/images/projects/wave/_originals/
-assets/images/projects/hybrid-media/_originals/
-assets/images/projects/stalo/_originals/
-
-# macOS
-.DS_Store
-assets/.DS_Store
-assets/images/.DS_Store
-assets/images/projects/.DS_Store
+node_modules/
+dist/
+package-lock*.json
+*.mov
+assets/images/projects/hybrid-media/Hybrid Media.mp4
+assets/images/projects/**/_originals/
