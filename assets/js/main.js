@@ -263,7 +263,6 @@ function _stopTouch(e) { e.preventDefault(); }
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
   _lockScrollY = window.scrollY;
-  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
   document.querySelectorAll('#drawer-overlay, #contact-overlay, #mobile-menu').forEach(el => {
     el.addEventListener('touchmove', _stopTouch, { passive: false });
@@ -272,7 +271,6 @@ function lockScroll() {
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
-  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
   document.querySelectorAll('#drawer-overlay, #contact-overlay, #mobile-menu').forEach(el => {
     el.removeEventListener('touchmove', _stopTouch);
