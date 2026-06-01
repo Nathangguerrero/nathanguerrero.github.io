@@ -258,25 +258,25 @@ function loadProject(index, direction = 'next') {
 
 let _lockScrollY = 0;
 
-function _blockTouch(e) {
-  const inside = e.target.closest('#contact-side, .mobile-menu-inner, #project-drawer');
-  if (inside) return;
-  e.preventDefault();
-}
+function _stopTouch(e) { e.preventDefault(); }
 
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
   _lockScrollY = window.scrollY;
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
-  document.addEventListener('touchmove', _blockTouch, { passive: false });
+  document.querySelectorAll('#drawer-overlay, #contact-overlay, #mobile-menu').forEach(el => {
+    el.addEventListener('touchmove', _stopTouch, { passive: false });
+  });
 }
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
   document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
-  document.removeEventListener('touchmove', _blockTouch);
+  document.querySelectorAll('#drawer-overlay, #contact-overlay, #mobile-menu').forEach(el => {
+    el.removeEventListener('touchmove', _stopTouch);
+  });
   window.scrollTo(0, _lockScrollY);
 }
 
