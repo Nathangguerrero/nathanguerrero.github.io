@@ -1516,10 +1516,28 @@ nav.nav-visible {
 
   /* Remove backdrop-filter nos overlays — causa flash no iOS */
   #contact-overlay,
+  #drawer-overlay,
   #mobile-menu::before {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     background: rgba(0,0,0,0.75) !important;
+  }
+
+  /* Impede touch nos backdrops de propagar pro body */
+  #contact-overlay,
+  #drawer-overlay {
+    touch-action: none;
+  }
+
+  /* Garante scroll interno correto no iOS */
+  #contact-side {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-menu-inner {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   /* Desabilita reveal animation no mobile — mostra tudo direto */

@@ -258,6 +258,12 @@ function loadProject(index, direction = 'next') {
 
 let _lockScrollY = 0;
 
+function _blockTouch(e) {
+  const inside = e.target.closest('#contact-side, .mobile-menu-inner, .drawer-frame');
+  if (inside) return;
+  e.preventDefault();
+}
+
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
   _lockScrollY = window.scrollY;
@@ -266,6 +272,7 @@ function lockScroll() {
   document.body.style.position = 'fixed';
   document.body.style.top = `-${_lockScrollY}px`;
   document.body.style.width = '100%';
+  document.addEventListener('touchmove', _blockTouch, { passive: false });
 }
 
 function unlockScroll() {
@@ -275,6 +282,7 @@ function unlockScroll() {
   document.body.style.position = '';
   document.body.style.top = '';
   document.body.style.width = '';
+  document.removeEventListener('touchmove', _blockTouch);
   window.scrollTo(0, _lockScrollY);
 }
 
