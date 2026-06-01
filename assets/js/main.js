@@ -851,7 +851,7 @@ let ctaHoverUnfreeze = null;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando…';
 
-    fetch('https://nathan-portfolio-contact.nathangguerrero.workers.dev', {
+    fetch('https://resend-proxy.nathangguerrero.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message }),
