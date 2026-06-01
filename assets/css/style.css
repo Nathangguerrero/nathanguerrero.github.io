@@ -1097,7 +1097,7 @@ nav.nav-visible {
   pointer-events: none;
   visibility: hidden;
 }
-#project-drawer.open { pointer-events: all; visibility: visible; }
+#project-drawer.open { pointer-events: all; visibility: visible; touch-action: none; }
 
 #drawer-overlay {
   position: absolute;
@@ -1125,6 +1125,7 @@ nav.nav-visible {
 }
 #project-drawer.open #drawer-panel {
   opacity: 1;
+  touch-action: pan-y;
 }
 
 #drawer-close {
