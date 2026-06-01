@@ -282,9 +282,12 @@ function unlockScroll() {
   document.querySelectorAll('#contact-overlay, #mobile-menu').forEach(el => {
     el.removeEventListener('touchmove', _stopTouch);
   });
-  window.scrollTo(0, _lockScrollY);
   requestAnimationFrame(() => {
-    if (window.__lenis) window.__lenis.start();
+    window.scrollTo(0, _lockScrollY);
+    if (window.__lenis) {
+      window.__lenis.start();
+      window.__lenis.scrollTo(_lockScrollY, { immediate: true });
+    }
   });
 }
 
