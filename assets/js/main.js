@@ -256,12 +256,27 @@ function loadProject(index, direction = 'next') {
   slideToProject(index, direction);
 }
 
+const SCROLL_CONTAINERS = ['#contact-panel', '#mobile-menu', '#drawer-panel'];
+
+function _preventTouch(e) {
+  const scrollable = e.composedPath().find(el => {
+    if (!(el instanceof Element)) return false;
+    return SCROLL_CONTAINERS.some(sel => el.matches?.(sel)) ||
+      (el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY !== 'hidden');
+  });
+  if (!scrollable) e.preventDefault();
+}
+
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
+  document.body.style.overflow = 'hidden';
+  document.addEventListener('touchmove', _preventTouch, { passive: false });
 }
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
+  document.body.style.overflow = '';
+  document.removeEventListener('touchmove', _preventTouch);
 }
 
 function openDrawer(index) {
@@ -765,7 +780,9 @@ let ctaHoverUnfreeze = null;
     lockScroll();
     panel.classList.add('open');
     if (whatsappBtn) whatsappBtn.style.display = 'none';
-    panel.querySelector('#cf-name') && panel.querySelector('#cf-name').focus();
+    if (window.matchMedia('(hover: hover)').matches) {
+      panel.querySelector('#cf-name')?.focus();
+    }
   }
 
   function closeContact() {
@@ -785,6 +802,13 @@ let ctaHoverUnfreeze = null;
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && panel.classList.contains('open')) closeContact();
   });
+
+  panel.addEventListener('touchstart', e => {
+    const tag = e.target.tagName;
+    if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+      document.activeElement?.blur();
+    }
+  }, { passive: true });
 
   const errorEl  = document.getElementById('cf-error');
   const submitBtn = form.querySelector('.cf-submit');
@@ -806,6 +830,16 @@ let ctaHoverUnfreeze = null;
     // Validação
     if (!name) { showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
     if (!contact) { showMsg(errorEl, 'Por favor, preencha seu e-mail ou WhatsApp.'); return; }
+    if (contact.includes('@')) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) {
+        showMsg(errorEl, 'E-mail inválido. Verifique o formato (ex: nome@email.com).'); return;
+      }
+    } else {
+      const digits = contact.replace(/\D/g, '');
+      if (digits.length < 10) {
+        showMsg(errorEl, 'WhatsApp inválido. Digite pelo menos 10 dígitos com DDD.'); return;
+      }
+    }
     if (!message) { showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
 
     submitBtn.disabled = true;

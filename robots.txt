@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nathangguerrero.github.io/Portfolio-Nathan/sitemap.xml
+Sitemap: https://nathangguerrero.com.br/sitemap.xml
