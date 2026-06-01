@@ -233,6 +233,7 @@ function slideToProject(index, direction) {
 
   incoming.src = p.page;
   incoming.style.opacity = '1';
+  incoming.style.visibility = 'visible';
   incoming.style.pointerEvents = 'all';
 
   activeFrame.classList.add(outClass);
@@ -244,6 +245,7 @@ function slideToProject(index, direction) {
   setTimeout(() => {
     activeFrame.classList.remove(outClass);
     activeFrame.style.opacity = '0';
+    activeFrame.style.visibility = 'hidden';
     activeFrame.style.pointerEvents = 'none';
     incoming.classList.remove(inClass);
     activeFrame = incoming;
@@ -290,9 +292,11 @@ function openDrawer(index) {
   currentProject = index;
   frameA.src = p.page;
   frameA.style.opacity = '1';
+  frameA.style.visibility = 'visible';
   frameA.style.pointerEvents = 'all';
   frameB.src = '';
   frameB.style.opacity = '0';
+  frameB.style.visibility = 'hidden';
   frameB.style.pointerEvents = 'none';
   activeFrame = frameA;
   updateArrows();
