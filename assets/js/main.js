@@ -322,6 +322,11 @@ function closeDrawer() {
     });
   } catch(e) {}
   drawer.classList.remove('open');
+  [frameA, frameB].forEach(f => {
+    f.style.pointerEvents = 'none';
+    f.style.visibility = 'hidden';
+    f.style.opacity = '0';
+  });
   unlockScroll();
   setTimeout(() => { frameA.src = ''; frameB.src = ''; }, 600);
 }
