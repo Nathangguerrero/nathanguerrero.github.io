@@ -256,27 +256,24 @@ function loadProject(index, direction = 'next') {
   slideToProject(index, direction);
 }
 
-const SCROLL_CONTAINERS = ['#contact-panel', '#mobile-menu', '#drawer-panel'];
-
-function _preventTouch(e) {
-  const scrollable = e.composedPath().find(el => {
-    if (!(el instanceof Element)) return false;
-    return SCROLL_CONTAINERS.some(sel => el.matches?.(sel)) ||
-      (el.scrollHeight > el.clientHeight && getComputedStyle(el).overflowY !== 'hidden');
-  });
-  if (!scrollable) e.preventDefault();
-}
+let _lockScrollY = 0;
 
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
+  _lockScrollY = window.scrollY;
   document.body.style.overflow = 'hidden';
-  document.addEventListener('touchmove', _preventTouch, { passive: false });
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${_lockScrollY}px`;
+  document.body.style.width = '100%';
 }
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
   document.body.style.overflow = '';
-  document.removeEventListener('touchmove', _preventTouch);
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, _lockScrollY);
 }
 
 function openDrawer(index) {
