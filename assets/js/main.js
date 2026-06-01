@@ -848,26 +848,8 @@ let ctaHoverUnfreeze = null;
     }
     if (!message) { showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
-
-    emailjs.send('service_op2nr3o', 'template_hxodt4e', {
-      nome:           name,
-      contato:        contact,
-      tipo_projeto:   types || '—',
-      mensagem:       message,
-    })
-    .then(() => {
-      showMsg(success, 'Mensagem enviada com sucesso!');
-      form.reset();
-    })
-    .catch(() => {
-      showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    });
+    // TODO: integrar novo serviço de envio
+    showMsg(errorEl, 'Formulário temporariamente indisponível. Entre em contato pelo WhatsApp.');
   });
 })();
 
