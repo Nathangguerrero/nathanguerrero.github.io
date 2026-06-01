@@ -1,3 +1,17 @@
+/* ============================================================================
+ * Nathan Guerrero — Portfólio · main.js
+ * JavaScript vanilla (ES6), sem dependências de build. Cada feature é uma IIFE
+ * independente. Edite este arquivo e rode `npm run minify:js` para gerar o
+ * main.min.js (o que é carregado em produção).
+ * ==========================================================================*/
+
+/* ── Configuração ── */
+// Endpoint do formulário de contato (Cloudflare Worker → Resend).
+// Deploy/alteração do Worker: ver DEVELOPMENT.md
+const CONTACT_ENDPOINT = 'https://resend-proxy.nathangguerrero.workers.dev';
+// Margem do IntersectionObserver para começar a carregar vídeos antes de entrar na tela.
+const LAZY_VIDEO_ROOT_MARGIN = '100px';
+
 /* ── Mobile hamburger menu ── */
 (function () {
   const btn = document.getElementById('nav-hamburger');
@@ -228,7 +242,7 @@ function slideToProject(index, direction) {
   try {
     const outDoc = activeFrame.contentDocument || activeFrame.contentWindow?.document;
     outDoc?.querySelectorAll('video').forEach(v => v.pause());
-  } catch(e) {}
+  } catch {}
 
   const outClass = direction === 'next' ? 'slide-out-left'  : 'slide-out-right';
   const inClass  = direction === 'next' ? 'slide-in-right'  : 'slide-in-left';
@@ -260,8 +274,6 @@ function loadProject(index, direction = 'next') {
   if (index === currentProject && drawer.classList.contains('open')) return;
   slideToProject(index, direction);
 }
-
-let _lockScrollY = 0;
 
 function _stopTouch(e) { e.preventDefault(); }
 
@@ -308,7 +320,7 @@ function closeDrawer() {
       const doc = f.contentDocument || f.contentWindow?.document;
       doc?.querySelectorAll('video').forEach(v => v.pause());
     });
-  } catch(e) {}
+  } catch {}
   drawer.classList.remove('open');
   [frameA, frameB].forEach(f => {
     f.style.pointerEvents = 'none';
@@ -528,7 +540,7 @@ if (_isMobileDevice) {
     { x: -999, y: -999, ease: 0.045 },
     { x: -999, y: -999, ease: 0.028 }
   ];
-  var mouseX = -999, mouseY = -999, hovered = false, gooRunning = false;
+  var mouseX = -999, mouseY = -999, gooRunning = false;
 
   function gooResize() {
     var W = wrap.offsetWidth, H = wrap.offsetHeight;
@@ -603,13 +615,11 @@ if (_isMobileDevice) {
   }
 
   wrap.addEventListener('mouseenter', function() {
-    hovered = true;
     gooRunning = true;
     requestAnimationFrame(gooTick);
   });
 
   wrap.addEventListener('mouseleave', function() {
-    hovered = false;
     gooRunning = false;
     // Send target off-screen so blobs ease out naturally following the mouse direction
     mouseX = -999; mouseY = -999;
@@ -851,7 +861,7 @@ let ctaHoverUnfreeze = null;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Enviando…';
 
-    fetch('https://resend-proxy.nathangguerrero.workers.dev', {
+    fetch(CONTACT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message }),
@@ -889,6 +899,6 @@ let ctaHoverUnfreeze = null;
         obs.unobserve(v);
       }
     });
-  }, { rootMargin: '100px' });
+  }, { rootMargin: LAZY_VIDEO_ROOT_MARGIN });
   lazyVideos.forEach(v => obs.observe(v));
 })();

@@ -10,7 +10,7 @@
   <style>
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0a0a0a; --fg: #f0ece6; --muted: #5a5a5a; --orange: #ff4d00; --border: rgba(240,236,230,0.08); --ease: cubic-bezier(0.76, 0, 0.24, 1); }
+    :root { --bg: #0a0a0a; --fg: #f0ece6; --muted: #909090; --orange: #ff4d00; --border: rgba(240,236,230,0.08); --ease: cubic-bezier(0.76, 0, 0.24, 1); }
     html { font-size: 16px; }
     body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
     body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.4; }
@@ -97,7 +97,7 @@
   <section class="project-hero">
     <div class="project-hero-bg">
       <video autoplay muted loop playsinline>
-        <source src="../assets/images/projects/Asafe quirino/Aafe Quirino.mp4" type="video/mp4" />
+        <source src="../assets/images/projects/asafe-quirino/aafe-quirino.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="project-hero-content">
@@ -131,8 +131,8 @@
 
   <div class="project-video-full reveal">
     <div class="video-player-wrapper" id="videoWrapper">
-      <video id="projectVideo" playsinline poster="../assets/images/projects/Asafe quirino/poster.webp">
-        <source id="videoSource" src="../assets/images/projects/Asafe quirino/AULAS DE BATERIA.mp4" type="video/mp4" />
+      <video id="projectVideo" playsinline poster="../assets/images/projects/asafe-quirino/poster.webp">
+        <source id="videoSource" src="../assets/images/projects/asafe-quirino/aulas-de-bateria.mp4" type="video/mp4" />
       </video>
       <div class="video-play-overlay" id="playOverlay">
         <div class="video-play-big">

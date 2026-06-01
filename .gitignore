@@ -1,6 +1,22 @@
+# Dependencies
 node_modules/
+
+# Build output (Vite — não usado no deploy do GitHub Pages)
 dist/
+
+# Lockfiles duplicados / temporários
 package-lock*.json
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Logs
+*.log
+.wrangler/
+
+# Mídia bruta de alta resolução (não vai a produção)
 *.mov
-assets/images/projects/hybrid-media/Hybrid Media.mp4
+assets/images/projects/hybrid-media/hybrid-media.mp4
 assets/images/projects/**/_originals/

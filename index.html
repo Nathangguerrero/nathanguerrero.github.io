@@ -44,8 +44,8 @@
   <div id="loader">
     <div class="loader-name">
       <video class="loader-logo" autoplay muted playsinline>
-        <source src="assets/video/NTHN. Animated.webm" type="video/webm" />
-        <source src="assets/video/NTHN. Animated.mp4" type="video/mp4" />
+        <source src="assets/video/nthn-animated.webm" type="video/webm" />
+        <source src="assets/video/nthn-animated.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="loader-pct" id="loader-pct" style="display:none">0%</div>
@@ -62,7 +62,7 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#hero" class="nav-logo" id="logo-home">
+    <a href="#hero" class="nav-logo" id="logo-home" aria-label="Nathan Guerrero — início">
       <svg class="nav-logo-img" viewBox="0 0 970.9 645.8" xmlns="http://www.w3.org/2000/svg">
         <g><path fill="#f0ece6" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#f0ece6" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#f0ece6" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#f0ece6" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
         <path fill="#f0ece6" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>
@@ -120,7 +120,7 @@
 
   <!-- HERO -->
   <section id="hero">
-    <video class="hero-video" autoplay muted loop playsinline>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/hero-poster.webp">
       <source media="(max-width: 768px)" src="assets/video/hero-mobile.mp4" type="video/mp4" />
       <source src="assets/video/hero-opt.mp4" type="video/mp4" />
     </video>
@@ -233,7 +233,7 @@
 
       <div class="project-item reveal" data-project="0">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/Riberalves/Capa Riberalves.mp4" data-src-mobile="assets/images/projects/Riberalves/Capa Riberalves-mobile.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/riberalves/capa-riberalves.mp4" data-src-mobile="assets/images/projects/riberalves/capa-riberalves-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -247,7 +247,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="1">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS NOVEMBRO I CRECEI.mp4" data-src-mobile="assets/images/projects/Matrículas CRECEI/CAPA_MATRÍCULAS-mobile.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/matriculas-crecei/capa-matriculas-novembro-i-crecei.mp4" data-src-mobile="assets/images/projects/matriculas-crecei/capa-matriculas-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -261,7 +261,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="2">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/LKC Con anúncio/LKC Con Anuncio.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/lkc-con-anuncio/lkc-con-anuncio.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -289,7 +289,7 @@
 
       <div class="project-item reveal" data-project="4">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/Asafe quirino/Aafe Quirino.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/asafe-quirino/aafe-quirino.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -303,7 +303,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="5">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/welcome-day/Capa Welcome Day.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/welcome-day/capa-welcome-day.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -317,7 +317,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="6">
         <div class="project-thumb">
-          <video data-src="assets/images/projects/acampa-lkc/Capa- Acampa LKC 23.mp4" data-src-mobile="assets/images/projects/acampa-lkc/Capa-mobile.mp4" muted loop playsinline class="lazy-video"></video>
+          <video data-src="assets/images/projects/acampa-lkc/capa-acampa-lkc-23.mp4" data-src-mobile="assets/images/projects/acampa-lkc/capa-mobile.mp4" muted loop playsinline class="lazy-video"></video>
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -495,7 +495,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo"><a href="#hero" class="nav-logo" id="logo-footer">
+    <div class="footer-logo"><a href="#hero" class="nav-logo" id="logo-footer" aria-label="Nathan Guerrero — início">
       <svg viewBox="0 0 970.9 645.8" xmlns="http://www.w3.org/2000/svg" style="height:54px;width:auto;display:block;">
         <g><path fill="#f0ece6" d="M390.1,116.4l43.8-94.7c1-2.2,6.1-3.4,8.1-3.7h28.1c2.4.2,8.9,3.5,7.6,6.9l-36.2,91.5h510.9c3.1,0,5.9,2.8,5.6,5.1l-1.2,8.3c-.7,4.5-3.3,7-8.4,7H433.2s-31.7,78.2-31.7,78.2c-3.5,8.6-5.3,16.6-6.3,25.9-2.5,29.7-4.2,58.7-2.8,89.3l33.4-102c.9-2.6,3.8-4,6.4-3l29.7,12.1c2.3,1,3.5,3.6,2.7,6l-10.5,31.7-56.3,166.1c-1,2.9-6.3,5.3-8.8,5.3h-14.2c-2.9,0-7.9-2-9.5-5.3l-15.9-133.2-30.8,66.4-65.7,145.4,79.9-48.2c5.6-3.4,12.3-.1,15.3,5.2,3.3,3,4.9,10.3.2,13.2l-134.2,81.5c-6.8,1-13,.7-19.7.2-3.3-1.5-8.5-5.3-6.6-9.6l95-211.1,14.6-32.1,83.1-181.7,9.5-20.5Z"/><path fill="#f0ece6" d="M370,135.6c-.4.8-1.2,1.3-2.1,1.3h-195.7c-4-.3-6.2-3.1-5.7-6.7l1.8-8.4c.6-2.9,3.1-5.4,6.9-5.4h200c1.7,0,2.8,1.8,2.1,3.3l-7.4,15.8Z"/><path fill="#f0ece6" d="M440.1,315.2l64.2-13.2,48.5-116.7c2.7-2.7,6.4-4.1,10.1-4.1h25.1c4.6.2,8.3,3.6,8,8.1l-43.6,102.4,55.4-11-15.7,35.7-54.6,11.1-56.5,149.5c-1.7,3.3-5.2,5.5-8.8,5.5h-26.3c-1.8,0-5.4-2-6.4-3.4s-1-5.1,0-7.7l35.5-95.2,14.9-38.6-64.2,13.2"/><path fill="#f0ece6" d="M604.8,278.4l32.5-76c3-3.3,7.2-4.7,11.7-4.7l18.1.2c4.5-.2,8.4,1.5,10.6,5.7,6.1,72.1,11.9,143.6,21.5,217.5l90-237.6c1.3-3.4,6.7-4.1,9.6-4.6l27.1.3c3.5,0,8,3.9,6.7,7.8l-41.5,127.2c-5.8,17.9-8.9,35.1-9.4,54l-2,81-3,112.6c0,5.6-1.3,10.2-8,10.3h-27.8c-5.2,0-8.9-3.9-7.9-9.3l3.2-121.7-27.8,72.5c-1.1,3-6.6,4.5-9.3,4.6h-19.3c-3.8-.3-7-1.5-10-5.1l-29.3-211.8-55,127.2c-2.1,2.8-5.1,3.9-8.6,4.7l-27.7-.3c-4.1,0-7.5-3.8-7.1-7.8l46.9-110.9,15.7-35.7Z"/></g>
         <path fill="#f0ece6" d="M214.9,444.5l-33.5,70c-1.4,2.9-6.9,3.9-9.6,3.8l-19.3-1.6c-3.8-.6-6.9-2-9.5-5.8l-12.4-213.5-64.9,122.4c-2.3,2.6-5.4,3.5-8.9,4l-27.6-2.5c-4.1-.4-7.1-4.4-6.5-8.3l55.6-106.8,18.4-34.3,38.4-73.2c3.3-3.1,7.5-4.1,12-3.7l18,1.6c4.5.2,8.2,2.2,10.1,6.5.4,72.4.4,144.1,4.2,218.5l108.5-229.7c1.6-3.3,7-3.6,9.9-3.9l27,2.4c3.5.3,7.7,4.6,6.1,8.3l-57.3,119.9-58.9,125.7Z"/>

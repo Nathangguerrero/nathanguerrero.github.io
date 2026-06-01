@@ -1,23 +1,51 @@
+/**
+ * Cloudflare Worker — proxy do formulário de contato.
+ *
+ * Recebe um POST JSON do site, valida, e encaminha para a API do Resend usando
+ * a API key guardada como secret (env.RESEND_API_KEY) — nunca exposta no frontend.
+ *
+ * Deploy:  npx wrangler deploy   (de dentro de /worker)
+ * Secret:  npx wrangler secret put RESEND_API_KEY
+ */
+
+// Origens autorizadas a usar este Worker (evita que outros sites o usem p/ spam).
+const ALLOWED_ORIGINS = [
+  'https://nathangguerrero.com.br',
+  'https://www.nathangguerrero.com.br',
+  'https://nathangguerrero.github.io',
+];
+
+// Limites para evitar abuso com payloads enormes.
+const MAX_LEN = { nome: 200, contato: 200, tipo_projeto: 300, mensagem: 5000 };
+
+const RECIPIENT = 'nathangguerrero@gmail.com';
+const SENDER = 'Nathan Portfolio <onboarding@resend.dev>';
+
 export default {
   async fetch(request, env) {
-    if (request.method === 'OPTIONS') {
-      return corsResponse(null, 204);
-    }
+    const origin = request.headers.get('Origin') || '';
 
+    if (request.method === 'OPTIONS') {
+      return cors(null, 204, origin);
+    }
     if (request.method !== 'POST') {
-      return corsResponse(JSON.stringify({ error: 'Method not allowed' }), 405);
+      return cors(JSON.stringify({ error: 'Method not allowed' }), 405, origin);
     }
 
     let body;
     try {
       body = await request.json();
     } catch {
-      return corsResponse(JSON.stringify({ error: 'Invalid JSON' }), 400);
+      return cors(JSON.stringify({ error: 'Invalid JSON' }), 400, origin);
     }
 
-    const { nome, contato, tipo_projeto, mensagem } = body;
+    const nome = String(body.nome || '').slice(0, MAX_LEN.nome).trim();
+    const contato = String(body.contato || '').slice(0, MAX_LEN.contato).trim();
+    const tipo = String(body.tipo_projeto || '').slice(0, MAX_LEN.tipo_projeto).trim();
+    const mensagem = String(body.mensagem || '').slice(0, MAX_LEN.mensagem).trim();
+
     if (!nome || !contato || !mensagem) {
-      return corsResponse(JSON.stringify({ error: 'Missing fields' }), 400);
+      return cors(JSON.stringify({ error: 'Missing fields' }), 400, origin);
     }
 
     const res = await fetch('https://api.resend.com/emails', {
@@ -27,36 +55,52 @@ export default {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Nathan Portfolio <onboarding@resend.dev>',
-        to: ['nathangguerrero@gmail.com'],
+        from: SENDER,
+        to: [RECIPIENT],
+        reply_to: contato.includes('@') ? contato : undefined,
         subject: `Novo contato: ${nome}`,
         html: `
           <h2>Novo contato via portfólio</h2>
-          <p><strong>Nome:</strong> ${nome}</p>
-          <p><strong>Contato:</strong> ${contato}</p>
-          <p><strong>Tipo de projeto:</strong> ${tipo_projeto || '—'}</p>
-          <p><strong>Mensagem:</strong><br>${mensagem.replace(/\n/g, '<br>')}</p>
+          <p><strong>Nome:</strong> ${esc(nome)}</p>
+          <p><strong>Contato:</strong> ${esc(contato)}</p>
+          <p><strong>Tipo de projeto:</strong> ${esc(tipo) || '—'}</p>
+          <p><strong>Mensagem:</strong><br>${esc(mensagem).replace(/\n/g, '<br>')}</p>
         `,
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-      return corsResponse(JSON.stringify({ error: err }), 500);
+      return cors(JSON.stringify({ error: err }), 500, origin);
     }
 
-    return corsResponse(JSON.stringify({ success: true }), 200);
+    return cors(JSON.stringify({ success: true }), 200, origin);
   },
 };
 
-function corsResponse(body, status) {
+// Escapa HTML para evitar injeção no corpo do e-mail.
+function esc(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function cors(body, status, origin) {
+  const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  const allowOrigin = ALLOWED_ORIGINS.includes(origin) || isLocalhost
+    ? origin
+    : ALLOWED_ORIGINS[0];
   return new Response(body, {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': allowOrigin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
+      'Vary': 'Origin',
     },
   });
 }

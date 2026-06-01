@@ -1,5 +1,8 @@
+// Vite é usado apenas como dev server (`npm run dev`).
+// O deploy NÃO usa o build do Vite — os arquivos .min.{css,js} são commitados
+// e servidos diretamente pelo GitHub Pages. A config de `build` abaixo existe
+// só para um eventual bundle local de inspeção.
 import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -7,7 +10,6 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   base: './',
-  plugins: [tailwindcss()],
   build: {
     rollupOptions: {
       input: {

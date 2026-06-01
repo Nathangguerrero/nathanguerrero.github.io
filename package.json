@@ -1,17 +1,26 @@
 {
   "name": "portfolio-nathan",
   "version": "1.0.0",
+  "description": "Portfólio de Nathan Guerrero — Estratégia, Direção Criativa & Audiovisual",
+  "author": "Nathan Guerrero <nathangguerrero@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "homepage": "https://nathangguerrero.com.br",
   "scripts": {
     "dev": "vite",
-    "start": "npx serve . -l 3000"
+    "dev:simple": "node devserver.mjs",
+    "start": "npx serve . -l 3000",
+    "minify:css": "cleancss -o assets/css/style.min.css assets/css/style.css",
+    "minify:js": "terser assets/js/main.js --compress --mangle --output assets/js/main.min.js",
+    "minify": "npm run minify:css && npm run minify:js",
+    "deploy:worker": "cd worker && npx wrangler deploy",
+    "lint": "eslint assets/js worker"
   },
   "devDependencies": {
     "clean-css-cli": "^5.6.3",
+    "eslint": "^9.0.0",
     "playwright": "^1.60.0",
-    "terser": "^5.48.0"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.3.0",
+    "terser": "^5.48.0",
     "vite": "^8.0.14"
   }
 }
