@@ -848,8 +848,30 @@ let ctaHoverUnfreeze = null;
     }
     if (!message) { showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
 
-    // TODO: integrar novo serviço de envio
-    showMsg(errorEl, 'Formulário temporariamente indisponível. Entre em contato pelo WhatsApp.');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    fetch('https://nathan-portfolio-contact.nathangguerrero.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        showMsg(success, 'Mensagem enviada com sucesso!');
+        form.reset();
+      } else {
+        showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
+      }
+    })
+    .catch(() => {
+      showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    });
   });
 })();
 
