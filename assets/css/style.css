@@ -1113,19 +1113,17 @@ nav.nav-visible {
 #drawer-panel {
   position: absolute;
   inset: 9vh 6vw;
-  transform: scale(0.88);
   background: #0e0e0e;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   border-radius: 20px;
   border: 1px solid rgba(255,255,255,0.08);
-  transition: transform 0.7s cubic-bezier(0.34, 1.28, 0.64, 1), opacity 0.4s ease;
+  transition: opacity 0.4s ease;
   opacity: 0;
   display: flex;
   flex-direction: column;
 }
 #project-drawer.open #drawer-panel {
-  transform: none;
   opacity: 1;
 }
 
