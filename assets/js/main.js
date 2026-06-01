@@ -261,6 +261,7 @@ let _lockScrollY = 0;
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
   _lockScrollY = window.scrollY;
+  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
   document.body.style.position = 'fixed';
   document.body.style.top = `-${_lockScrollY}px`;
@@ -269,6 +270,7 @@ function lockScroll() {
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
+  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
   document.body.style.position = '';
   document.body.style.top = '';
