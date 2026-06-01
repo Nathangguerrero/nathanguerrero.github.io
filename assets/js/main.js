@@ -275,7 +275,6 @@ function lockScroll() {
 }
 
 function unlockScroll() {
-  if (window.__lenis) window.__lenis.start();
   document.body.style.overflow = '';
   document.body.style.position = '';
   document.body.style.top = '';
@@ -284,6 +283,9 @@ function unlockScroll() {
     el.removeEventListener('touchmove', _stopTouch);
   });
   window.scrollTo(0, _lockScrollY);
+  requestAnimationFrame(() => {
+    if (window.__lenis) window.__lenis.start();
+  });
 }
 
 function openDrawer(index) {
