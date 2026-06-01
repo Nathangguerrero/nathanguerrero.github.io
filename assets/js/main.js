@@ -263,8 +263,10 @@ function _stopTouch(e) { e.preventDefault(); }
 function lockScroll() {
   if (window.__lenis) window.__lenis.stop();
   _lockScrollY = window.scrollY;
-  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${_lockScrollY}px`;
+  document.body.style.width = '100%';
   document.querySelectorAll('#contact-overlay, #mobile-menu').forEach(el => {
     el.addEventListener('touchmove', _stopTouch, { passive: false });
   });
@@ -272,8 +274,10 @@ function lockScroll() {
 
 function unlockScroll() {
   if (window.__lenis) window.__lenis.start();
-  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
   document.querySelectorAll('#contact-overlay, #mobile-menu').forEach(el => {
     el.removeEventListener('touchmove', _stopTouch);
   });

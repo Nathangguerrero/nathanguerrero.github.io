@@ -1125,7 +1125,7 @@ nav.nav-visible {
   flex-direction: column;
 }
 #project-drawer.open #drawer-panel {
-  transform: scale(1);
+  transform: none;
   opacity: 1;
 }
 
