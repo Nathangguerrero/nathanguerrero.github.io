@@ -544,10 +544,19 @@ if (_isMobileDevice) {
     ctx.drawImage(img, (W - sw) * 0.65, (H - sh) * 0.15, sw, sh);
   }
 
+  function allBlobsOffScreen() {
+    return blobs.every(function(b) { return b.x < -900 && b.y < -900; });
+  }
+
   function gooTick() {
+    var rect = wrap.getBoundingClientRect();
+    // Convert current mouse position (global) to local coords even when outside
+    var tx0 = mouseX - rect.left;
+    var ty0 = mouseY - rect.top;
+
     for (var i = 0; i < blobs.length; i++) {
-      var tx = i === 0 ? mouseX : blobs[i - 1].x;
-      var ty = i === 0 ? mouseY : blobs[i - 1].y;
+      var tx = i === 0 ? tx0 : blobs[i - 1].x;
+      var ty = i === 0 ? ty0 : blobs[i - 1].y;
       blobs[i].x += (tx - blobs[i].x) * blobs[i].ease;
       blobs[i].y += (ty - blobs[i].y) * blobs[i].ease;
     }
@@ -589,29 +598,28 @@ if (_isMobileDevice) {
     gooCtx.drawImage(maskCvs, 0, 0, W, H);
     gooCtx.globalCompositeOperation = 'source-over';
 
-    if (gooRunning) requestAnimationFrame(gooTick);
+    // Keep running until blobs settle off-screen after hover ends
+    if (gooRunning || !allBlobsOffScreen()) requestAnimationFrame(gooTick);
   }
 
   wrap.addEventListener('mouseenter', function() {
     hovered = true;
-    if (!gooRunning) { gooRunning = true; requestAnimationFrame(gooTick); }
+    gooRunning = true;
+    requestAnimationFrame(gooTick);
   });
+
   wrap.addEventListener('mouseleave', function() {
     hovered = false;
     gooRunning = false;
-    // reset blobs off-screen so canvas clears on next hover
-    blobs.forEach(function(b) { b.x = -999; b.y = -999; });
+    // Send target off-screen so blobs ease out naturally following the mouse direction
     mouseX = -999; mouseY = -999;
-    // clear canvas
-    gooCtx.clearRect(0, 0, gooCanvas.width, gooCanvas.height);
   });
 
   window.addEventListener('mousemove', function (e) {
-    if (!hovered) return;
-    var rect = wrap.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
   });
+
   window.addEventListener('resize', gooResize);
 
   gooResize();
