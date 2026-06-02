@@ -39,6 +39,8 @@ export default {
       return cors(JSON.stringify({ error: 'Invalid JSON' }), 400, origin);
     }
 
+    if (body.website) return cors(JSON.stringify({ success: true }), 200, origin);
+
     const nome = String(body.nome || '').slice(0, MAX_LEN.nome).trim();
     const contato = String(body.contato || '').slice(0, MAX_LEN.contato).trim();
     const tipo = String(body.tipo_projeto || '').slice(0, MAX_LEN.tipo_projeto).trim();

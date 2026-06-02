@@ -813,6 +813,9 @@ let ctaHoverUnfreeze = null;
     unlockScroll();
     if (whatsappBtn) whatsappBtn.style.display = '';
     if (ctaHoverUnfreeze) ctaHoverUnfreeze();
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('success');
+    submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
 
   document.querySelectorAll('.open-contact').forEach(btn => {
@@ -842,6 +845,13 @@ let ctaHoverUnfreeze = null;
     setTimeout(() => el.classList.remove('visible'), duration);
   }
 
+  const toast = document.getElementById('cf-toast');
+  function showToast(text, duration = 4000) {
+    toast.textContent = text;
+    toast.classList.add('visible');
+    setTimeout(() => toast.classList.remove('visible'), duration);
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -849,6 +859,7 @@ let ctaHoverUnfreeze = null;
     const contact = form.querySelector('#cf-contact').value.trim();
     const message = form.querySelector('#cf-message').value.trim();
     const types   = [...form.querySelectorAll('input[name="type"]:checked')].map(c => c.value).join(', ');
+    const hp      = form.querySelector('#cf-website').value;
 
     // Validação
     if (!name) { showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
@@ -871,21 +882,24 @@ let ctaHoverUnfreeze = null;
     fetch(CONTACT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message }),
+      body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message, website: hp }),
     })
     .then(r => r.json())
     .then(data => {
       if (data.success) {
-        showMsg(success, 'Mensagem enviada com sucesso!');
+        submitBtn.classList.add('success');
+        submitBtn.innerHTML = 'Enviado! <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline class="check-path" points="2,8 6,12 14,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        submitBtn.disabled = true;
+        showToast('Mensagem enviada com sucesso!');
         form.reset();
       } else {
         showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       }
     })
     .catch(() => {
       showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
-    })
-    .finally(() => {
       submitBtn.disabled = false;
       submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     });

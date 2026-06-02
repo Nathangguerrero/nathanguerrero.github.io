@@ -120,10 +120,8 @@
 
   <!-- HERO -->
   <section id="hero">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/hero-poster.webp">
-      <source media="(max-width: 768px)" src="assets/video/hero-mobile.mp4" type="video/mp4" />
-      <source src="assets/video/hero-opt.mp4" type="video/mp4" />
-    </video>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/video/hero-poster.webp" id="hero-video"></video>
+    <script>document.getElementById('hero-video').src=window.innerWidth<=768?'assets/video/hero-mobile.mp4':'assets/video/hero-opt.mp4';</script>
     <p class="hero-eyebrow">Estratégia · Direção Criativa · Audiovisual</p>
     <h1 class="hero-title">
       <span class="hero-white">Criando</span><br/>
@@ -174,7 +172,7 @@
   <!-- ABOUT -->
   <section id="about" class="parallax-section">
     <div class="about-photo reveal" id="about-photo-anim">
-      <img src="assets/images/about/nathan.webp" alt="Nathan" class="photo-base" />
+      <img src="assets/images/about/nathan.webp" alt="Nathan" class="photo-base" loading="lazy" width="1179" height="1164" />
       <canvas id="goo-canvas" class="photo-alt-svg"></canvas>
       <svg class="photo-orbit-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
         <g>
@@ -331,7 +329,7 @@
 
       <div class="project-item reveal reveal-delay-3" data-project="7">
         <div class="project-thumb">
-          <img src="assets/images/projects/stalo/logotipo.webp" alt="Stalo" loading="lazy" />
+          <img src="assets/images/projects/stalo/logotipo.webp" alt="Stalo" loading="lazy" width="1920" height="1080" />
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -345,7 +343,7 @@
 
       <div class="project-item reveal" data-project="8">
         <div class="project-thumb">
-          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg" alt="CRECEI Brand Refresh" loading="lazy" />
+          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/aa0895222522241.Y3JvcCwxMDA3LDc4OCwxOTcsMA.jpg" alt="CRECEI Brand Refresh" loading="lazy" width="808" height="808" />
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -359,7 +357,7 @@
 
       <div class="project-item reveal reveal-delay-1" data-project="9">
         <div class="project-thumb">
-          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png" alt="Charlotte Brand Design" loading="lazy" />
+          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/8e1a54222436833.Y3JvcCwxMDA3LDc4OCwxOTcsMA.png" alt="Charlotte Brand Design" loading="lazy" width="808" height="808" />
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -373,7 +371,7 @@
 
       <div class="project-item reveal reveal-delay-2" data-project="10">
         <div class="project-thumb">
-          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/9adaed182240697.6721438fc4566.jpg" alt="Wave Agency Brand Design" loading="lazy" />
+          <img src="https://mir-s3-cdn-cf.behance.net/projects/808/9adaed182240697.6721438fc4566.jpg" alt="Wave Agency Brand Design" loading="lazy" width="808" height="808" />
         </div>
         <div class="project-info">
           <div class="project-meta">
@@ -553,6 +551,11 @@
             </div>
           </div>
 
+          <div class="cf-hp" aria-hidden="true">
+            <label for="cf-website">Website</label>
+            <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
           <div class="cf-field">
             <label for="cf-message">Me conta sobre o projeto</label>
             <textarea id="cf-message" name="message" placeholder="Descreva brevemente o que você tem em mente..." rows="4" required></textarea>
@@ -571,6 +574,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Toast -->
+  <div id="cf-toast" role="status" aria-live="polite"></div>
 
   <!-- Project Drawer -->
   <div id="project-drawer">
