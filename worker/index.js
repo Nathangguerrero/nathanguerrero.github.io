@@ -50,6 +50,15 @@ export default {
       return cors(JSON.stringify({ error: 'Missing fields' }), 400, origin);
     }
 
+    // Verifica MX do domínio se o contato for email
+    if (contato.includes('@')) {
+      const domain = contato.split('@')[1];
+      const mxValid = await hasMx(domain);
+      if (!mxValid) {
+        return cors(JSON.stringify({ error: 'E-mail inválido. Verifique o endereço e tente novamente.' }), 400, origin);
+      }
+    }
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -79,6 +88,19 @@ export default {
     return cors(JSON.stringify({ success: true }), 200, origin);
   },
 };
+
+// Verifica se o domínio tem registro MX via DNS-over-HTTPS do Cloudflare.
+async function hasMx(domain) {
+  try {
+    const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=MX`, {
+      headers: { 'Accept': 'application/dns-json' },
+    });
+    const data = await res.json();
+    return Array.isArray(data.Answer) && data.Answer.length > 0;
+  } catch {
+    return true; // em caso de falha na consulta, deixa passar
+  }
+}
 
 // Escapa HTML para evitar injeção no corpo do e-mail.
 function esc(str) {

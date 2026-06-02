@@ -860,7 +860,7 @@ nav:hover {
   -webkit-text-stroke: 0;
 }
 .cta-box .btn-primary { position: relative; z-index: 1; padding: 20px 48px; font-size: 1rem; transition: background 0.8s ease, color 0.8s ease; background: #ff4d00; animation: none; }
-.cta-box .btn-primary:hover { background-image: none; animation: none; box-shadow: none; }
+.cta-box .btn-primary:hover, .cta-box .btn-primary:not(.mobile-cta):hover { background-image: none !important; background: #fff !important; color: #0a0a0a !important; animation: none !important; box-shadow: none !important; }
 
 .cta-box .cta-label,
 .cta-box .cta-title,
@@ -1178,7 +1178,10 @@ nav.nav-visible {
   text-transform: uppercase;
   text-decoration: none;
   padding: 14px 32px;
+  border: none;
+  outline: none;
   border-radius: 999px;
+  cursor: pointer;
   animation: scrollBounce 2s ease-in-out infinite;
   transition: box-shadow 0.3s;
 }
@@ -1240,7 +1243,7 @@ nav.nav-visible {
   transform: translateY(-50%);
   z-index: 10;
   background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.14);
+  border: none;
   color: #f0ece6;
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -1759,7 +1762,7 @@ nav.nav-visible {
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(240,236,230,0.5);
+  color: rgba(240,236,230,0.25);
 }
 .cf-field input,
 .cf-field textarea {
@@ -1779,6 +1782,15 @@ nav.nav-visible {
 .cf-field textarea::placeholder { color: rgba(240,236,230,0.25); }
 .cf-field input:focus,
 .cf-field textarea:focus { border-color: var(--orange); }
+.cf-field input.field-error,
+.cf-field textarea.field-error { border-color: #ff4444; box-shadow: 0 0 0 2px rgba(255,68,68,0.2); }
+.cf-field input.field-error:focus,
+.cf-field textarea.field-error:focus { border-color: #ff4444; }
+.cf-field input:disabled,
+.cf-field textarea:disabled { opacity: 0.25; cursor: not-allowed; border-color: rgba(255,255,255,0.06); }
+.cf-chips.disabled { opacity: 0.25; pointer-events: none; }
+.cf-submit.sending { background-image: linear-gradient(270deg, #ff4d00, #ff8c00, #ff2200, #ff6a00); background-size: 400% 400%; animation: gradientShift 1.2s ease infinite; opacity: 0.85; cursor: not-allowed; }
+.cf-submit.success { cursor: not-allowed; }
 
 .cf-chips {
   display: flex;
@@ -1866,6 +1878,88 @@ nav.nav-visible {
 #cf-toast.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+#cf-sent-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  flex: 1;
+  padding: 110px 0 0;
+}
+#cf-sent-state.visible { display: flex; }
+.cf-sent-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px rgba(34,197,94,0.4);
+  animation: sent-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.cf-sent-circle svg polyline {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: draw-check 0.4s 0.3s ease forwards;
+}
+@keyframes sent-pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.cf-sent-label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream);
+  opacity: 0;
+  animation: fade-up 0.4s 0.5s ease forwards;
+}
+.cf-sent-back {
+  margin-top: 8px;
+  background: #fff;
+  color: #0a0a0a;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  animation: fade-in-btn 0.4s 0.8s ease forwards;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+}
+@keyframes fade-in-btn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (hover: hover) {
+  .cf-sent-back:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+  }
+}
+.cf-sent-sub {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: rgba(240,236,230,0.5);
+  text-align: center;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fade-up 0.4s 0.65s ease forwards;
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .cf-success {

@@ -803,7 +803,10 @@ let ctaHoverUnfreeze = null;
     lockScroll();
     panel.classList.add('open');
     if (whatsappBtn) whatsappBtn.style.display = 'none';
-    if (window.matchMedia('(hover: hover)').matches) {
+    if (form.dataset.sent) {
+      form.style.display = 'none';
+      document.getElementById('cf-sent-state').classList.add('visible');
+    } else if (window.matchMedia('(hover: hover)').matches) {
       panel.querySelector('#cf-name')?.focus();
     }
   }
@@ -813,9 +816,16 @@ let ctaHoverUnfreeze = null;
     unlockScroll();
     if (whatsappBtn) whatsappBtn.style.display = '';
     if (ctaHoverUnfreeze) ctaHoverUnfreeze();
-    submitBtn.disabled = false;
-    submitBtn.classList.remove('success');
-    submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    if (!form.dataset.sent) {
+      form.style.display = '';
+      document.getElementById('cf-sent-state').classList.remove('visible');
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('success', 'sending');
+      submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      form.querySelectorAll('input, textarea').forEach(el => el.disabled = false);
+      const chips = form.querySelector('.cf-chips');
+      if (chips) chips.classList.remove('disabled');
+    }
   }
 
   document.querySelectorAll('.open-contact').forEach(btn => {
@@ -825,6 +835,10 @@ let ctaHoverUnfreeze = null;
 
   closeBtn.addEventListener('click', closeContact);
   overlay.addEventListener('click', closeContact);
+  document.getElementById('cf-sent-back').addEventListener('click', () => {
+    closeContact();
+    setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }), 300);
+  });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && panel.classList.contains('open')) closeContact();
   });
@@ -852,32 +866,45 @@ let ctaHoverUnfreeze = null;
     setTimeout(() => toast.classList.remove('visible'), duration);
   }
 
+  function markError(el) {
+    el.classList.add('field-error');
+    el.addEventListener('input', () => el.classList.remove('field-error'), { once: true });
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const name    = form.querySelector('#cf-name').value.trim();
-    const contact = form.querySelector('#cf-contact').value.trim();
-    const message = form.querySelector('#cf-message').value.trim();
+    const nameEl    = form.querySelector('#cf-name');
+    const contactEl = form.querySelector('#cf-contact');
+    const messageEl = form.querySelector('#cf-message');
+    const name    = nameEl.value.trim();
+    const contact = contactEl.value.trim();
+    const message = messageEl.value.trim();
     const types   = [...form.querySelectorAll('input[name="type"]:checked')].map(c => c.value).join(', ');
     const hp      = form.querySelector('#cf-website').value;
 
     // Validação
-    if (!name) { showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
-    if (!contact) { showMsg(errorEl, 'Por favor, preencha seu e-mail ou WhatsApp.'); return; }
+    if (!name) { markError(nameEl); showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
+    if (!contact) { markError(contactEl); showMsg(errorEl, 'Por favor, preencha seu e-mail ou WhatsApp.'); return; }
     if (contact.includes('@')) {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)) {
-        showMsg(errorEl, 'E-mail inválido. Verifique o formato (ex: nome@email.com).'); return;
+        markError(contactEl); showMsg(errorEl, 'E-mail inválido. Verifique o formato (ex: nome@email.com).'); return;
       }
     } else {
       const digits = contact.replace(/\D/g, '');
       if (digits.length < 10) {
-        showMsg(errorEl, 'WhatsApp inválido. Digite pelo menos 10 dígitos com DDD.'); return;
+        markError(contactEl); showMsg(errorEl, 'WhatsApp inválido. Digite pelo menos 10 dígitos com DDD.'); return;
       }
     }
-    if (!message) { showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
+    if (!message) { markError(messageEl); showMsg(errorEl, 'Conte um pouco sobre o seu projeto.'); return; }
 
+    const allInputs = form.querySelectorAll('input, textarea');
+    const chipsEl = form.querySelector('.cf-chips');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
+    submitBtn.classList.add('sending');
+    submitBtn.innerHTML = 'Enviando… <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    allInputs.forEach(el => el.disabled = true);
+    if (chipsEl) chipsEl.classList.add('disabled');
 
     fetch(CONTACT_ENDPOINT, {
       method: 'POST',
@@ -886,22 +913,28 @@ let ctaHoverUnfreeze = null;
     })
     .then(r => r.json())
     .then(data => {
+      submitBtn.classList.remove('sending');
       if (data.success) {
-        submitBtn.classList.add('success');
-        submitBtn.innerHTML = 'Enviado! <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline class="check-path" points="2,8 6,12 14,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        submitBtn.disabled = true;
+        form.style.display = 'none';
+        document.getElementById('cf-sent-state').classList.add('visible');
         showToast('Mensagem enviada com sucesso!');
         form.reset();
+        form.dataset.sent = 'true';
       } else {
-        showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
+        showMsg(errorEl, data.error || 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        allInputs.forEach(el => el.disabled = false);
+        if (chipsEl) chipsEl.classList.remove('disabled');
       }
     })
     .catch(() => {
+      submitBtn.classList.remove('sending');
       showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
       submitBtn.disabled = false;
       submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      allInputs.forEach(el => el.disabled = false);
+      if (chipsEl) chipsEl.classList.remove('disabled');
     });
   });
 })();
