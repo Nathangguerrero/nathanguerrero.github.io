@@ -13,7 +13,19 @@ export default [
     ],
   },
   {
+    files: ['assets/js/analytics.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module', // ES module para Vercel Analytics
+    },
+    rules: {
+      'no-unused-vars': 'warn',
+      'prefer-const': 'warn',
+    },
+  },
+  {
     files: ['assets/js/**/*.js'],
+    ignores: ['assets/js/analytics.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'script', // IIFEs no escopo global, não módulos
