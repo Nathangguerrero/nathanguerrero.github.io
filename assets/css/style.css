@@ -236,7 +236,7 @@ nav:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
   pointer-events: none;
 }
@@ -303,8 +303,8 @@ nav:hover {
   animation: fadeUp 1s var(--ease) 0.9s forwards;
 }
 .hero-desc {
-  max-width: 380px;
-  font-size: 1rem;
+  max-width: 520px;
+  font-size: 1.2rem;
   color: #f0ece6;
   line-height: 1.7;
 }
@@ -1264,7 +1264,7 @@ nav.nav-visible {
 /* ── Responsive: Ultrawide (3000px+) ── */
 @media (min-width: 3000px) {
   .hero-title { font-size: clamp(9rem, 5vw, 16rem); }
-  .hero-desc { max-width: 560px; font-size: 1.2rem; }
+  .hero-desc { max-width: 560px; font-size: 1.7rem; }
   #hero { padding: 0 100px 140px; }
   #about { max-width: 2400px; padding: 160px 100px; }
   #work { padding: 100px 100px 180px; }
@@ -1596,13 +1596,13 @@ nav.nav-visible {
     margin-bottom: 32px;
   }
   .hero-bottom { flex-direction: column; gap: 24px; align-items: flex-start; }
-  .hero-desc { max-width: 100%; font-size: 1.05rem; line-height: 1.65; }
-  .hero-scroll-wrap { margin-top: 24px; }
+  .hero-desc { max-width: 100%; font-size: 0.95rem; line-height: 1.65; }
+  .hero-scroll-wrap { margin-top: 36px; }
   .hero-scroll-box { padding: 7px 7px 7px 14px; gap: 10px; }
   .hero-scroll-circle { width: 30px; height: 30px; }
   .hero-scroll-circle svg { width: 14px; height: 14px; }
   .hero-scroll-box span { font-size: 0.62rem; }
-  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.08em; padding: 9px 18px; }
+  .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.08em; padding: 9px 18px; }
 
   /* About */
   #about {
