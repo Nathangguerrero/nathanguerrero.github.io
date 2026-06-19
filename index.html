@@ -610,6 +610,7 @@
             <span>Concordo com a <a href="/privacidade.html" target="_blank">Política de Privacidade</a> e autorizo o uso dos meus dados para retorno de contato.</span>
           </label>
 
+          <div id="recaptcha-container"></div>
           <button type="submit" class="cf-submit">
             Vamos criar
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -691,6 +692,22 @@
       requestAnimationFrame(tick);
     })();
   </script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=_onRecaptchaLoad&render=explicit" async defer></script>
+  <script>
+    var _recaptchaWidgetId = null;
+    function _onRecaptchaLoad() {
+      _recaptchaWidgetId = grecaptcha.render('recaptcha-container', {
+        sitekey: '6LdYiBstAAAAAAtKS76XyWJne4XI8y2uLveCDTcN',
+        size: 'invisible',
+        callback: function(token) {
+          // token válido — submete o form de verdade
+          document.getElementById('contact-form').dataset.recaptchaOk = '1';
+          document.getElementById('contact-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        }
+      });
+    }
+    window._onRecaptchaLoad = _onRecaptchaLoad;
+  </script>
   <script>
     (function() {
       var form = document.getElementById('contact-form');
@@ -710,7 +727,18 @@
           checkbox.addEventListener('change', function() {
             checkbox.classList.remove('field-error');
           }, { once: true });
+          return;
         }
+        // Se reCAPTCHA ainda não validou, dispara e bloqueia o submit
+        if (!form.dataset.recaptchaOk && _recaptchaWidgetId !== null) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          grecaptcha.execute(_recaptchaWidgetId);
+          return;
+        }
+        // Limpa o flag para próximo envio
+        delete form.dataset.recaptchaOk;
+        if (_recaptchaWidgetId !== null) grecaptcha.reset(_recaptchaWidgetId);
       }, true);
     })();
   </script>
