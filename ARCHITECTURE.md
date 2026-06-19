@@ -2,7 +2,7 @@
 
 ## Visão geral
 
-Site **estático** (sem servidor de aplicação) hospedado no GitHub Pages. A única peça
+Site **estático** (sem servidor de aplicação) hospedado na Vercel. A única peça
 dinâmica é o formulário de contato, que delega o envio de e-mail a um **Cloudflare Worker**
 (serverless edge) para manter a API key do Resend fora do frontend.
 
@@ -10,7 +10,7 @@ dinâmica é o formulário de contato, que delega o envio de e-mail a um **Cloud
                           ┌─────────────────────────────────────────┐
                           │            NAVEGADOR (cliente)            │
                           │                                           │
-   GitHub Pages  ───────► │  index.html + assets/*.min.{css,js}       │
+   Vercel        ───────► │  index.html + assets/*.min.{css,js}       │
    (CDN, estático)        │  pages/*.html  (drawer via <iframe>)      │
                           │                                           │
                           │  Lenis (scroll) · Canvas (bg) · GA        │
@@ -86,11 +86,11 @@ Cada bloco é uma IIFE independente, ativada apenas se seus elementos existem:
 - **reCAPTCHA v2 Invisible** — proteção do formulário sem fricção para o usuário
 
 ### Dev (npm, não vão a produção)
-- **vite** — dev server
+- **devserver.mjs** — dev server local com live-reload (SSE), `npm run dev`
 - **terser** — minificação de JS
 - **clean-css-cli** — minificação de CSS
+- **eslint** — lint do JS-fonte e do Worker
 - **playwright** — testes/screenshots manuais
-- `@tailwindcss/vite` — **resíduo, não utilizado** (candidato a remoção)
 
 ---
 
@@ -111,5 +111,4 @@ Nenhuma no frontend. O **Worker** usa um único secret, configurado via Wrangler
 - Os arquivos `.min.css`/`.min.js` são **commitados** (não gerados no deploy).
 - Domínio `nathangguerrero.com.br` configurado no painel da Vercel.
 - Rota 404 customizada em `vercel.json` → serve `404.html` animado.
-- `dist/` e `vite.config.js` são resíduos de um pipeline de build Vite **não usado** no
-  deploy atual.
+- Não há etapa de build: o deploy serve os arquivos estáticos diretamente.

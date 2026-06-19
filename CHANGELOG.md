@@ -6,6 +6,23 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.2.1] — 2026-06-19
+
+### Refatoração & limpeza
+- **JS:** remove código morto (`updateArrows()`, const `success` órfã).
+- **CSS:** remove regras mortas (`nav.nav-scrolled`, `.cf-success`) e corrige
+  variáveis fantasma (`--cream`, `--font-display`, `--font-body`) que eram usadas
+  sem nunca terem sido definidas.
+- **HTML:** remove elemento `.cf-success` e comentário vazio órfãos.
+- **Páginas de projeto (13):** remove scripts `/_vercel/*` duplicados nos iframes
+  (a página pai já os carrega) e `postMessage` mortos (`cursorMove`, `closingVisible`,
+  sem handler no `main.js`).
+- **Config:** remove `vite.config.js` (build Vite não usado no deploy); `npm run dev`
+  agora usa `devserver.mjs`; remove devDependency `vite`.
+- **Conteúdo:** padroniza `© 2025 → © 2026` nas páginas de projeto.
+
+---
+
 ## [1.2.0] — 2026-06-19
 
 ### Adicionado

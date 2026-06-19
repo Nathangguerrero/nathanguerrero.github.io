@@ -24,8 +24,8 @@ npm install -g wrangler   # ou use npx wrangler
 
 | Comando | Servidor | Porta | Observação |
 |---|---|---|---|
-| `npm run dev` | Vite | 5173 | HMR completo, recomendado |
-| `node devserver.mjs` | Custom | 3456 | Live-reload simples via SSE |
+| `npm run dev` | `devserver.mjs` | 3456 | Live-reload via SSE |
+| `npm start` | `serve` | 3000 | Servidor estático simples (sem reload) |
 
 O site é estático: abrir `index.html` direto no navegador também funciona, mas alguns
 recursos (fontes, fetch do Worker) preferem ser servidos por HTTP.
@@ -45,7 +45,7 @@ recursos (fontes, fetch do Worker) preferem ser servidos por HTTP.
    npm run minify:js     # só JS
    ```
 3. Teste local (`npm run dev`)
-4. Commit + push (deploy automático no GitHub Pages)
+4. Commit + push (deploy automático na Vercel)
 
 ---
 

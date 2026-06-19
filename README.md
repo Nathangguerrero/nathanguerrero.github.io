@@ -21,11 +21,11 @@ drawer de projetos em iframe e formulário de contato via serverless.
 | Analytics | Google Analytics 4 |
 | Fontes | Google Fonts (Inter + Syne) |
 | Hospedagem | Vercel + domínio customizado |
-| Dev/minify | Vite (dev server), Terser (JS), clean-css (CSS) |
+| Dev/minify | `devserver.mjs` (dev server), Terser (JS), clean-css (CSS) |
 
-> **Nota:** apesar de `@tailwindcss/vite` aparecer no `package.json`, **Tailwind não é
-> usado** — todo o CSS é escrito à mão. GSAP **também não é usado**; as animações de
-> reveal são feitas com `IntersectionObserver`. Ver [ARCHITECTURE.md](ARCHITECTURE.md).
+> **Nota:** **Tailwind e GSAP não são usados** — todo o CSS é escrito à mão e as
+> animações de reveal são feitas com `IntersectionObserver`. Ver
+> [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ---
 
@@ -61,22 +61,16 @@ drawer de projetos em iframe e formulário de contato via serverless.
 └── package.json            # Scripts de dev/minify
 ```
 
-> Pastas ignoradas pelo Git: `node_modules/`, `dist/` (build Vite não usado em deploy),
-> `_originals/` (mídia bruta de alta resolução). Ver `.gitignore`.
+> Pastas ignoradas pelo Git: `node_modules/`, `_originals/` (mídia bruta de alta
+> resolução). Ver `.gitignore`.
 
 ---
 
 ## Rodando localmente
 
 ```bash
-npm install          # instala devDependencies (Vite, Terser, clean-css)
-npm run dev          # Vite dev server em http://localhost:5173
-```
-
-Alternativa com live-reload simples (sem Vite):
-
-```bash
-node devserver.mjs   # http://localhost:3456
+npm install          # instala devDependencies (Terser, clean-css, eslint)
+npm run dev          # dev server com live-reload em http://localhost:3456
 ```
 
 Mais detalhes em [DEVELOPMENT.md](DEVELOPMENT.md).
