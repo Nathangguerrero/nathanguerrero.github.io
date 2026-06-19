@@ -672,6 +672,25 @@
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="assets/js/main.min.js"></script>
+  <!-- Nav shrink on scroll -->
+  <script>
+    (function() {
+      var nav = document.querySelector('nav');
+      nav.style.transition = 'padding 0.35s cubic-bezier(0.76, 0, 0.24, 1), gap 0.35s cubic-bezier(0.76, 0, 0.24, 1), background 0.5s cubic-bezier(0.76, 0, 0.24, 1), box-shadow 0.5s cubic-bezier(0.76, 0, 0.24, 1)';
+      var scrolled = false;
+      function tick() {
+        var y = window.__lenis ? window.__lenis.scroll : window.scrollY;
+        var shouldShrink = y > 80;
+        if (shouldShrink !== scrolled) {
+          scrolled = shouldShrink;
+          nav.style.padding = scrolled ? '16px 20px' : '';
+          nav.style.gap = scrolled ? '32px' : '';
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+  </script>
   <script>
     (function() {
       var form = document.getElementById('contact-form');

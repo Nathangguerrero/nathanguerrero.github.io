@@ -152,7 +152,10 @@ nav {
     0 4px 24px rgba(0, 0, 0, 0.12),
     0 1px 0 rgba(255, 255, 255, 0.3) inset,
     0 -1px 0 rgba(0, 0, 0, 0.08) inset;
-  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: background 0.5s var(--ease), box-shadow 0.5s var(--ease), transform 0.5s var(--ease);
+}
+nav.nav-scrolled {
+  transform: translateX(-50%) scale(0.82);
 }
 nav:hover {
   background: rgba(255, 255, 255, 0.18);
