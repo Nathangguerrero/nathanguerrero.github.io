@@ -9,6 +9,9 @@ package-lock*.json
 
 # OS / editor
 .DS_Store
+._*
+**._*
+.claude/
 *.swp
 *~
 
