@@ -9,7 +9,7 @@ export default [
       'assets/**/*.min.js',
       'dist/**',
       'node_modules/**',
-      'src/**', // código legado não usado em produção
+      '**/._*', // metadados do macOS em volumes externos
     ],
   },
   {

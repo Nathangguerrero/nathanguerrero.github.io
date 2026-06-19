@@ -234,11 +234,6 @@ let currentProject  = 0;
 let activeFrame     = frameA;
 let animating       = false;
 
-function updateArrows() {
-  drawerPrev.disabled = false;
-  drawerNext.disabled = false;
-}
-
 function slideToProject(index, direction) {
   if (animating || index === currentProject) return;
   const p = projects[index];
@@ -264,7 +259,6 @@ function slideToProject(index, direction) {
   incoming.classList.add(inClass);
 
   currentProject = index;
-  updateArrows();
 
   setTimeout(() => {
     activeFrame.classList.remove(outClass);
@@ -311,7 +305,6 @@ function openDrawer(index) {
   frameB.style.visibility = 'hidden';
   frameB.style.pointerEvents = 'none';
   activeFrame = frameA;
-  updateArrows();
   updateMobileCounter();
   lockScroll();
   requestAnimationFrame(() => {
@@ -794,7 +787,6 @@ let ctaHoverUnfreeze = null;
   const overlay = document.getElementById('contact-overlay');
   const closeBtn = document.getElementById('contact-close');
   const form    = document.getElementById('contact-form');
-  const success = document.getElementById('cf-success');
 
   const whatsappBtn = document.getElementById('whatsapp-btn');
 

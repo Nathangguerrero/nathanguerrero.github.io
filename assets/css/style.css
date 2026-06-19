@@ -51,9 +51,7 @@ body {
   transform-origin: center top;
 }
 
-/* body::before is used for the CTA gradient overlay */
-
-/* ── Scroll progress ── */
+/* ── WhatsApp floating button ── */
 #whatsapp-btn {
   position: fixed;
   bottom: 24px;
@@ -153,9 +151,6 @@ nav {
     0 1px 0 rgba(255, 255, 255, 0.3) inset,
     0 -1px 0 rgba(0, 0, 0, 0.08) inset;
   transition: background 0.5s var(--ease), box-shadow 0.5s var(--ease), transform 0.5s var(--ease);
-}
-nav.nav-scrolled {
-  transform: translateX(-50%) scale(0.82);
 }
 nav:hover {
   background: rgba(255, 255, 255, 0.18);
@@ -1728,7 +1723,7 @@ nav.nav-visible {
   top: 20px; right: 20px;
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
-  color: var(--cream);
+  color: var(--fg);
   width: 40px; height: 40px;
   border-radius: 50%;
   display: flex;
@@ -1749,11 +1744,11 @@ nav.nav-visible {
   margin-bottom: 12px;
 }
 .contact-title {
-  font-family: var(--font-display);
+  font-family: 'Syne', sans-serif;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 700;
   line-height: 1.15;
-  color: var(--cream);
+  color: var(--fg);
 }
 .contact-title em { font-style: normal; color: var(--orange); -webkit-text-stroke: 0; }
 
@@ -1772,8 +1767,8 @@ nav.nav-visible {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 10px;
-  color: var(--cream);
-  font-family: var(--font-body);
+  color: var(--fg);
+  font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   padding: 14px 16px;
   outline: none;
@@ -1827,7 +1822,7 @@ nav.nav-visible {
   gap: 10px;
   background: var(--orange);
   color: #fff;
-  font-family: var(--font-display);
+  font-family: 'Syne', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   padding: 16px 32px;
@@ -1869,7 +1864,7 @@ nav.nav-visible {
   padding: 14px 24px;
   border-radius: 100px;
   font-size: 0.88rem;
-  font-family: var(--font-body);
+  font-family: 'Inter', sans-serif;
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   opacity: 0;
   pointer-events: none;
@@ -1914,12 +1909,12 @@ nav.nav-visible {
   to   { transform: scale(1);   opacity: 1; }
 }
 .cf-sent-label {
-  font-family: var(--font-display);
+  font-family: 'Syne', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cream);
+  color: var(--fg);
   opacity: 0;
   animation: fade-up 0.4s 0.5s ease forwards;
 }
@@ -1927,7 +1922,7 @@ nav.nav-visible {
   margin-top: 8px;
   background: #fff;
   color: #0a0a0a;
-  font-family: var(--font-display);
+  font-family: 'Syne', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1952,7 +1947,7 @@ nav.nav-visible {
   }
 }
 .cf-sent-sub {
-  font-family: var(--font-body);
+  font-family: 'Inter', sans-serif;
   font-size: 0.88rem;
   color: rgba(240,236,230,0.5);
   text-align: center;
@@ -1964,15 +1959,6 @@ nav.nav-visible {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-.cf-success {
-  display: none;
-  text-align: center;
-  color: var(--orange);
-  font-size: 0.9rem;
-  margin-top: 4px;
-}
-.cf-success.visible { display: block; }
 
 .cf-error {
   display: none;
