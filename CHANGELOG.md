@@ -6,6 +6,25 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.2.0] — 2026-06-19
+
+### Adicionado
+- **reCAPTCHA v2 Invisible** no formulário de contato (proteção contra bots, sem fricção para o usuário).
+- **Banner de cookies LGPD** — aparece após o loader, com animação de entrada/saída; aceitar/recusar persiste em `localStorage`.
+- **Página de Política de Privacidade** (`/privacidade.html`) em conformidade com a LGPD.
+- **Checkbox de privacidade** obrigatório no formulário antes do envio.
+- **Página 404 animada** com canvas (partículas, pulsos, glitch) e botão de retorno.
+- **Link de Política de Privacidade** no rodapé.
+- **Nav encolhe horizontalmente** ao scrollar (animação fluida via `padding`/`gap`).
+- **og:image único por página de projeto** — cada um dos 13 projetos agora tem a imagem correta ao ser compartilhado no WhatsApp/LinkedIn.
+
+### Alterado
+- **Google Analytics 4** agora carrega **somente após consentimento** (reCAPTCHA Consent Mode v2).
+- **Hospedagem migrada de GitHub Pages → Vercel** (com rota 404 customizada via `vercel.json`).
+- **Vercel Web Analytics** e **Speed Insights** adicionados a todas as páginas.
+
+---
+
 ## [1.0.0] — 2026-06-01
 
 Primeiro lançamento público em [nathangguerrero.com.br](https://nathangguerrero.com.br).

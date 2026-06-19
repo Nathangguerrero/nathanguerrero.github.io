@@ -82,7 +82,8 @@ Cada bloco é uma IIFE independente, ativada apenas se seus elementos existem:
 ### Runtime (carregadas pelo navegador)
 - **Lenis** 1.1.14 — `unpkg.com` (scroll suave, desktop)
 - **Google Fonts** — Inter + Syne (carregamento não-bloqueante via `media="print"` swap)
-- **Google Analytics 4** — `gtag.js`
+- **Google Analytics 4** — `gtag.js` com Consent Mode v2 (só carrega após aceite de cookies)
+- **reCAPTCHA v2 Invisible** — proteção do formulário sem fricção para o usuário
 
 ### Dev (npm, não vão a produção)
 - **vite** — dev server
@@ -106,8 +107,9 @@ Nenhuma no frontend. O **Worker** usa um único secret, configurado via Wrangler
 
 ## Decisões de hospedagem
 
-- **GitHub Pages** serve a branch `main` na raiz — deploy é `git push`, sem build.
+- **Vercel** serve a branch `main` — deploy automático a cada push, sem build.
 - Os arquivos `.min.css`/`.min.js` são **commitados** (não gerados no deploy).
-- Domínio `nathangguerrero.com.br` via `CNAME` + DNS na Cloudflare.
+- Domínio `nathangguerrero.com.br` configurado no painel da Vercel.
+- Rota 404 customizada em `vercel.json` → serve `404.html` animado.
 - `dist/` e `vite.config.js` são resíduos de um pipeline de build Vite **não usado** no
   deploy atual.

@@ -20,7 +20,7 @@ drawer de projetos em iframe e formulário de contato via serverless.
 | Formulário | [Cloudflare Workers](https://workers.cloudflare.com/) + [Resend](https://resend.com/) |
 | Analytics | Google Analytics 4 |
 | Fontes | Google Fonts (Inter + Syne) |
-| Hospedagem | GitHub Pages + domínio customizado (CNAME) |
+| Hospedagem | Vercel + domínio customizado |
 | Dev/minify | Vite (dev server), Terser (JS), clean-css (CSS) |
 
 > **Nota:** apesar de `@tailwindcss/vite` aparecer no `package.json`, **Tailwind não é
@@ -53,7 +53,9 @@ drawer de projetos em iframe e formulário de contato via serverless.
 ├── worker/                 # Cloudflare Worker (proxy do formulário → Resend)
 │   ├── index.js
 │   └── wrangler.toml
-├── CNAME                   # Domínio customizado do GitHub Pages
+├── 404.html                # Página 404 animada (canvas: partículas, pulsos, glitch)
+├── privacidade.html        # Política de Privacidade (LGPD)
+├── vercel.json             # Config do Vercel (rota 404 customizada)
 ├── robots.txt              # SEO
 ├── sitemap.xml             # SEO
 └── package.json            # Scripts de dev/minify
@@ -94,13 +96,13 @@ npm run minify       # minifica CSS + JS
 
 ## Deploy
 
-GitHub Pages serve a branch `main` na raiz. **Deploy = push:**
+Vercel faz deploy automático a cada push na branch `main`. **Deploy = push:**
 
 ```bash
 git push origin main
 ```
 
-O domínio `nathangguerrero.com.br` é apontado via arquivo `CNAME` + DNS na Cloudflare.
+O domínio `nathangguerrero.com.br` é configurado no painel da Vercel. A rota 404 customizada está em `vercel.json`.
 
 O Worker do formulário é deployado separadamente (ver [DEVELOPMENT.md](DEVELOPMENT.md#worker)):
 
