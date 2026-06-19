@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página não encontrada · Nathan Guerrero</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0ece6;
+      --muted: #a0a0a0;
+      --orange: #ff4d00;
+      --ease: cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.4;
+    }
+    canvas#bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .wrap {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      gap: 1.5rem;
+      z-index: 1;
+      animation: fadeUp 0.8s var(--ease) both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .code {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--fg);
+    }
+    .code span { color: var(--orange); }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.75rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 360px;
+      line-height: 1.7;
+    }
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0.5rem;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s;
+    }
+    a.btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 32px 8px rgba(255,77,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+  <div class="wrap">
+    <div class="code" style="display:flex;justify-content:center;width:100%;">4<span>0</span>4</div>
+    <h1>Página não encontrada</h1>
+    <p>O endereço que você acessou não existe ou foi movido. Que tal voltar ao início?</p>
+    <a href="/" class="btn">
+      Voltar ao início
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <script>
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let W, H, mouseX, mouseY, smoothX, smoothY;
+    let glitchTimer = 0, glitchActive = false, glitchDuration = 0;
+
+    // ── Particles ──
+    const PARTICLE_COUNT = 90;
+    const particles = [];
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      smoothX = mouseX = W * .5;
+      smoothY = mouseY = H * .5;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random() - .5) * .0003,
+        vy: (Math.random() - .5) * .0003,
+        size: Math.random() * 1.8 + .5,
+        opacity: Math.random() * .5 + .2
+      });
+    }
+
+    // ── Pulses ──
+    const pulses = [];
+    function spawnPulse() {
+      pulses.push({ r: 0, maxR: Math.max(W, H) * .8, opacity: .6, speed: Math.random() * 1.5 + 1 });
+      setTimeout(spawnPulse, Math.random() * 2000 + 1500);
+    }
+    spawnPulse();
+
+    function draw(t) {
+      smoothX += .04 * (mouseX - smoothX);
+      smoothY += .04 * (mouseY - smoothY);
+
+      // ── Background blobs ──
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, W, H);
+
+      const blobs = [
+        { x: smoothX + (0.2 - .5) * W * .3, y: smoothY + (0.3 - .5) * H * .3, r: .55, color: [255,77,0] },
+        { x: (0.8 + .12 * Math.sin(t * 13e-5 + 2.1)) * W, y: (0.7 + .1 * Math.cos(t * 11e-5 + 2.1)) * H, r: .45, color: [80,20,180] },
+        { x: (0.5 + .12 * Math.sin(t * 2e-4 + 4.3)) * W,  y: (0.1 + .1 * Math.cos(t * 16e-5 + 4.3)) * H, r: .4,  color: [0,120,200] },
+        { x: (0.1 + .12 * Math.sin(t * 15e-5 + 1.1)) * W, y: (0.8 + .1 * Math.cos(t * 12e-5 + 1.1)) * H, r: .35, color: [180,40,255] }
+      ];
+      blobs.forEach(b => {
+        const r = b.r * Math.max(W, H);
+        const [red, g, blue] = b.color;
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
+        grad.addColorStop(0,  `rgba(${red},${g},${blue},0.13)`);
+        grad.addColorStop(.5, `rgba(${red},${g},${blue},0.05)`);
+        grad.addColorStop(1,  `rgba(${red},${g},${blue},0)`);
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalCompositeOperation = 'source-over';
+
+      // ── Pulses ──
+      pulses.forEach((p, i) => {
+        p.r += p.speed;
+        p.opacity -= p.speed / p.maxR * .8;
+        if (p.opacity <= 0) { pulses.splice(i, 1); return; }
+        ctx.beginPath();
+        ctx.arc(W / 2, H / 2, p.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,77,0,${p.opacity * .4})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      });
+
+      // ── Particles + connections ──
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = 1;
+        if (p.x > 1) p.x = 0;
+        if (p.y < 0) p.y = 1;
+        if (p.y > 1) p.y = 0;
+        const mx = mouseX / W, my = mouseY / H;
+        const dx = p.x - mx, dy = p.y - my;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < .15) {
+          p.vx += dx * .000002;
+          p.vy += dy * .000002;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x * W, p.y * H, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(240,236,230,${p.opacity})`;
+        ctx.fill();
+      });
+
+      const CONNECT_DIST = 0.12;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.sqrt(dx*dx + dy*dy);
+          if (d < CONNECT_DIST) {
+            const alpha = (1 - d / CONNECT_DIST) * .25;
+            ctx.beginPath();
+            ctx.moveTo(a.x * W, a.y * H);
+            ctx.lineTo(b.x * W, b.y * H);
+            ctx.strokeStyle = `rgba(255,77,0,${alpha})`;
+            ctx.lineWidth = .8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // ── Glitch ──
+      glitchTimer--;
+      if (glitchTimer <= 0) {
+        if (!glitchActive) {
+          glitchActive = true;
+          glitchDuration = Math.floor(Math.random() * 8 + 3);
+          glitchTimer = glitchDuration;
+        } else {
+          glitchActive = false;
+          glitchTimer = Math.floor(Math.random() * 180 + 60);
+        }
+      }
+      if (glitchActive) {
+        for (let i = 0; i < 4; i++) {
+          const sy = Math.random() * H;
+          const sh = Math.random() * 12 + 2;
+          const ox = (Math.random() - .5) * 24;
+          try {
+            const img = ctx.getImageData(0, sy, W, sh);
+            ctx.putImageData(img, ox, sy);
+          } catch(e) {}
+        }
+        if (Math.random() > .5) {
+          ctx.fillStyle = `rgba(255,77,0,${Math.random() * .06})`;
+          ctx.fillRect(0, Math.random() * H, W, Math.random() * 3 + 1);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>

@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7X8TG5R5E4"></script>
+  <!-- Google Analytics (carrega só com consentimento) -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied'
+    });
     gtag('js', new Date());
-
     gtag('config', 'G-7X8TG5R5E4');
+
+    if (localStorage.getItem('cookie-consent') === 'accepted') {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+    }
+
+    window._enableAnalytics = function() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-7X8TG5R5E4';
+      document.head.appendChild(s);
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+    };
+
+    if (localStorage.getItem('cookie-consent') === 'accepted') {
+      window._enableAnalytics();
+    }
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -525,7 +543,7 @@
       <li><a href="https://www.behance.net/nathanguerrero1" target="_blank">Behance</a></li>
       <li><a href="https://www.linkedin.com/in/nathan-guerrero-235732366/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
     </ul>
-    <p class="footer-copy">© 2026 Nathan. Todos os direitos reservados.</p>
+    <p class="footer-copy">© 2026 Nathan. Todos os direitos reservados. · <a href="/privacidade.html" style="color:inherit;opacity:0.5;text-decoration:underline;text-underline-offset:3px;">Política de Privacidade</a></p>
   </footer>
 
   <!-- Contact Panel -->
@@ -587,6 +605,11 @@
             <textarea id="cf-message" name="message" placeholder="Descreva brevemente o que você tem em mente..." rows="4" required></textarea>
           </div>
 
+          <label class="cf-privacy-check">
+            <input type="checkbox" id="cf-privacy" required />
+            <span>Concordo com a <a href="/privacidade.html" target="_blank">Política de Privacidade</a> e autorizo o uso dos meus dados para retorno de contato.</span>
+          </label>
+
           <button type="submit" class="cf-submit">
             Vamos criar
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -637,8 +660,82 @@
     </div>
   </div>
 
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" role="dialog" aria-label="Aviso de cookies" style="display:none">
+    <p>Este site usa cookies para análise de visitas e melhoria da experiência. <a href="/privacidade.html">Política de Privacidade</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-accept">Aceitar</button>
+      <button id="cookie-decline">Recusar</button>
+    </div>
+  </div>
+
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="assets/js/main.min.js"></script>
+  <script>
+    (function() {
+      var form = document.getElementById('contact-form');
+      if (!form) return;
+      form.addEventListener('submit', function(e) {
+        var checkbox = document.getElementById('cf-privacy');
+        if (!checkbox.checked) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          checkbox.classList.add('field-error');
+          var err = document.getElementById('cf-error');
+          if (err) {
+            err.textContent = 'Você precisa aceitar a Política de Privacidade para enviar.';
+            err.classList.add('visible');
+            setTimeout(function() { err.classList.remove('visible'); }, 5000);
+          }
+          checkbox.addEventListener('change', function() {
+            checkbox.classList.remove('field-error');
+          }, { once: true });
+        }
+      }, true);
+    })();
+  </script>
+  <script>
+    (function() {
+      if (localStorage.getItem('cookie-consent')) return;
+      var banner = document.getElementById('cookie-banner');
+      var loader = document.getElementById('loader');
+
+      function showBanner() {
+        banner.style.display = 'flex';
+      }
+
+      function dismiss(value) {
+        localStorage.setItem('cookie-consent', value);
+        if (value === 'accepted' && window._enableAnalytics) window._enableAnalytics();
+        banner.classList.add('dismissing');
+        banner.addEventListener('animationend', function() {
+          banner.style.display = 'none';
+        }, { once: true });
+      }
+
+      function onAccept() { dismiss('accepted'); }
+      function onDecline() { dismiss('declined'); }
+
+      document.getElementById('cookie-accept').addEventListener('click', onAccept);
+      document.getElementById('cookie-decline').addEventListener('click', onDecline);
+
+      if (loader) {
+        new MutationObserver(function(_, obs) {
+          if (loader.classList.contains('hidden')) {
+            obs.disconnect();
+            loader.addEventListener('transitionend', function onDone(e) {
+              if (e.propertyName === 'opacity') {
+                loader.removeEventListener('transitionend', onDone);
+                showBanner();
+              }
+            });
+          }
+        }).observe(loader, { attributes: true, attributeFilter: ['class'] });
+      } else {
+        showBanner();
+      }
+    })();
+  </script>
 </body>
 </html>
