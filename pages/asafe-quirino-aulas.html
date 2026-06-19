@@ -99,8 +99,6 @@
       .video-player-wrapper video { width: 100% !important; height: auto !important; max-width: 100% !important; }
     }
   </style>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
@@ -193,14 +191,14 @@
     <p style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#5a5a5a;">Próximo passo</p>
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.5rem,5vw,4.5rem); letter-spacing:-0.04em; line-height:0.95; color:#f0ece6;">Vamos criar algo<br/><em style="font-style:normal; color:#ff4d00;">juntos.</em></h2>
     <p style="color:#5a5a5a; font-size:0.9rem; max-width:400px; line-height:1.7;">Tem algum projeto em mente? Eu adoraria fazer parte!</p>
-    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2025</p>
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2026</p>
   </section>
 
   <script>
     const reveals=document.querySelectorAll('.reveal');const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.05});reveals.forEach(el=>observer.observe(el));
     const canvas=document.getElementById('bg-canvas');const ctx=canvas.getContext('2d');let W,H;function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}resize();window.addEventListener('resize',resize);let mouseX=W*0.5,mouseY=H*0.4,lerpX=mouseX,lerpY=mouseY;document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});const orbs=[{x:0.2,y:0.3,r:0.55,color:[255,77,0],speed:0.00018,phase:0,mouse:true},{x:0.8,y:0.7,r:0.45,color:[80,20,180],speed:0.00013,phase:2.1,mouse:false},{x:0.5,y:0.1,r:0.40,color:[0,120,200],speed:0.00020,phase:4.3,mouse:false},{x:0.1,y:0.8,r:0.35,color:[180,40,255],speed:0.00015,phase:1.1,mouse:false}];function drawBg(t){lerpX+=(mouseX-lerpX)*0.04;lerpY+=(mouseY-lerpY)*0.04;ctx.fillStyle='#0a0a0a';ctx.fillRect(0,0,W,H);orbs.forEach(o=>{const cx=o.mouse?lerpX+(o.x-0.5)*W*0.3:(o.x+Math.sin(t*o.speed+o.phase)*0.12)*W;const cy=o.mouse?lerpY+(o.y-0.5)*H*0.3:(o.y+Math.cos(t*o.speed*0.8+o.phase)*0.10)*H;const radius=o.r*Math.max(W,H);const[r,g,b]=o.color;const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,radius);grad.addColorStop(0,`rgba(${r},${g},${b},0.13)`);grad.addColorStop(0.5,`rgba(${r},${g},${b},0.05)`);grad.addColorStop(1,`rgba(${r},${g},${b},0)`);ctx.globalCompositeOperation='screen';ctx.fillStyle=grad;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.fill();});ctx.globalCompositeOperation='source-over';requestAnimationFrame(drawBg);}requestAnimationFrame(drawBg);
   </script>
-  <script>if(window.self!==window.top){document.addEventListener("DOMContentLoaded",()=>{const nav=document.querySelector("nav");if(nav)nav.style.display="none";const hero=document.querySelector(".project-hero");if(hero){hero.style.paddingTop="0";hero.style.marginTop="0";}document.querySelectorAll(".nav-back, .nav-logo").forEach(a=>{a.addEventListener("click",e=>{e.preventDefault();window.parent.postMessage("closeDrawer","*");});});document.addEventListener('mousemove',e=>{window.parent.postMessage({type:'cursorMove',x:e.clientX,y:e.clientY},'*');});});}</script>
+  <script>if(window.self!==window.top){document.addEventListener("DOMContentLoaded",()=>{const nav=document.querySelector("nav");if(nav)nav.style.display="none";const hero=document.querySelector(".project-hero");if(hero){hero.style.paddingTop="0";hero.style.marginTop="0";}document.querySelectorAll(".nav-back, .nav-logo").forEach(a=>{a.addEventListener("click",e=>{e.preventDefault();window.parent.postMessage("closeDrawer","*");});});});}</script>
   <script>
     const video=document.getElementById('projectVideo');const playBtn=document.getElementById('playBtn');const playIcon=document.getElementById('playIcon');const pauseIcon=document.getElementById('pauseIcon');const progressFill=document.getElementById('progressFill');const progressBar=document.getElementById('progressBar');const videoTime=document.getElementById('videoTime');const muteBtn=document.getElementById('muteBtn');const soundIcon=document.getElementById('soundIcon');const muteIcon=document.getElementById('muteIcon');const fullBtn=document.getElementById('fullBtn');const playOverlay=document.getElementById('playOverlay');const volumeSlider=document.getElementById('volumeSlider');
     function fmt(s){const m=Math.floor(s/60);return m+':'+String(Math.floor(s%60)).padStart(2,'0');}function togglePlay(){video.paused?video.play():video.pause();}function updateVolumeUI(){const muted=video.muted||video.volume===0;soundIcon.style.display=muted?'none':'';muteIcon.style.display=muted?'':'none';volumeSlider.value=muted?0:video.volume;}
@@ -249,6 +247,5 @@
       }
     });muteBtn.addEventListener('click',()=>{video.muted=!video.muted;if(!video.muted&&video.volume===0)video.volume=1;updateVolumeUI();});volumeSlider.addEventListener('input',()=>{video.volume=parseFloat(volumeSlider.value);video.muted=video.volume===0;updateVolumeUI();});fullBtn.addEventListener('click',()=>{document.fullscreenElement?document.exitFullscreen():document.getElementById('videoWrapper').requestFullscreen();});
   </script>
-  <script>const _closing=document.getElementById('project-closing');if(_closing){new IntersectionObserver(([e])=>{window.parent.postMessage({type:'closingVisible',visible:e.isIntersecting},'*');},{threshold:0.15}).observe(_closing);}</script>
 </body>
 </html>

@@ -407,8 +407,6 @@
       .project-meta-row { gap: 20px; flex-wrap: wrap; }
     }
   </style>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -612,9 +610,6 @@
           a.addEventListener("click", e => {
             e.preventDefault();
             window.parent.postMessage("closeDrawer", "*");
-    document.addEventListener('mousemove', e => {
-      window.parent.postMessage({ type: 'cursorMove', x: e.clientX, y: e.clientY }, '*');
-    });
 
           });
         });
@@ -627,16 +622,7 @@
     <p style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#5a5a5a;">Próximo passo</p>
     <h2 style="font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.5rem,5vw,4.5rem); letter-spacing:-0.04em; line-height:0.95; color:#f0ece6;">Vamos criar algo<br/><em style="font-style:normal; color:#ff4d00;">juntos.</em></h2>
     <p style="color:#5a5a5a; font-size:0.9rem; max-width:400px; line-height:1.7;">Tem algum projeto em mente? Eu adoraria fazer parte!</p>
-    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2025</p>
+    <p style="font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:#5a5a5a; margin-top:8px;">Nathan Guerrero © 2026</p>
   </section>
-
-  <script>
-    const _closing = document.getElementById('project-closing');
-    if (_closing) {
-      new IntersectionObserver(([e]) => {
-        window.parent.postMessage({ type: 'closingVisible', visible: e.isIntersecting }, '*');
-      }, { threshold: 0.15 }).observe(_closing);
-    }
-  </script>
 </body>
 </html>
