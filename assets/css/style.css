@@ -571,13 +571,14 @@ nav:hover {
 .project-item:nth-child(2) { grid-column: span 5; }
 .project-item:nth-child(3) { grid-column: span 5; }
 .project-item:nth-child(4) { grid-column: span 7; }
-.project-item:nth-child(5) { grid-column: span 4; }
-.project-item:nth-child(6) { grid-column: span 4; }
-.project-item:nth-child(7) { grid-column: span 4; }
-.project-item:nth-child(8)  { grid-column: span 3; }
+.project-item:nth-child(5) { grid-column: span 7; }
+.project-item:nth-child(6) { grid-column: span 5; }
+.project-item:nth-child(7) { grid-column: span 5; }
+.project-item:nth-child(8)  { grid-column: span 7; }
 .project-item:nth-child(9)  { grid-column: span 3; }
 .project-item:nth-child(10) { grid-column: span 3; }
 .project-item:nth-child(11) { grid-column: span 3; }
+.project-item:nth-child(12) { grid-column: span 3; }
 
 .project-thumb {
   width: 100%;
@@ -592,7 +593,9 @@ nav:hover {
   filter: drop-shadow(0 8px 32px rgba(255, 77, 0, 0.3));
 }
 .project-item:nth-child(1) .project-thumb,
-.project-item:nth-child(4) .project-thumb { aspect-ratio: 16/9; }
+.project-item:nth-child(4) .project-thumb,
+.project-item:nth-child(5) .project-thumb,
+.project-item:nth-child(8) .project-thumb { aspect-ratio: 16/9; }
 
 .project-thumb img,
 .project-thumb video {
@@ -1674,12 +1677,18 @@ nav.nav-visible {
   z-index: 9999;
   pointer-events: none;
   visibility: hidden;
+  overflow: hidden;
   transition: visibility 0s linear 0.55s;
 }
 #contact-panel.open {
   pointer-events: all;
   visibility: visible;
   transition: visibility 0s linear 0s;
+}
+#contact-panel.closing {
+  pointer-events: none;
+  visibility: visible;
+  transition: none;
 }
 
 #contact-overlay {
@@ -1692,6 +1701,13 @@ nav.nav-visible {
   transition: opacity 0.4s var(--ease);
 }
 #contact-panel.open #contact-overlay { opacity: 1; }
+#contact-panel.open:not(.closing) #contact-overlay {
+  animation: contactOverlayEnter 0.7s ease both;
+}
+#contact-panel.closing #contact-overlay {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
 
 #contact-side {
   position: absolute;
@@ -1704,11 +1720,112 @@ nav.nav-visible {
   transform: translateX(100%);
   transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
+#contact-side::-webkit-scrollbar { display: none; }
 #contact-panel.open #contact-side {
   transform: translateX(0);
-  transition: transform 0.55s cubic-bezier(0.34, 1.18, 0.64, 1);
+  transition: none;
+}
+#contact-panel.open:not(.closing) #contact-side {
+  animation: contactPanelEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 100% 15%;
+  will-change: transform, filter;
+}
+#contact-panel.closing #contact-side {
+  animation: contactPanelFall 0.72s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  transform-origin: 50% 8%;
+  will-change: transform;
+}
+
+@keyframes contactPanelFall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  16% {
+    transform: translate3d(calc(var(--fall-x, 3vw) * -0.12), -1.5vh, 0) rotate(calc(var(--fall-rotate, 7deg) * -0.08));
+  }
+  100% {
+    transform: translate3d(var(--fall-x, 3vw), 112vh, 0) rotate(var(--fall-rotate, 7deg));
+  }
+}
+
+@keyframes contactPanelEnter {
+  0% {
+    transform: perspective(1200px) translate3d(115%, -14%, 0) rotateZ(9deg) rotateY(-18deg) scale(0.78);
+    filter: saturate(1.8) contrast(1.15);
+  }
+  58% {
+    transform: perspective(1200px) translate3d(-5%, 1.5%, 0) rotateZ(-1.8deg) rotateY(2deg) scale(1.025);
+    filter: saturate(1.15) contrast(1.05);
+  }
+  78% {
+    transform: perspective(1200px) translate3d(1.5%, -0.5%, 0) rotateZ(0.6deg) rotateY(-0.8deg) scale(0.995);
+  }
+  100% {
+    transform: perspective(1200px) translate3d(0, 0, 0) rotateZ(0) rotateY(0) scale(1);
+    filter: none;
+  }
+}
+
+@keyframes contactOverlayEnter {
+  0% { opacity: 0; backdrop-filter: blur(0) saturate(100%); }
+  45% { opacity: 1; }
+  70% { opacity: 0.82; }
+  100% { opacity: 1; backdrop-filter: blur(10px) saturate(80%); }
+}
+
+@keyframes contactContentEnter {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--contact-enter-x, 44px), 28px, 0) rotate(var(--contact-enter-r, 2deg));
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0);
+    filter: blur(0);
+  }
+}
+
+#contact-panel.open:not(.closing) #contact-close,
+#contact-panel.open:not(.closing) .contact-header,
+#contact-panel.open:not(.closing) #contact-form > *,
+#contact-panel.open:not(.closing) #cf-sent-state.visible > * {
+  animation: contactContentEnter 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+#contact-panel.open:not(.closing) #contact-close { --contact-enter-x: 70px; --contact-enter-r: 18deg; animation-delay: 0.34s; }
+#contact-panel.open:not(.closing) .contact-header { --contact-enter-x: -64px; --contact-enter-r: -3deg; animation-delay: 0.3s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(odd) { --contact-enter-x: -52px; --contact-enter-r: -2deg; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(even) { --contact-enter-x: 58px; --contact-enter-r: 2deg; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(1) { animation-delay: 0.38s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(2) { animation-delay: 0.44s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(3) { animation-delay: 0.5s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(4) { animation-delay: 0.56s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(5) { animation-delay: 0.62s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(6) { animation-delay: 0.68s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(7) { animation-delay: 0.74s; }
+#contact-panel.open:not(.closing) #contact-form > :nth-child(8) { animation-delay: 0.8s; }
+#contact-panel.open:not(.closing) #cf-sent-state.visible > :nth-child(1) { animation-delay: 0.4s; }
+#contact-panel.open:not(.closing) #cf-sent-state.visible > :nth-child(2) { animation-delay: 0.48s; }
+#contact-panel.open:not(.closing) #cf-sent-state.visible > :nth-child(3) { animation-delay: 0.56s; }
+#contact-panel.open:not(.closing) #cf-sent-state.visible > :nth-child(4) { animation-delay: 0.64s; }
+
+@media (prefers-reduced-motion: reduce) {
+  #contact-panel.open:not(.closing) #contact-side,
+  #contact-panel.open:not(.closing) #contact-overlay,
+  #contact-panel.open:not(.closing) #contact-close,
+  #contact-panel.open:not(.closing) .contact-header,
+  #contact-panel.open:not(.closing) #contact-form > *,
+  #contact-panel.open:not(.closing) #cf-sent-state.visible > * {
+    animation-duration: 0.01ms;
+    animation-delay: 0s;
+  }
+  #contact-panel.closing #contact-side {
+    animation-duration: 0.01ms;
+  }
 }
 
 .contact-side-inner {
@@ -1981,8 +2098,11 @@ nav.nav-visible {
     padding: 72px 24px 48px;
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
+  .contact-side-inner::-webkit-scrollbar { display: none; }
   #contact-close {
     position: fixed;
     top: 16px;

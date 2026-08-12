@@ -212,15 +212,16 @@ setTimeout(() => { isDeleting = true; typeWriter(); }, 2000);
 const projects = [
   { num:'01', name:'Moqueca de Bacalhau · Riberalves', tags:['Audiovisual','Motion'], page: 'pages/riberalves.html' },
   { num:'02', name:'Matrículas 2025 · CRECEI', tags:['Audiovisual','Motion'], page: 'pages/matriculas-crecei.html' },
-  { num:'03', name:'Divulgação do Evento · LKC CON', tags:['Audiovisual','Motion'], page: 'pages/lkc-con-anuncio.html' },
-  { num:'04', name:'São Paulo · Hybrid Media', tags:['Branding','Motion'], page: 'pages/hybrid-media.html' },
-  { num:'05', name:'Por Que Você Ainda Não Evoluiu? · Asafe Quirino', tags:['Audiovisual','Motion'], page: 'pages/asafe-quirino.html' },
-  { num:'06', name:'Welcome Day · CCRP', tags:['Design','Motion'], page: 'pages/welcome-day.html' },
-  { num:'07', name:'Highlights Acampa · LKC', tags:['Design','Identidade'], page: 'pages/acampa-lkc.html' },
-  { num:'08', name:'Brand Strategy & Visual Identity · Stalo', tags:['Branding','Estratégia'], page: 'pages/stalo.html' },
-  { num:'09', name:'Brand Refresh · CRECEI', tags:['Branding','Refresh'], page: 'pages/crecei.html' },
-  { num:'10', name:'Brand Design · Charlotte', tags:['Branding','Design'], page: 'pages/charlotte.html' },
-  { num:'11', name:'Brand Design · Wave Agency', tags:['Branding','Design'], page: 'pages/wave-agency.html' },
+  { num:'03', name:'O que é a Stalo · Stalo Agência', tags:['Motion','Design'], page: 'pages/o-que-e-a-stalo.html' },
+  { num:'04', name:'Divulgação do Evento · LKC CON', tags:['Audiovisual','Motion'], page: 'pages/lkc-con-anuncio.html' },
+  { num:'05', name:'São Paulo · Hybrid Media', tags:['Branding','Motion'], page: 'pages/hybrid-media.html' },
+  { num:'06', name:'Por Que Você Ainda Não Evoluiu? · Asafe Quirino', tags:['Audiovisual','Motion'], page: 'pages/asafe-quirino.html' },
+  { num:'07', name:'Welcome Day · CCRP', tags:['Design','Motion'], page: 'pages/welcome-day.html' },
+  { num:'08', name:'Highlights Acampa · LKC', tags:['Design','Identidade'], page: 'pages/acampa-lkc.html' },
+  { num:'09', name:'Brand Strategy & Visual Identity · Stalo', tags:['Branding','Estratégia'], page: 'pages/stalo.html' },
+  { num:'10', name:'Brand Refresh · CRECEI', tags:['Branding','Refresh'], page: 'pages/crecei.html' },
+  { num:'11', name:'Brand Design · Charlotte', tags:['Branding','Design'], page: 'pages/charlotte.html' },
+  { num:'12', name:'Brand Design · Wave Agency', tags:['Branding','Design'], page: 'pages/wave-agency.html' },
 ];
 
 const drawer        = document.getElementById('project-drawer');
@@ -787,10 +788,16 @@ let ctaHoverUnfreeze = null;
   const overlay = document.getElementById('contact-overlay');
   const closeBtn = document.getElementById('contact-close');
   const form    = document.getElementById('contact-form');
+  const contactSide = document.getElementById('contact-side');
 
   const whatsappBtn = document.getElementById('whatsapp-btn');
+  let closeTimer = null;
+  let isClosing = false;
 
   function openContact(fromCtaBtn = false) {
+    window.clearTimeout(closeTimer);
+    isClosing = false;
+    panel.classList.remove('closing');
     if (fromCtaBtn && ctaHoverFreeze) ctaHoverFreeze();
     lockScroll();
     panel.classList.add('open');
@@ -804,19 +811,41 @@ let ctaHoverUnfreeze = null;
   }
 
   function closeContact() {
-    panel.classList.remove('open');
-    unlockScroll();
-    if (whatsappBtn) whatsappBtn.style.display = '';
-    if (ctaHoverUnfreeze) ctaHoverUnfreeze();
-    if (!form.dataset.sent) {
-      form.style.display = '';
-      document.getElementById('cf-sent-state').classList.remove('visible');
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('success', 'sending');
-      submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      form.querySelectorAll('input, textarea').forEach(el => el.disabled = false);
-      const chips = form.querySelector('.cf-chips');
-      if (chips) chips.classList.remove('disabled');
+    if (!panel.classList.contains('open') || isClosing) return;
+    isClosing = true;
+
+    const direction = Math.random() < 0.5 ? -1 : 1;
+    const rotation = direction * (6 + Math.random() * 5);
+    contactSide.style.setProperty('--fall-x', `${direction * (2 + Math.random() * 4)}vw`);
+    contactSide.style.setProperty('--fall-rotate', `${rotation}deg`);
+    panel.classList.add('closing');
+
+    const finishClose = () => {
+      if (!isClosing) return;
+      isClosing = false;
+      panel.classList.remove('open', 'closing');
+      contactSide.style.removeProperty('--fall-x');
+      contactSide.style.removeProperty('--fall-rotate');
+      unlockScroll();
+      if (whatsappBtn) whatsappBtn.style.display = '';
+      if (ctaHoverUnfreeze) ctaHoverUnfreeze();
+      if (!form.dataset.sent) {
+        form.style.display = '';
+        document.getElementById('cf-sent-state').classList.remove('visible');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('success', 'sending');
+        submitBtn.innerHTML = 'Vamos criar <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        form.querySelectorAll('input, textarea').forEach(el => el.disabled = false);
+        const chips = form.querySelector('.cf-chips');
+        if (chips) chips.classList.remove('disabled');
+      }
+    };
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      finishClose();
+    } else {
+      contactSide.addEventListener('animationend', finishClose, { once: true });
+      closeTimer = window.setTimeout(finishClose, 850);
     }
   }
 
@@ -829,7 +858,7 @@ let ctaHoverUnfreeze = null;
   overlay.addEventListener('click', closeContact);
   document.getElementById('cf-sent-back').addEventListener('click', () => {
     closeContact();
-    setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }), 300);
+    setTimeout(() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }), 800);
   });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && panel.classList.contains('open')) closeContact();
