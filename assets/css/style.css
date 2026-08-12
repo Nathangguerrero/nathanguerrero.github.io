@@ -30,6 +30,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+body.modal-open { overflow: hidden; }
 #cta-overlay {
   position: fixed;
   inset: 0;
@@ -320,6 +321,10 @@ nav:hover {
   align-items: center;
   gap: 14px;
   background: #f0ece6;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
   padding: 10px 10px 10px 20px;
   border-radius: 999px;
   animation: scrollBounce 2s ease-in-out infinite;
@@ -591,6 +596,11 @@ nav:hover {
 }
 .project-item:hover .project-thumb {
   filter: drop-shadow(0 8px 32px rgba(255, 77, 0, 0.3));
+}
+.project-item:focus-visible,
+.hero-scroll-box:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 5px;
 }
 .project-item:nth-child(1) .project-thumb,
 .project-item:nth-child(4) .project-thumb,

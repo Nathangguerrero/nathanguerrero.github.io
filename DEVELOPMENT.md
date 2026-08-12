@@ -62,6 +62,7 @@ com a API key guardada como **secret** (nunca no frontend).
 cd worker
 npx wrangler login                    # 1x, autentica no Cloudflare
 npx wrangler secret put RESEND_API_KEY # cola a API key do Resend quando pedir
+npx wrangler secret put RECAPTCHA_SECRET # chave secreta do reCAPTCHA
 npx wrangler deploy                    # publica
 ```
 
@@ -80,11 +81,13 @@ Teste direto no Worker (sem passar pelo site):
 
 ```bash
 curl -X POST https://resend-proxy.nathangguerrero.workers.dev \
+  -H "Origin: https://nathangguerrero.com.br" \
   -H "Content-Type: application/json" \
-  -d '{"nome":"Teste","contato":"teste@teste.com","tipo_projeto":"Branding","mensagem":"Teste"}'
+  -d '{"nome":"Teste","contato":"teste@teste.com","tipo_projeto":"Branding","mensagem":"Teste","recaptcha_token":"TOKEN_GERADO_NO_SITE"}'
 ```
 
 Resposta esperada: `{"success":true}` (HTTP 200) e um e-mail no inbox configurado.
+O token deve ser gerado pelo reCAPTCHA no site e só pode ser usado uma vez.
 
 **Validação client-side** (em `main.js`, antes do envio):
 - Campo contato com `@` → valida formato de e-mail
@@ -97,7 +100,7 @@ Resposta esperada: `{"success":true}` (HTTP 200) e um e-mail no inbox configurad
 | Sintoma | Causa provável | Solução |
 |---|---|---|
 | Mudança no CSS/JS não aparece | esqueceu de rodar `npm run minify` | regenere os `.min` |
-| Form retorna erro | Worker fora do ar / secret faltando | teste o Worker via curl; confira `wrangler secret list` |
+| Form retorna erro | Worker fora do ar / secret faltando | teste o Worker; confira `wrangler secret list` e os secrets `RESEND_API_KEY` e `RECAPTCHA_SECRET` |
 | `ERR_NAME_NOT_RESOLVED` no form | cache de DNS local desatualizado | trocar DNS para `8.8.8.8` ou `dscacheutil -flushcache` |
 | Vídeo do card não scrolla (iOS) | `transform`/`overflow` no ancestral do iframe | manter `#drawer-panel` sem `transform` quando aberto |
 | Scroll do fundo "vaza" no mobile | listener de `touchmove` ausente nos overlays | ver `lockScroll()` em `main.js` |

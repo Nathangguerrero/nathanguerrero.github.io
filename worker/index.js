@@ -5,7 +5,8 @@
  * a API key guardada como secret (env.RESEND_API_KEY) — nunca exposta no frontend.
  *
  * Deploy:  npx wrangler deploy   (de dentro de /worker)
- * Secret:  npx wrangler secret put RESEND_API_KEY
+ * Secrets: npx wrangler secret put RESEND_API_KEY
+ *          npx wrangler secret put RECAPTCHA_SECRET
  */
 
 // Origens autorizadas a usar este Worker (evita que outros sites o usem p/ spam).
@@ -13,6 +14,13 @@ const ALLOWED_ORIGINS = [
   'https://nathangguerrero.com.br',
   'https://www.nathangguerrero.com.br',
   'https://nathangguerrero.github.io',
+];
+const ALLOWED_RECAPTCHA_HOSTNAMES = [
+  'nathangguerrero.com.br',
+  'www.nathangguerrero.com.br',
+  'nathangguerrero.github.io',
+  'localhost',
+  '127.0.0.1',
 ];
 
 // Limites para evitar abuso com payloads enormes.
@@ -25,21 +33,44 @@ export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
 
+    if (!isAllowedOrigin(origin)) {
+      return json({ error: 'Origin not allowed' }, 403, origin);
+    }
+
     if (request.method === 'OPTIONS') {
-      return cors(null, 204, origin);
+      return json(null, 204, origin);
     }
     if (request.method !== 'POST') {
-      return cors(JSON.stringify({ error: 'Method not allowed' }), 405, origin);
+      return json({ error: 'Method not allowed' }, 405, origin);
     }
 
     let body;
     try {
       body = await request.json();
     } catch {
-      return cors(JSON.stringify({ error: 'Invalid JSON' }), 400, origin);
+      return json({ error: 'Invalid JSON' }, 400, origin);
     }
 
-    if (body.website) return cors(JSON.stringify({ success: true }), 200, origin);
+    if (body.website) return json({ success: true }, 200, origin);
+
+    const recaptchaToken = String(body.recaptcha_token || '').trim();
+    if (!recaptchaToken) {
+      return json({ error: 'Não foi possível validar a proteção anti-spam. Tente novamente.' }, 400, origin);
+    }
+
+    if (!env.RECAPTCHA_SECRET) {
+      console.error('RECAPTCHA_SECRET não configurado no Worker.');
+      return json({ error: 'Serviço temporariamente indisponível.' }, 503, origin);
+    }
+
+    const recaptchaOk = await verifyRecaptcha(
+      recaptchaToken,
+      env.RECAPTCHA_SECRET,
+      request.headers.get('CF-Connecting-IP') || '',
+    );
+    if (!recaptchaOk) {
+      return json({ error: 'Não foi possível validar a proteção anti-spam. Tente novamente.' }, 400, origin);
+    }
 
     const nome = String(body.nome || '').slice(0, MAX_LEN.nome).trim();
     const contato = String(body.contato || '').slice(0, MAX_LEN.contato).trim();
@@ -47,7 +78,7 @@ export default {
     const mensagem = String(body.mensagem || '').slice(0, MAX_LEN.mensagem).trim();
 
     if (!nome || !contato || !mensagem) {
-      return cors(JSON.stringify({ error: 'Missing fields' }), 400, origin);
+      return json({ error: 'Missing fields' }, 400, origin);
     }
 
     // Verifica MX do domínio se o contato for email
@@ -55,7 +86,7 @@ export default {
       const domain = contato.split('@')[1];
       const mxValid = await hasMx(domain);
       if (!mxValid) {
-        return cors(JSON.stringify({ error: 'E-mail inválido. Verifique o endereço e tente novamente.' }), 400, origin);
+        return json({ error: 'E-mail inválido. Verifique o endereço e tente novamente.' }, 400, origin);
       }
     }
 
@@ -81,13 +112,31 @@ export default {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      return cors(JSON.stringify({ error: err }), 500, origin);
+      console.error('Falha no Resend:', res.status, await res.text());
+      return json({ error: 'Não foi possível enviar a mensagem. Tente novamente.' }, 502, origin);
     }
 
-    return cors(JSON.stringify({ success: true }), 200, origin);
+    return json({ success: true }, 200, origin);
   },
 };
+
+// Valida o token no servidor. Tokens do reCAPTCHA são de uso único e expiram rapidamente.
+async function verifyRecaptcha(token, secret, remoteIp) {
+  try {
+    const params = new URLSearchParams({ secret, response: token });
+    if (remoteIp) params.set('remoteip', remoteIp);
+    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params,
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data.success === true && ALLOWED_RECAPTCHA_HOSTNAMES.includes(data.hostname);
+  } catch {
+    return false;
+  }
+}
 
 // Verifica se o domínio tem registro MX via DNS-over-HTTPS do Cloudflare.
 async function hasMx(domain) {
@@ -112,16 +161,16 @@ function esc(str) {
     .replace(/'/g, '&#39;');
 }
 
-function cors(body, status, origin) {
-  const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
-  const allowOrigin = ALLOWED_ORIGINS.includes(origin) || isLocalhost
-    ? origin
-    : ALLOWED_ORIGINS[0];
-  return new Response(body, {
+function isAllowedOrigin(origin) {
+  return ALLOWED_ORIGINS.includes(origin) || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+}
+
+function json(payload, status, origin) {
+  return new Response(payload === null ? null : JSON.stringify(payload), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': allowOrigin,
+      ...(isAllowedOrigin(origin) ? { 'Access-Control-Allow-Origin': origin } : {}),
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Vary': 'Origin',

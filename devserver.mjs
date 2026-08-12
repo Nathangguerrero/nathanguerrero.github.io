@@ -35,12 +35,12 @@ const mtimes = new Map();
 let debounceTimer = null;
 const WATCH_EXT = new Set(['.html', '.css', '.js', '.json', '.svg']);
 
-fs.watch(ROOT, { recursive: true }, (_, filename) => {
+function handleChange(base, _, filename) {
   if (!filename) return;
   if (filename.includes('devserver') || filename.includes('.git') || filename.includes('.tmp')) return;
   const ext = path.extname(filename);
   if (!WATCH_EXT.has(ext)) return;
-  const fullPath = path.join(ROOT, filename);
+  const fullPath = path.join(base, filename);
   try {
     const mtime = fs.statSync(fullPath).mtimeMs;
     if (mtimes.get(fullPath) === mtime) return;
@@ -51,6 +51,18 @@ fs.watch(ROOT, { recursive: true }, (_, filename) => {
     console.log('reload:', filename);
     clients.forEach(res => res.write('data: reload\n\n'));
   }, 300);
+}
+
+// Evita observar node_modules e mídias pesadas, que podem esgotar o limite de arquivos abertos.
+const watchTargets = [
+  { target: ROOT, recursive: false },
+  { target: path.join(ROOT, 'assets', 'css'), recursive: true },
+  { target: path.join(ROOT, 'assets', 'js'), recursive: true },
+  { target: path.join(ROOT, 'pages'), recursive: true },
+  { target: path.join(ROOT, 'worker'), recursive: true },
+];
+watchTargets.forEach(({ target, recursive }) => {
+  if (fs.existsSync(target)) fs.watch(target, { recursive }, handleChange.bind(null, target));
 });
 
 http.createServer((req, res) => {
@@ -68,7 +80,17 @@ http.createServer((req, res) => {
     return;
   }
 
-  let filePath = path.join(ROOT, decodeURIComponent(req.url.split('?')[0]));
+  let requestPath;
+  try {
+    requestPath = decodeURIComponent(req.url.split('?')[0]);
+  } catch {
+    res.writeHead(400); res.end('Bad request'); return;
+  }
+  const filePathCandidate = path.resolve(ROOT, `.${requestPath}`);
+  if (filePathCandidate !== ROOT && !filePathCandidate.startsWith(`${ROOT}${path.sep}`)) {
+    res.writeHead(403); res.end('Forbidden'); return;
+  }
+  let filePath = filePathCandidate;
 
   // directory → index.html
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
@@ -90,6 +112,11 @@ http.createServer((req, res) => {
     const parts = range.replace(/bytes=/, '').split('-');
     const start = parseInt(parts[0], 10);
     const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+    if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start || end >= stat.size) {
+      res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` });
+      res.end();
+      return;
+    }
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${stat.size}`,
       'Accept-Ranges': 'bytes',

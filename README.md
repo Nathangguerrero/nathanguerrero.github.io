@@ -34,7 +34,7 @@ drawer de projetos em iframe e formulário de contato via serverless.
 ```
 .
 ├── index.html              # Página principal (single-page)
-├── pages/                  # 13 páginas de projeto (carregadas no drawer via iframe)
+├── pages/                  # 14 páginas de projeto (carregadas no drawer via iframe)
 │   ├── riberalves.html
 │   ├── hybrid-media.html
 │   └── ...

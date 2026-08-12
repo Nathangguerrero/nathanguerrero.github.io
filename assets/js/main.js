@@ -26,6 +26,7 @@ const LAZY_VIDEO_ROOT_MARGIN = '100px';
   }
 
   function closeMenu() {
+    if (!menu.classList.contains('open')) return;
     btn.classList.remove('open');
     menu.classList.remove('open');
     btn.setAttribute('aria-expanded', 'false');
@@ -214,10 +215,10 @@ const projects = [
   { num:'02', name:'Matrículas 2025 · CRECEI', tags:['Audiovisual','Motion'], page: 'pages/matriculas-crecei.html' },
   { num:'03', name:'O que é a Stalo · Stalo Agência', tags:['Motion','Design'], page: 'pages/o-que-e-a-stalo.html' },
   { num:'04', name:'Divulgação do Evento · LKC CON', tags:['Audiovisual','Motion'], page: 'pages/lkc-con-anuncio.html' },
-  { num:'05', name:'São Paulo · Hybrid Media', tags:['Branding','Motion'], page: 'pages/hybrid-media.html' },
-  { num:'06', name:'Por Que Você Ainda Não Evoluiu? · Asafe Quirino', tags:['Audiovisual','Motion'], page: 'pages/asafe-quirino.html' },
-  { num:'07', name:'Welcome Day · CCRP', tags:['Design','Motion'], page: 'pages/welcome-day.html' },
-  { num:'08', name:'Highlights Acampa · LKC', tags:['Design','Identidade'], page: 'pages/acampa-lkc.html' },
+  { num:'05', name:'São Paulo · Hybrid Media', tags:['Audiovisual','Motion'], page: 'pages/hybrid-media.html' },
+  { num:'06', name:'Aulas de Bateria · Asafe Quirino', tags:['Audiovisual','Motion','Design'], page: 'pages/asafe-quirino.html' },
+  { num:'07', name:'Welcome Day · CCRP', tags:['Motion','Design'], page: 'pages/welcome-day.html' },
+  { num:'08', name:'Highlights Acampa · LKC', tags:['Audiovisual','Motion'], page: 'pages/acampa-lkc.html' },
   { num:'09', name:'Brand Strategy & Visual Identity · Stalo', tags:['Branding','Estratégia'], page: 'pages/stalo.html' },
   { num:'10', name:'Brand Refresh · CRECEI', tags:['Branding','Refresh'], page: 'pages/crecei.html' },
   { num:'11', name:'Brand Design · Charlotte', tags:['Branding','Design'], page: 'pages/charlotte.html' },
@@ -234,6 +235,7 @@ const drawerNext    = document.getElementById('drawer-next');
 let currentProject  = 0;
 let activeFrame     = frameA;
 let animating       = false;
+let drawerReturnFocus = null;
 
 function slideToProject(index, direction) {
   if (animating || index === currentProject) return;
@@ -278,16 +280,23 @@ function loadProject(index, direction = 'next') {
 }
 
 function _stopTouch(e) { e.preventDefault(); }
+let scrollLockCount = 0;
 
 function lockScroll() {
+  scrollLockCount += 1;
+  if (scrollLockCount > 1) return;
   if (window.__lenis) window.__lenis.stop();
+  document.body.classList.add('modal-open');
   document.querySelectorAll('#contact-overlay, #mobile-menu').forEach(el => {
     el.addEventListener('touchmove', _stopTouch, { passive: false });
   });
 }
 
 function unlockScroll() {
+  scrollLockCount = Math.max(0, scrollLockCount - 1);
+  if (scrollLockCount > 0) return;
   if (window.__lenis) window.__lenis.start();
+  document.body.classList.remove('modal-open');
   document.querySelectorAll('#contact-overlay, #mobile-menu').forEach(el => {
     el.removeEventListener('touchmove', _stopTouch);
   });
@@ -307,15 +316,19 @@ function openDrawer(index) {
   frameB.style.pointerEvents = 'none';
   activeFrame = frameA;
   updateMobileCounter();
+  drawerReturnFocus = document.activeElement;
+  drawer.setAttribute('aria-hidden', 'false');
   lockScroll();
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       drawer.classList.add('open');
+      drawerClose.focus();
     });
   });
 }
 
 function closeDrawer() {
+  if (!drawer.classList.contains('open')) return;
   try {
     [frameA, frameB].forEach(f => {
       const doc = f.contentDocument || f.contentWindow?.document;
@@ -323,12 +336,15 @@ function closeDrawer() {
     });
   } catch {}
   drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
   [frameA, frameB].forEach(f => {
     f.style.pointerEvents = 'none';
     f.style.visibility = 'hidden';
     f.style.opacity = '0';
   });
   unlockScroll();
+  if (drawerReturnFocus?.isConnected) drawerReturnFocus.focus();
+  drawerReturnFocus = null;
   setTimeout(() => { frameA.src = ''; frameB.src = ''; }, 600);
 }
 
@@ -366,6 +382,11 @@ if (mobileNext) mobileNext.addEventListener('click', () => { loadProject((curren
 
 document.querySelectorAll('.project-item[data-project]').forEach(el => {
   el.addEventListener('click', () => openDrawer(+el.dataset.project));
+  el.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    openDrawer(+el.dataset.project);
+  });
 });
 drawerClose.addEventListener('click', closeDrawer);
 drawerOverlay.addEventListener('click', () => {
@@ -793,14 +814,18 @@ let ctaHoverUnfreeze = null;
   const whatsappBtn = document.getElementById('whatsapp-btn');
   let closeTimer = null;
   let isClosing = false;
+  let returnFocus = null;
 
-  function openContact(fromCtaBtn = false) {
+  function openContact(fromCtaBtn = false, trigger = null) {
     window.clearTimeout(closeTimer);
     isClosing = false;
     panel.classList.remove('closing');
     if (fromCtaBtn && ctaHoverFreeze) ctaHoverFreeze();
+    returnFocus = trigger || document.activeElement;
     lockScroll();
     panel.classList.add('open');
+    panel.setAttribute('aria-hidden', 'false');
+    if (drawer.classList.contains('open')) drawer.setAttribute('aria-hidden', 'true');
     if (whatsappBtn) whatsappBtn.style.display = 'none';
     if (form.dataset.sent) {
       form.style.display = 'none';
@@ -824,11 +849,15 @@ let ctaHoverUnfreeze = null;
       if (!isClosing) return;
       isClosing = false;
       panel.classList.remove('open', 'closing');
+      panel.setAttribute('aria-hidden', 'true');
+      if (drawer.classList.contains('open')) drawer.setAttribute('aria-hidden', 'false');
       contactSide.style.removeProperty('--fall-x');
       contactSide.style.removeProperty('--fall-rotate');
       unlockScroll();
       if (whatsappBtn) whatsappBtn.style.display = '';
       if (ctaHoverUnfreeze) ctaHoverUnfreeze();
+      if (returnFocus?.isConnected) returnFocus.focus();
+      returnFocus = null;
       if (!form.dataset.sent) {
         form.style.display = '';
         document.getElementById('cf-sent-state').classList.remove('visible');
@@ -851,7 +880,7 @@ let ctaHoverUnfreeze = null;
 
   document.querySelectorAll('.open-contact').forEach(btn => {
     const isCtaBtn = btn.closest('#cta') !== null;
-    btn.addEventListener('click', () => openContact(isCtaBtn));
+    btn.addEventListener('click', () => openContact(isCtaBtn, btn));
   });
 
   closeBtn.addEventListener('click', closeContact);
@@ -903,6 +932,7 @@ let ctaHoverUnfreeze = null;
     const message = messageEl.value.trim();
     const types   = [...form.querySelectorAll('input[name="type"]:checked')].map(c => c.value).join(', ');
     const hp      = form.querySelector('#cf-website').value;
+    const recaptchaToken = form.dataset.recaptchaToken || '';
 
     // Validação
     if (!name) { markError(nameEl); showMsg(errorEl, 'Por favor, preencha seu nome.'); return; }
@@ -930,10 +960,11 @@ let ctaHoverUnfreeze = null;
     fetch(CONTACT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message, website: hp }),
+      body: JSON.stringify({ nome: name, contato: contact, tipo_projeto: types || '—', mensagem: message, website: hp, recaptcha_token: recaptchaToken }),
     })
     .then(r => r.json())
     .then(data => {
+      window._resetRecaptcha?.();
       submitBtn.classList.remove('sending');
       if (data.success) {
         form.style.display = 'none';
@@ -950,6 +981,7 @@ let ctaHoverUnfreeze = null;
       }
     })
     .catch(() => {
+      window._resetRecaptcha?.();
       submitBtn.classList.remove('sending');
       showMsg(errorEl, 'Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.');
       submitBtn.disabled = false;

@@ -19,8 +19,8 @@ dinâmica é o formulário de contato, que delega o envio de e-mail a um **Cloud
                                              ▼
                           ┌─────────────────────────────────────────┐
                           │     CLOUDFLARE WORKER  (resend-proxy)     │
-                          │  - valida método/CORS/campos              │
-                          │  - lê RESEND_API_KEY (secret)             │
+                          │  - valida origem/reCAPTCHA/campos         │
+                          │  - lê secrets do reCAPTCHA e Resend       │
                           └──────────────────┬────────────────────────┘
                                              │  POST /emails (Bearer key)
                                              ▼
@@ -38,11 +38,12 @@ dinâmica é o formulário de contato, que delega o envio de e-mail a um **Cloud
 1. Usuário clica "Vamos criar juntos"        → abre #contact-panel
 2. Preenche nome, contato, tipo, mensagem    → submit
 3. main.js valida (e-mail OU ≥10 dígitos)    → se inválido, mostra erro e para
-4. fetch(CONTACT_ENDPOINT, POST JSON)         → Cloudflare Worker
-5. Worker valida campos + monta HTML do email
-6. Worker → Resend (Authorization: Bearer RESEND_API_KEY)
-7. Resend entrega → nathangguerrero@gmail.com
-8. Worker responde { success: true }          → main.js mostra "Mensagem enviada!"
+4. reCAPTCHA gera um token de uso único       → enviado junto com o formulário
+5. fetch(CONTACT_ENDPOINT, POST JSON)         → Cloudflare Worker
+6. Worker valida origem, reCAPTCHA e campos   → monta o HTML do e-mail
+7. Worker → Resend (Authorization: Bearer RESEND_API_KEY)
+8. Resend entrega → nathangguerrero@gmail.com
+9. Worker responde { success: true }          → main.js mostra "Mensagem enviada!"
 ```
 
 **Por que um Worker?** A API key do Resend é um segredo de servidor. Colocá-la no
@@ -96,12 +97,13 @@ Cada bloco é uma IIFE independente, ativada apenas se seus elementos existem:
 
 ## Variáveis de ambiente
 
-Nenhuma no frontend. O **Worker** usa um único secret, configurado via Wrangler
+Nenhuma no frontend. O **Worker** usa dois secrets, configurados via Wrangler
 (nunca commitado):
 
 | Nome | Onde | Como definir |
 |---|---|---|
 | `RESEND_API_KEY` | Cloudflare Worker (secret) | `npx wrangler secret put RESEND_API_KEY` |
+| `RECAPTCHA_SECRET` | Cloudflare Worker (secret) | `npx wrangler secret put RECAPTCHA_SECRET` |
 
 ---
 
