@@ -2086,6 +2086,22 @@ nav.nav-visible {
 }
 .cf-error.visible { display: block; }
 
+.grecaptcha-badge { visibility: hidden !important; }
+.cf-recaptcha-notice {
+  margin: -10px auto 0;
+  max-width: 370px;
+  color: rgba(240,236,230,0.34);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.cf-recaptcha-notice a {
+  color: rgba(240,236,230,0.5);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cf-recaptcha-notice a:hover { color: var(--fg); }
+
 @media (max-width: 600px) {
   #contact-side {
     width: 100vw;
